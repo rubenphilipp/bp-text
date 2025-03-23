@@ -6,7 +6,7 @@
 ;;; package
 ;;;
 ;;; DESCRIPTION
-;;; Package definition of BP1.
+;;; Package definition of BP-TEXT.
 ;;;
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
@@ -14,12 +14,12 @@
 ;;; CREATED
 ;;; 2025-03-01
 ;;;
-;;; $$ Last modified:  00:05:12 Sun Mar  2 2025 CET
+;;; $$ Last modified:  21:07:49 Sun Mar 23 2025 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :cl-user)
 
-(defpackage :bp1
+(defpackage :bp-text
   (:use :common-lisp)
   (:nicknames :bp)
   (:import-from

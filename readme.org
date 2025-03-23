@@ -1,18 +1,33 @@
-#+title: BP1
+#+title: bp-text
 #+date: 2025-03-01
 
-This directory contains a set of tools, mainly written in Common Lisp, for
-algorithmic text generation.
+This repository contains a set of tools for algorithmic text generation, being
+written by Fabian Bentrup and Ruben Philipp for one of their current projects.
 
-** Dependencies
+The project is split into two parts, one written in Python, the other in Common
+Lisp.
 
-- [[https://github.com/rubenphilipp/cologne-phonetics/][cologne-phonetics]]
-- [[https://github.com/rubenphilipp/soundex][soundex]]
-- [[https://github.com/rubenphilipp/cl-ris][cl-ris]]
+** Architecture
+
+*** Python
+
+The python ([[file:python/]]) part is mainly responsible for the fundamental text
+and (BibTeX-)database processing.  It should be considered the main part of the
+software.
+
+*** Common Lisp
+
+The Common Lisp ([[file:lisp/]]) part of the software is conceived as an interface
+to thy python part (thus requiring it) and is aimed at providing tools to
+"compositionally" and creatively work with the data provided by the python
+module(s).
+
 
 ** Details
 
 more to come...
+
+*NB:* This is still work in progress at a very early stage of development. 
 
 * Apropos
 

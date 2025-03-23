@@ -1,0 +1,13 @@
+# -*- eval: (flyspell-mode); eval: (ispell-change-dictionary "en") -*-
+#+title: bp-text
+#+date: 2025-03-23
+#+LANGUAGE: en
+#+startup: overview
+
+This is the Common Lisp part of the /bp-text/ project.
+
+** Dependencies
+
+- [[https://github.com/rubenphilipp/cologne-phonetics/][cologne-phonetics]]
+- [[https://github.com/rubenphilipp/soundex][soundex]]
+- [[https://github.com/rubenphilipp/cl-ris][cl-ris]]

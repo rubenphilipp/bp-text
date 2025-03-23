@@ -1,12 +1,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; FILE
-;;; bp1.asd
+;;; bp-text.asd
 ;;;
 ;;; NAME
 ;;; system
 ;;;
 ;;; DESCRIPTION
-;;; System definition of BP1.
+;;; System definition of BP-TEXT.
 ;;;
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
@@ -14,11 +14,11 @@
 ;;; CREATED
 ;;; 2025-03-01
 ;;;
-;;; $$ Last modified:  17:35:29 Tue Mar 11 2025 CET
+;;; $$ Last modified:  21:07:14 Sun Mar 23 2025 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(defsystem "bp1"
+(defsystem "bp-text"
   :description "Common Lisp algorithmic text generation tools."
   :version "0.0.1"
   :author "Ruben Philipp <me@rubenphilipp.com>, Fabian Bentrup"
@@ -39,4 +39,4 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; EOF bp1.asd
+;;; EOF bp-text.asd
