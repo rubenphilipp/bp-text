@@ -179,5 +179,9 @@ Temporary Items
 *.sqlite
 *.sqlite3
 
+## python
+
+*.egg-info
+
 ################################################################################
 ### EOF .gitignore
