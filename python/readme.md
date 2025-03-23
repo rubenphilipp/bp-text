@@ -15,8 +15,7 @@ This is the Python part of the *bp-text* project.
     - https://www.nltk.org
   - BibTeX parsing
     - https://github.com/sciunto-org/python-bibtexparser
-      - install *V2* via #+begin_src shell pip install bibtexparser --pre
-        #+end_src
+      - install *V2* via `pip install bibtexparser --pre`
   - https://github.com/pemistahl/lingua-py
   - https://pypi.org/project/pypdf/
 - PDF
