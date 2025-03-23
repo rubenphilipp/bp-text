@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bp-text"
+version = "0.0.1"
+description = "Python algorithmic text generation tools."
+authors = [
+    { name = "Ruben Philipp", email = "me@rubenphilipp.com" }
+]
+license = { text = "GPL Version 2.0 or later" }
+readme = "README.org"
+requires-python = ">=3.8"
+dependencies = [
+    # "requests>=2.26.0",
+    "numpy>=1.21.0",
+    "lingua>=4.4",
+    "flair>=0.15.0",
+    "pdf2image>=1.17.0",
+    "pytesseract>=0.3.13",
+    "PyPDF2>=3.0.1",
+    "bibtexparser>=2.0.0b8"
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "black", "flake8"]
+
+[tool.setuptools]
+packages = ["bp-text"]
+
+[tool.black]
+line-length = 88
+
+# [tool.pytest.ini_options]
+# testpaths = ["tests"]
+
