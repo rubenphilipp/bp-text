@@ -1,6 +1,8 @@
-# bp-text
+# bp_text
 
 This is the Python part of the *bp-text* project.
+
+**NB:** In Python, the module is called bp_text!
 
 
 ## Installation Notes

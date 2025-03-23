@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "bp-text"
+name = "bp_text"
 version = "0.0.1"
 description = "Python algorithmic text generation tools."
 authors = [
@@ -27,7 +27,7 @@ dependencies = [
 dev = ["pytest", "black", "flake8"]
 
 [tool.setuptools]
-packages = ["bp-text"]
+packages = ["bp_text"]
 
 [tool.black]
 line-length = 88
