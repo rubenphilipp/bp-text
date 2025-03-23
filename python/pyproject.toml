@@ -10,7 +10,7 @@ authors = [
     { name = "Ruben Philipp", email = "me@rubenphilipp.com" }
 ]
 license = "GPL-3.0-or-later"
-readme = "readme.org"
+readme = "readme.md"
 requires-python = ">=3.8"
 dependencies = [
     # "requests>=2.26.0",
