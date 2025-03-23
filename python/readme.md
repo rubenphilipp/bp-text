@@ -1,26 +1,21 @@
-# -*- eval: (flyspell-mode); eval: (ispell-change-dictionary "en") -*-
-#+title: bp-text
-#+date: 2025-03-23
-#+LANGUAGE: en
-#+startup: overview
+# bp-text
 
-This is the Python part of the /bp-text/ project.
+This is the Python part of the *bp-text* project.
 
-* Installation notes
 
-** Dependencies
+## Installation Notes
+
+### Dependencies
 
 - Python 3
-  - preferably in a venv[fn:1]
+  - preferably in a venv[^1]
 - Python libraries
   - NLP
     - https://flairnlp.github.io
     - https://www.nltk.org
   - BibTeX parsing
     - https://github.com/sciunto-org/python-bibtexparser
-      - install *V2* via
-        #+begin_src shell
-        pip install bibtexparser --pre
+      - install *V2* via #+begin_src shell pip install bibtexparser --pre
         #+end_src
   - https://github.com/pemistahl/lingua-py
   - https://pypi.org/project/pypdf/
@@ -33,7 +28,5 @@ This is the Python part of the /bp-text/ project.
       - https://github.com/tesseract-ocr/tesseract
 
 
-* Footnotes
-
-[fn:1] On MacOS, it's recommended to use =pyenv= in conjunction with
-=pyenv-venv= to manage python versions and virtual environments.  
+[^1]: On MacOS, it's recommended to use pyenv in conjunction with pyenv-venv to
+    manage python versions and virtual environments.

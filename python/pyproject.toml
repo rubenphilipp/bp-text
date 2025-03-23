@@ -9,8 +9,8 @@ description = "Python algorithmic text generation tools."
 authors = [
     { name = "Ruben Philipp", email = "me@rubenphilipp.com" }
 ]
-license = { text = "GPL Version 2.0 or later" }
-readme = "README.org"
+license = "GPL-3.0-or-later"
+readme = "readme.org"
 requires-python = ">=3.8"
 dependencies = [
     # "requests>=2.26.0",
