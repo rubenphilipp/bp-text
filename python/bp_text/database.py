@@ -5,7 +5,7 @@ from a BibTeX file (as database).
 Created: 2025-03-23
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  00:42:28 Thu Mar 27 2025 CET
+$$ Last modified:  00:55:01 Thu Mar 27 2025 CET
 """
 
 import abc
@@ -97,7 +97,7 @@ class BibTexDatabase(Database):
         """
         Find entries matching the search string in the given field.
 
-        Return: A list with items of class <class 'bibtexparser.model.Entry'>
+        Return: A list with items of <class 'bibtexparser.model.Entry'>
         """
         matches = []
 
@@ -117,7 +117,7 @@ class BibTexDatabase(Database):
 
         return matches
         
-
+    
     
 
     def get_nth_entry(self, n):
