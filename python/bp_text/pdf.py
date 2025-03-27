@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  19:34:46 Thu Mar 27 2025 CET
+$$ Last modified:  19:43:15 Thu Mar 27 2025 CET
 """
 
 import os
@@ -299,7 +299,9 @@ class PdfFile:
             ## get most used lang
             for lang in langs:
                 langs[lang] = pages_langs_lst.count(lang)
-            return sorted(langs, key=lambda item: item[1])[-1]
+            return sorted(langs.items(),
+                          key=lambda item: item[1],
+                          reverse=True)[0][0]
 
 
         

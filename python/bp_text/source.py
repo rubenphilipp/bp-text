@@ -5,7 +5,7 @@ file (e.g. TXT, PDF).
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  15:16:00 Thu Mar 27 2025 CET
+$$ Last modified:  19:35:55 Thu Mar 27 2025 CET
 """
 
 import os
@@ -79,6 +79,7 @@ class Text:
             self.lang = detected_lang
         return detected_lang
 
+    ## TODO: remove from here (cf. pdf.py)
     def extract_text_from_file(self, set_data = True):
         file = self._file
         filename, file_extension = os.path.splitext(file)
