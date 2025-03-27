@@ -5,11 +5,12 @@ from a BibTeX file (as database).
 Created: 2025-03-23
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  00:55:01 Thu Mar 27 2025 CET
+$$ Last modified:  13:37:42 Thu Mar 27 2025 CET
 """
 
 import abc
 import os
+import re
 from pathlib import Path
 import bibtexparser
 
@@ -128,6 +129,31 @@ class BibTexDatabase(Database):
             print(f"Entry '{n}' does is not within the list range.")
         
 
+################################################################################
+
+################################################################################
+## convert latex umlauts (esp. in file) to ascii umlauts
+def convert_latex_umlauts(text):
+    # Dictionary mapping LaTeX umlaut sequences to Unicode characters
+    umlaut_map = {
+        '{\\"a}': 'ä', '{\\"A}': 'Ä',
+        '{\\"o}': 'ö', '{\\"O}': 'Ö',
+        '{\\"u}': 'ü', '{\\"U}': 'Ü',
+        '{\\"e}': 'ë', '{\\"E}': 'Ë',
+        '{\\"i}': 'ï', '{\\"I}': 'Ï',
+        '{\\ss}': 'ß'
+    }
+    
+    # Replace each LaTeX sequence with its Unicode equivalent
+    for latex_seq, unicode_char in umlaut_map.items():
+        text = text.replace(latex_seq, unicode_char)
+    
+    # Also handle alternate forms like \"a
+    alt_pattern = r'\\"([aoueiAOUEI])'
+    text = re.sub(alt_pattern,
+                  lambda m: umlaut_map.get('{\\"' + m.group(1) + '}',
+                                           m.group(0)), text)
+    return text
 
 ################################################################################
 ## EOF db.py
