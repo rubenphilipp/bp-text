@@ -5,7 +5,7 @@ file (e.g. TXT, PDF).
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  15:11:49 Thu Mar 27 2025 CET
+$$ Last modified:  15:16:00 Thu Mar 27 2025 CET
 """
 
 import os
@@ -71,7 +71,7 @@ class Text:
 
     def detect_lang(self, set_lang = False):
         if self.data == "":
-            print("No text in the data attribute.")
+            print(f"Error: No text in the data attribute.")
             return False
         lang = detector.detect_language_of(self.data)
         detected_lang = lang.iso_code_639_1.name
@@ -88,7 +88,7 @@ class Text:
         elif file_extension == ".pdf":
             text = textdata.extract_text_from_pdf(file)
         else:
-            print("Error: No text found")
+            print(f"Error: No text found")
             text = "" # replace with return when inside function
         if set_data:
             self.data = text
