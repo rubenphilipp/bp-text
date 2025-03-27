@@ -20,7 +20,9 @@ dependencies = [
     "pdf2image>=1.17.0",
     "pytesseract>=0.3.13",
     "PyPDF2>=3.0.1",
-    "bibtexparser>=2.0.0b8"
+    "bibtexparser>=2.0.0b8",
+    "roman>=5.0",
+    "langcodes>=3.5.0"
 ]
 
 [project.optional-dependencies]
