@@ -4,7 +4,7 @@ This module contains functionality dealing with languages (e.g. detection).
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  18:44:21 Thu Mar 27 2025 CET
+$$ Last modified:  20:01:33 Fri Mar 28 2025 CET
 """
 
 from lingua import Language, LanguageDetectorBuilder
@@ -48,16 +48,13 @@ class LanguageDetector:
     def detector(self):
         return self._detector
 
+    ########################################
+
     def update(self):
         ## instantiate detector
         self._detector = LanguageDetectorBuilder \
             .from_languages(*self._languages).build()
 
-        
-            
-
-
-        
 
 
 

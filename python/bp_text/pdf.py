@@ -4,13 +4,14 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  19:43:15 Thu Mar 27 2025 CET
+$$ Last modified:  20:14:32 Fri Mar 28 2025 CET
 """
 
 import os
 import sys
 import re
 from pathlib import Path
+from abc import ABC, abstractmethod
 
 from lingua import Language, LanguageDetectorBuilder
 from PyPDF2 import PdfReader
@@ -21,23 +22,36 @@ import roman
 import langcodes
 
 from . import language
+from . import utilities
 
 ################################################################################
 
-class PdfPage:
+class Page(ABC):
     """
-    A PDF page.
+    Abstract base class for a page. 
     """
     def __init__(self,
                  page_num = None,
                  page_label = None,
-                 data = "",
+                 data = None,
+                 text = "",
                  lang = ""):
+        ## the page number / index
         self._page_num = page_num
+        ## the page number (number) label
+        ## this might differ from the actual page number e.g.
+        ## when sections of a document are labeled with roman
+        ## numerals
         self._page_label = page_label
+        ## additional data
         self._data = data
+        ## the text contents of the page
+        self._text = text
+        ## the primary language of the page's content
         self._lang = lang
         self.update()
+
+    ########################################
 
     @property
     def page_num(self):
@@ -61,10 +75,18 @@ class PdfPage:
 
     @data.setter
     def data(self, val):
+        self._data = val
+
+    @property
+    def text(self):
+        return self._text
+
+    @text.setter
+    def text(self, val):
         if isinstance(val, str):
-            self._data = val
+            self._text = val
         else:
-            print("Error: value for data is not a String.")
+            print("Error: value for text is not a String.")
         self.update()
 
     @property
@@ -78,31 +100,50 @@ class PdfPage:
         else:
             self._lang = ""
 
+    ########################################
+
     def update(self):
-        ## detect language
-        if self.lang == "":
-            self.detect_lang(set_lang = True)
-
-
-    def get_num_words(self):
-        return len(self._data.split())
+        ## detect and update language
+        self.detect_lang(set_lang = True)
 
     def detect_lang(self, set_lang = True):
+        """Detect the language of text"""
         lang = None
         detector = language.LanguageDetector().detector
-        if self.data != "":
-            lang = detector.detect_language_of(self.data)
+        if self.text != "":
+            lang = detector.detect_language_of(self.text)
         else:
             return False
         langcode = lang.iso_code_639_1.name
         if set_lang:
             self.lang = langcode
         return langcode
-            
+
+    def count_words(self):
+        return len(self._text.split())
 
 
-        
 
+
+################################################################################
+
+class PdfPage(Page):
+    """
+    A PDF page.
+    """
+    def __init__(self,
+                 page_num = None,
+                 page_label = None,
+                 data = None,
+                 text = "",
+                 lang = ""):
+        super(PdfPage, self).__init__(page_num,
+                                      page_label,
+                                      data,
+                                      text,
+                                      lang)
+
+    ## nothing special to add here, as of now (2025-03-28)
 
 ################################################################################
 
@@ -119,6 +160,8 @@ class PdfFile:
                  ocr_default_lang = 'eng'):
         ## The filepath
         self._file = file
+        ## a sha256 checksum for the file
+        self._file_checksum = None
         ## The PyPDF2.PdfReader object
         self._reader = None
         ## The number tree of the PDF
@@ -138,6 +181,7 @@ class PdfFile:
         ########################################
         self.update()
 
+    ########################################
         
     @property
     def file(self):
@@ -147,6 +191,11 @@ class PdfFile:
     def file(self, val):
         self._file = val
         self.update()
+
+    @property
+    def file_checksum(self):
+        return self._file_checksum
+
 
     @property
     def lang(self):
@@ -184,7 +233,7 @@ class PdfFile:
             print(f"Error: '{val}' is not of type Boolean")
             return False
 
-
+    ########################################
 
     def update(self):
         """Update the instance"""
@@ -202,6 +251,9 @@ class PdfFile:
         else:
             print(f"Error: The file '{self._file}' does not exist.")
             return False
+        ## calculate file checksum
+        self._file_checksum = utilities.file_checksum(self._file,
+                                                      algorithm = "sha256")
         ## auto-extract
         if self._auto_extract:
             self.data = self.extract_text()
@@ -219,12 +271,12 @@ class PdfFile:
 
         for i, page in enumerate(self.reader.pages):
             page_text = page.extract_text()
-            page_ob = PdfPage()
             if page_text:
-                page_ob.lang = self.lang
-                page_ob.data = page_text
-                page_ob.page_num = i
-                page_ob.page_label = "" # TODO
+                page_ob = PdfPage(lang = self.lang,
+                                  text = page_text,
+                                  page_num = i,
+                                  page_label = "" # TODO
+                                  )
                 text.append(page_ob)
 
         return text
@@ -246,7 +298,7 @@ class PdfFile:
                     lang = self._ocr_default_lang)
                 page_ob = PdfPage(page_num = i,
                                   page_label = "", # TODO
-                                  data = page_text,
+                                  text = page_text,
                                   lang = self.lang)
                 text.append(page_ob)
                 
@@ -271,7 +323,7 @@ class PdfFile:
             text = self.extract_text_without_ocr()
             
             ## get the sum of words in result
-            text_words = sum(map(lambda p: p.get_num_words(), text))
+            text_words = sum(map(lambda p: p.count_words(), text))
             # Fall back to OCR if needed
             if self._fallback_to_ocr and (not text or text_words < 20):
                 print("Direct extraction yielded little text, "

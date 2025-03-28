@@ -5,7 +5,7 @@ file (e.g. TXT, PDF).
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  19:35:55 Thu Mar 27 2025 CET
+$$ Last modified:  19:36:02 Fri Mar 28 2025 CET
 """
 
 import os
@@ -18,7 +18,9 @@ from pdf2image import convert_from_path
 import pytesseract
 
 from . import database
-from . import textdata
+# from . import textdata
+
+## TODO: remove textdata-reference, use PDF classes etc. 
 
 ################################################################################
 
