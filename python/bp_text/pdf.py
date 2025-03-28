@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  22:50:47 Fri Mar 28 2025 CET
+$$ Last modified:  22:58:02 Fri Mar 28 2025 CET
 """
 
 import os
@@ -182,14 +182,15 @@ class PdfFile:
                 self._reader = PdfReader(self._file)
             except PdfReadError:
                 print(f"Error: Invalid PDF file {self._file}")
-                ## Initialize the number tree
-                self._number_tree = self._reader.trailer['/Root'] \
-                                                .get('/PageLabels')
+                
             else:
                 pass
         else:
             print(f"Error: The file '{self._file}' does not exist.")
             return False
+        ## Initialize the number tree
+        self._number_tree = self._reader.trailer['/Root'] \
+                                        .get('/PageLabels')
         ## calculate file checksum
         self._file_checksum = utilities.file_checksum(self._file,
                                                       algorithm = "sha256")
