@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  21:45:36 Fri Mar 28 2025 CET
+$$ Last modified:  22:50:47 Fri Mar 28 2025 CET
 """
 
 import os
@@ -197,7 +197,7 @@ class PdfFile:
         if self._auto_extract:
             self.data = self.extract_text()
         ## set (primary) language if not given
-        if self.lang == "" or not self.lang:
+        if (self.lang == "" or not self.lang) and self.data:
             self.lang = self.get_primary_lang()
         return self
 
@@ -280,7 +280,7 @@ class PdfFile:
         """
         Get the primary language of a PDF.
         """
-        if self.data == "":
+        if self._data == "" or self._data == None:
             print("Error: Cannot detect language. No data!")
             return False
         pages_langs = map(lambda p: p.lang, self.data)
