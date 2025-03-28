@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  20:14:32 Fri Mar 28 2025 CET
+$$ Last modified:  21:24:00 Fri Mar 28 2025 CET
 """
 
 import os
@@ -14,6 +14,7 @@ from pathlib import Path
 from abc import ABC, abstractmethod
 
 from lingua import Language, LanguageDetectorBuilder
+import PyPDF2
 from PyPDF2 import PdfReader
 from PyPDF2.errors import PdfReadError
 from pdf2image import convert_from_path
@@ -134,6 +135,7 @@ class PdfPage(Page):
     def __init__(self,
                  page_num = None,
                  page_label = None,
+                 ## here, data holds a PyPDF2.PageObject (or None)
                  data = None,
                  text = "",
                  lang = ""):
@@ -142,8 +144,44 @@ class PdfPage(Page):
                                       data,
                                       text,
                                       lang)
+        ## call this again to perform tests
+        self.data = data
 
-    ## nothing special to add here, as of now (2025-03-28)
+    ########################################
+
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, val):
+        ## test if data is a PyPDF2 PageObject
+        if val != None and not isinstance(val, PyPDF2.PageObject):
+            print(f"Error: The value for data is not a PyPDF2.PageObject, but "
+                  + "a {type(val)}")
+            return False
+        self._data = val
+
+
+    ########################################
+
+    def extract_text(self, update_text = True):
+        """
+        Extract text from a PDF page using direct extraction.
+        Returns the text as a string. 
+        """
+        if not self.data:
+            print("Error: No data.")
+            return False
+        
+        text = self.data.extract_text()
+
+        if update_text:
+            self.text = text
+        
+        return text
+
+
 
 ################################################################################
 
@@ -274,6 +312,7 @@ class PdfFile:
             if page_text:
                 page_ob = PdfPage(lang = self.lang,
                                   text = page_text,
+                                  data = page,
                                   page_num = i,
                                   page_label = "" # TODO
                                   )
@@ -320,6 +359,7 @@ class PdfFile:
         use_ocr = self._use_ocr
         # Try direct extraction first
         if not use_ocr:
+            
             text = self.extract_text_without_ocr()
             
             ## get the sum of words in result
