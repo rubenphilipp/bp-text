@@ -13,6 +13,9 @@ class TestPdf(unittest.TestCase):
         Use this to initialize any objects or data needed for testing.
         """
         self.pdf1 = pdf.PdfFile(os.path.join(DATA_DIR, "bajohr2024a.pdf"))
+        ## contains roman numerals on some pages
+        self.pdf2 = pdf.PdfFile(
+            os.path.join(DATA_DIR, "Infrastructure_Aesthetics_2024.pdf"))
         pass
 
     def test_get_lang(self):
