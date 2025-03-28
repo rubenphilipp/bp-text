@@ -23,6 +23,11 @@ class TestPdf(unittest.TestCase):
     def test_has_data(self):
         result = type(self.pdf1.data[1].text)
         self.assertEqual(result, str)
+
+    def test_no_auto_extract(self):
+        result = pdf.PdfFile(os.path.join(DATA_DIR, "bajohr2024a.pdf"),
+                             auto_extract = False)
+        self.assertEqual(isinstance(result, pdf.PdfFile), True)
         
 
     
