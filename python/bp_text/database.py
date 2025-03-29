@@ -5,7 +5,7 @@ from a BibTeX file (as database).
 Created: 2025-03-23
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  13:37:42 Thu Mar 27 2025 CET
+$$ Last modified:  23:00:46 Sat Mar 29 2025 CET
 """
 
 import abc
