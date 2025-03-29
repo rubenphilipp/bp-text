@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  22:55:31 Sat Mar 29 2025 CET
+$$ Last modified:  22:56:33 Sat Mar 29 2025 CET
 """
 
 import os
@@ -288,7 +288,7 @@ class PdfFile:
         label_tuples = self._number_tree.get_object()['/Nums']
         if len(label_tuples) % 2 != 0:
             print("Error: Label number tree is malformed.");
-            return ""
+            return str(page_num + 1)
 
         page_labels = {}
         for i in range(0, len(label_tuples), 2):
