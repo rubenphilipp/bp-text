@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:08:12 Sat Mar 29 2025 CET
+$$ Last modified:  23:31:03 Sat Mar 29 2025 CET
 """
 
 import os
@@ -39,13 +39,16 @@ class PdfPage(Page):
                  ## here, data holds a PyPDF2.PageObject (or None)
                  data = None,
                  text = "",
-                 lang = ""):
+                 lang = "",
+                 ## can include a reference to a PdfFile object
+                 file = None):
         super(PdfPage, self).__init__(page_num,
                                       page_label,
                                       data,
                                       text,
                                       lang)
         ## call this again to perform tests
+        self._file = file
         self.data = data
 
     ########################################
@@ -63,6 +66,17 @@ class PdfPage(Page):
             return False
         self._data = val
 
+    @property
+    def file(self):
+        return self._file
+
+    @file.setter
+    def file(self, val):
+        if isinstance(val, PdfFile):
+            self._file = val
+        else:
+            print("Error: val is not of type PdfFile. ")
+            return False
 
     ########################################
 
@@ -215,6 +229,7 @@ class PdfFile:
             page_ob = PdfPage(lang = self.lang,
                               text = page_text,
                               data = page,
+                              file = self,
                               page_num = i,
                               page_label = self.get_page_label(i))
             text.append(page_ob)
@@ -239,6 +254,7 @@ class PdfFile:
                 page_ob = PdfPage(page_num = i,
                                   page_label = self.get_page_label(i),
                                   text = page_text,
+                                  file = self,
                                   lang = self.lang)
                 text.append(page_ob)
                 
