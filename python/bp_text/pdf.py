@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  22:49:18 Sat Mar 29 2025 CET
+$$ Last modified:  22:55:31 Sat Mar 29 2025 CET
 """
 
 import os
@@ -282,13 +282,13 @@ class PdfFile:
         tree) of a pdf page by index (page_num, zero-based). 
         """
         if not self._number_tree:
-            print("Error: No number_tree.")
-            return False
+            # no number tree, use page numstring instead
+            return str(page_num + 1)
         
         label_tuples = self._number_tree.get_object()['/Nums']
         if len(label_tuples) % 2 != 0:
             print("Error: Label number tree is malformed.");
-            return False
+            return ""
 
         page_labels = {}
         for i in range(0, len(label_tuples), 2):

@@ -32,7 +32,9 @@ class TestPdf(unittest.TestCase):
                              auto_extract = False)
         self.assertEqual(isinstance(result, pdf.PdfFile), True)
         
-
+    def text_page_labels(self):
+        self.assertEqual(self.pdf2.data[0].page_label, "I")
+        self.assertEqual(self.pdf2.data[8].page_label, "1")
     
 
 ################################################################################
