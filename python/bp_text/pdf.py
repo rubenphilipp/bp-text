@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  22:58:02 Fri Mar 28 2025 CET
+$$ Last modified:  22:49:18 Sat Mar 29 2025 CET
 """
 
 import os
@@ -211,14 +211,13 @@ class PdfFile:
 
         for i, page in enumerate(self.reader.pages):
             page_text = page.extract_text()
-            if page_text:
-                page_ob = PdfPage(lang = self.lang,
-                                  text = page_text,
-                                  data = page,
-                                  page_num = i,
-                                  page_label = "" # TODO
-                                  )
-                text.append(page_ob)
+            
+            page_ob = PdfPage(lang = self.lang,
+                              text = page_text,
+                              data = page,
+                              page_num = i,
+                              page_label = self.get_page_label(i))
+            text.append(page_ob)
 
         return text
 
@@ -238,7 +237,7 @@ class PdfFile:
                     image,
                     lang = self._ocr_default_lang)
                 page_ob = PdfPage(page_num = i,
-                                  page_label = "", # TODO
+                                  page_label = self.get_page_label(i),
                                   text = page_text,
                                   lang = self.lang)
                 text.append(page_ob)
@@ -276,6 +275,55 @@ class PdfFile:
             text = self.extract_text_with_ocr()
 
         return text
+
+    def get_page_label(self, page_num):
+        """
+        Returns the label (i.e. the page number according to the PDF number
+        tree) of a pdf page by index (page_num, zero-based). 
+        """
+        if not self._number_tree:
+            print("Error: No number_tree.")
+            return False
+        
+        label_tuples = self._number_tree.get_object()['/Nums']
+        if len(label_tuples) % 2 != 0:
+            print("Error: Label number tree is malformed.");
+            return False
+
+        page_labels = {}
+        for i in range(0, len(label_tuples), 2):
+            start_index = label_tuples[i]
+            label_dict = label_tuples[i + 1].get_object()
+            
+            prefix = label_dict.get('P', '')
+            start_number = label_dict.get('/St', 1)
+            style = label_dict.get('/S')
+
+            if style == '/D': # Decimal
+                def ret_label(index):
+                    return str(start_number + index)
+            elif style == '/R': # Uppercase Roman
+                def ret_label(index):
+                    return roman.toRoman(start_number + index).upper()
+            elif style == '/r': # Lowercase Roman
+                def ret_label(index):
+                    return roman.toRoman(start_number + index).lower()
+            else:
+                def ret_label(index):
+                    return ""
+            
+            page_labels[start_index] = (prefix, ret_label, start_number)
+
+        ## determine page label
+        page_label = str(page_num + 1)
+        for start_index, (prefix,
+                          label_func,
+                          start_number) in page_labels.items():
+            if page_num >= start_index:
+                page_label = prefix + label_func(page_num - start_index)
+
+        return page_label
+    
 
     def get_primary_lang(self):
         """
