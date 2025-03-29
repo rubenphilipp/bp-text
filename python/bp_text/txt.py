@@ -4,7 +4,7 @@ This module implements functionality for TXT files.
 Created: 2025-03-29
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  00:01:58 Sun Mar 30 2025 CET
+$$ Last modified:  00:14:09 Sun Mar 30 2025 CET
 """
 
 import os
@@ -58,6 +58,11 @@ class TxtFile:
     @data.setter
     def data(self, val):
         self._data = val
+
+    @property
+    def file_checksum(self):
+        return self._file_checksum
+
 
 
     ########################################
