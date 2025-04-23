@@ -91,7 +91,7 @@
 <p>This module implements functionality for TXT files.</p>
 <p>Created: 2025-03-29
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  17:30:59 Wed Apr 23 2025 CEST</p>
+<p>$$ Last modified:  17:39:37 Wed Apr 23 2025 CEST</p>
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -105,6 +105,14 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.txt.</span></span><span class="sig-name descname"><span class="pre">TxtFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/txt.html#TxtFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.txt.TxtFile" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Implementation of the text-file (txt) class.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">## instantiate the text file object and read its contents</span>
+<span class="n">text</span> <span class="o">=</span> <span class="n">txt</span><span class="o">.</span><span class="n">TxtFile</span><span class="p">(</span><span class="s2">&quot;something.txt&quot;</span><span class="p">)</span>
+<span class="c1">## get the primary language</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">lang</span><span class="p">)</span>
+<span class="c1">## =&gt; &quot;en&quot;</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

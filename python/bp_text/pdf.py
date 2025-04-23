@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  16:33:46 Wed Apr 23 2025 CEST
+$$ Last modified:  17:37:49 Wed Apr 23 2025 CEST
 """
 
 import os
@@ -146,7 +146,26 @@ class PdfFile:
     """
     This is a class implementation of a PDF file.  A PDF file object is related
     to an actual PDF file (e.g. retrieved from a database entry).  Its methods
-    facilitate e.g. the retrieval of data/text from the pages. 
+    facilitate e.g. the retrieval of data/text from the pages.
+
+    The `data` attribute holds the :py:class:`PdfPage` objects. 
+
+    Examples::
+
+        ## load a PDF file and extract the content from its pages
+        pdfFile = pdf.PdfFile("bajohr2024a.pdf", auto_extract=True)
+        
+        ## get the primary language
+        print(pdfFile.lang)
+        ## => "de"
+        
+        ## get the label from the second page (in this case a roman numeral)
+        pdfFile.data[1].page_label
+        ## => "II"
+
+        ## get the text from the third page
+        pdfFile.data[2].text
+        
 
     :param file: The filepath.
     :type file: string

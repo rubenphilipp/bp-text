@@ -76,7 +76,7 @@
 <span class="sd">Created: 2025-03-29</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  17:30:59 Wed Apr 23 2025 CEST</span>
+<span class="sd">$$ Last modified:  17:39:37 Wed Apr 23 2025 CEST</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -92,7 +92,15 @@
 <div class="viewcode-block" id="TxtFile">
 <a class="viewcode-back" href="../../generated/bp_text.txt.html#bp_text.txt.TxtFile">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TxtFile</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementation of the text-file (txt) class. </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementation of the text-file (txt) class.</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        ## instantiate the text file object and read its contents</span>
+<span class="sd">        text = txt.TxtFile(&quot;something.txt&quot;)</span>
+<span class="sd">        ## get the primary language</span>
+<span class="sd">        print(text.lang)</span>
+<span class="sd">        ## =&gt; &quot;en&quot;</span>
 
 <span class="sd">    :param file: The path to the text file.</span>
 <span class="sd">    :type file: string</span>

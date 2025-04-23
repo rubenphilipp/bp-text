@@ -5,7 +5,7 @@ from a BibTeX file (as database).
 Created: 2025-03-23
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  16:53:39 Wed Apr 23 2025 CEST
+$$ Last modified:  17:32:55 Wed Apr 23 2025 CEST
 """
 
 import abc
@@ -37,7 +37,12 @@ class BibTexDatabase(Database):
     of the actual database it is recommended to use a specialized software (e.g.
     BibDesk).
 
-    The `data` attribute contains the parsed data. 
+    The `data` attribute contains the parsed data.
+
+    Example::
+
+        database = database.BibTexDatabase("db.bib")
+        database.entries["adorno1960"].get("file").value
 
     :param file_path: The path to the .bib file.
     :type file_path: string

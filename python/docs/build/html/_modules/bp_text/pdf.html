@@ -76,7 +76,7 @@
 <span class="sd">Created: 2025-03-27</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  16:33:46 Wed Apr 23 2025 CEST</span>
+<span class="sd">$$ Last modified:  17:37:49 Wed Apr 23 2025 CEST</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -229,7 +229,26 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This is a class implementation of a PDF file.  A PDF file object is related</span>
 <span class="sd">    to an actual PDF file (e.g. retrieved from a database entry).  Its methods</span>
-<span class="sd">    facilitate e.g. the retrieval of data/text from the pages. </span>
+<span class="sd">    facilitate e.g. the retrieval of data/text from the pages.</span>
+
+<span class="sd">    The `data` attribute holds the :py:class:`PdfPage` objects. </span>
+
+<span class="sd">    Examples::</span>
+
+<span class="sd">        ## load a PDF file and extract the content from its pages</span>
+<span class="sd">        pdfFile = pdf.PdfFile(&quot;bajohr2024a.pdf&quot;, auto_extract=True)</span>
+<span class="sd">        </span>
+<span class="sd">        ## get the primary language</span>
+<span class="sd">        print(pdfFile.lang)</span>
+<span class="sd">        ## =&gt; &quot;de&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        ## get the label from the second page (in this case a roman numeral)</span>
+<span class="sd">        pdfFile.data[1].page_label</span>
+<span class="sd">        ## =&gt; &quot;II&quot;</span>
+
+<span class="sd">        ## get the text from the third page</span>
+<span class="sd">        pdfFile.data[2].text</span>
+<span class="sd">        </span>
 
 <span class="sd">    :param file: The filepath.</span>
 <span class="sd">    :type file: string</span>

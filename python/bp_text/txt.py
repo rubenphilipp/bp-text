@@ -4,7 +4,7 @@ This module implements functionality for TXT files.
 Created: 2025-03-29
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  17:30:59 Wed Apr 23 2025 CEST
+$$ Last modified:  17:39:37 Wed Apr 23 2025 CEST
 """
 
 import os
@@ -18,7 +18,15 @@ from . import utilities
 ################################################################################
 
 class TxtFile:
-    """Implementation of the text-file (txt) class. 
+    """Implementation of the text-file (txt) class.
+
+    Example::
+
+        ## instantiate the text file object and read its contents
+        text = txt.TxtFile("something.txt")
+        ## get the primary language
+        print(text.lang)
+        ## => "en"
 
     :param file: The path to the text file.
     :type file: string

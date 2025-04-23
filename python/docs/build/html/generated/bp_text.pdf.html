@@ -93,7 +93,7 @@
 <p>This module implements functionality for PDF files.</p>
 <p>Created: 2025-03-27
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  16:33:46 Wed Apr 23 2025 CEST</p>
+<p>$$ Last modified:  17:37:49 Wed Apr 23 2025 CEST</p>
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -112,6 +112,23 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <p>This is a class implementation of a PDF file.  A PDF file object is related
 to an actual PDF file (e.g. retrieved from a database entry).  Its methods
 facilitate e.g. the retrieval of data/text from the pages.</p>
+<p>The <cite>data</cite> attribute holds the <a class="reference internal" href="#bp_text.pdf.PdfPage" title="bp_text.pdf.PdfPage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PdfPage</span></code></a> objects.</p>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">## load a PDF file and extract the content from its pages</span>
+<span class="n">pdfFile</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">PdfFile</span><span class="p">(</span><span class="s2">&quot;bajohr2024a.pdf&quot;</span><span class="p">,</span> <span class="n">auto_extract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">## get the primary language</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pdfFile</span><span class="o">.</span><span class="n">lang</span><span class="p">)</span>
+<span class="c1">## =&gt; &quot;de&quot;</span>
+
+<span class="c1">## get the label from the second page (in this case a roman numeral)</span>
+<span class="n">pdfFile</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">page_label</span>
+<span class="c1">## =&gt; &quot;II&quot;</span>
+
+<span class="c1">## get the text from the third page</span>
+<span class="n">pdfFile</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
