@@ -20,7 +20,7 @@ entry by a given citation key:
 .. code-block:: python
 
    # load the database
-   db = bp_text.database.BibTexDatabase("/sources.bib")
+   db = bp_text.database.BibTexDatabase("sources.bib")
    
    # get keywords if the field is not empty
    entry = db.entries.get("chion2018")

@@ -87,7 +87,7 @@
 <p>This examples shows how to load a BibTeX file and access the keywords of an
 entry by a given citation key:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the database</span>
-<span class="n">db</span> <span class="o">=</span> <span class="n">bp_text</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">BibTexDatabase</span><span class="p">(</span><span class="s2">&quot;/sources.bib&quot;</span><span class="p">)</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">bp_text</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">BibTexDatabase</span><span class="p">(</span><span class="s2">&quot;sources.bib&quot;</span><span class="p">)</span>
 
 <span class="c1"># get keywords if the field is not empty</span>
 <span class="n">entry</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;chion2018&quot;</span><span class="p">)</span>
