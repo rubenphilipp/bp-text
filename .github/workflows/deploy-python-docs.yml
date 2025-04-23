@@ -38,8 +38,8 @@ jobs:
         run: |
           mkdir -p final-deploy/doc/python
           cp -r temp/docs final-deploy/
-          cp -r python/docs/build/html/* final-deploy/doc/python/
-          touch final-deploy/doc/python/.nojekyll
+          cp -r python/docs/build/html/* final-deploy/python/
+          touch final-deploy/.nojekyll
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
