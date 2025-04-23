@@ -29,3 +29,5 @@ is conceived.
 Keywords can also be included.  They should be placed in a `keywords` field
 which should be provided by `BibDesk` by default and should also be the standard
 field when exporting a library from Zotero e.g. via BetterBibTeX.  
+
+Citation keys should, of course, be unique. 
