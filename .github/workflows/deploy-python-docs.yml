@@ -36,7 +36,7 @@ jobs:
 
       - name: Prepare deployment directory
         run: |
-          mkdir -p final-deploy/doc/python
+          mkdir -p final-deploy/python
           cp -r temp/docs final-deploy/
           cp -r python/docs/build/html/* final-deploy/python/
           touch final-deploy/.nojekyll
