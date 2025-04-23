@@ -95,12 +95,12 @@
 from a BibTeX file (as database).</p>
 <p>Created: 2025-03-23
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  23:00:46 Sat Mar 29 2025 CET</p>
+<p>$$ Last modified:  16:53:39 Wed Apr 23 2025 CEST</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.database.convert_latex_umlauts" title="bp_text.database.convert_latex_umlauts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_latex_umlauts</span></code></a>(text)</p></td>
-<td><p></p></td>
+<td><p>Convert LaTeX umlauts to ASCII umlauts.</p></td>
 </tr>
 </tbody>
 </table>
@@ -108,10 +108,10 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.database.BibTexDatabase" title="bp_text.database.BibTexDatabase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BibTexDatabase</span></code></a>(file_path[, split_keywords, ...])</p></td>
-<td><p></p></td>
+<td><p>Implementation of a BibTeX database.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#bp_text.database.Database" title="bp_text.database.Database"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Database</span></code></a>()</p></td>
-<td><p></p></td>
+<td><p>An abstract superclass for a database.</p></td>
 </tr>
 </tbody>
 </table>
@@ -119,6 +119,24 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <dt class="sig sig-object py" id="bp_text.database.BibTexDatabase">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.database.</span></span><span class="sig-name descname"><span class="pre">BibTexDatabase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_keywords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#BibTexDatabase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.BibTexDatabase" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#bp_text.database.Database" title="bp_text.database.Database"><code class="xref py py-class docutils literal notranslate"><span class="pre">Database</span></code></a></p>
+<p>Implementation of a BibTeX database.  This class provides the user with
+various methods to interact with the stored data.</p>
+<p>NB: This class is limited to read-only use.  In order to modify the contents
+of the actual database it is recommended to use a specialized software (e.g.
+BibDesk).</p>
+<p>The <cite>data</cite> attribute contains the parsed data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>string</em>) – The path to the .bib file.</p></li>
+<li><p><strong>split_keywords</strong> (<em>boolean</em>) – When true, split all keywords in the <cite>keywords</cite>
+field into a list, assuming they are separated by a comma (“,”).
+Default = True</p></li>
+<li><p><strong>split_files</strong> (<em>boolean</em>) – When true, split all files in the <cite>file</cite> field into a
+list, assuming they are separated by a semicolon (“;”).  Default = True</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_keywords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#BibTexDatabase.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.BibTexDatabase.__init__" title="Link to this definition"></a></dt>
@@ -127,37 +145,74 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.data">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#bp_text.database.BibTexDatabase.data" title="Link to this definition"></a></dt>
-<dd><p>Getter for data</p>
+<dd><p>The parsed data.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.entries">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">entries</span></span><a class="headerlink" href="#bp_text.database.BibTexDatabase.entries" title="Link to this definition"></a></dt>
-<dd><p>Getter for db entries</p>
+<dd><p>The database entries as a <cite>dict</cite>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.find_entries">
 <span class="sig-name descname"><span class="pre">find_entries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#BibTexDatabase.find_entries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.BibTexDatabase.find_entries" title="Link to this definition"></a></dt>
 <dd><p>Find entries matching the search string in the given field.</p>
-<p>Return: A list with items of &lt;class ‘bibtexparser.model.Entry’&gt;</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field</strong> (<em>string</em>) – The field name (e.g. “keywords”).</p></li>
+<li><p><strong>search</strong> (<em>string</em>) – The search string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list with items of <cite>&lt;class ‘bibtexparser.model.Entry’&gt;</cite></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.get_entry_by_key">
 <span class="sig-name descname"><span class="pre">get_entry_by_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#BibTexDatabase.get_entry_by_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.BibTexDatabase.get_entry_by_key" title="Link to this definition"></a></dt>
-<dd><p>Getter for a specific entry by citation key in the db.</p>
+<dd><p>Get a specific entry by citation-key in the db.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>string</em>) – The citation key (e.g. “&#64;adorno1960”) to look for.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.get_nth_entry">
 <span class="sig-name descname"><span class="pre">get_nth_entry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#BibTexDatabase.get_nth_entry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.BibTexDatabase.get_nth_entry" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Get the nth entry in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>integer</em>) – Index (zero-based) of the entry in the database.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.load">
 <span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_keywords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#BibTexDatabase.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.BibTexDatabase.load" title="Link to this definition"></a></dt>
 <dd><p>Load and parse a BibTeX file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>string</em>) – The path to the BibTeX file.</p></li>
+<li><p><strong>split_keywords</strong> (<em>boolean</em>) – When true, split all keywords in the <cite>keywords</cite>
+field into a list, assuming they are separated by a comma (“,”).
+Default = True</p></li>
+<li><p><strong>split_files</strong> (<em>boolean</em>) – When true, split all files in the <cite>file</cite> field into
+a list, assuming they are separated by a semicolon (“;”).
+Default = True</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -165,6 +220,14 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <span class="sig-name descname"><span class="pre">split_fields_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">';'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#BibTexDatabase.split_fields_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.BibTexDatabase.split_fields_by" title="Link to this definition"></a></dt>
 <dd><p>Splits the data/value of all entries in the database (destructively)
 of the given field (e.g. “keywords”) by a given separator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field</strong> (<em>string</em>) – The field name (e.g. “keywords”).</p></li>
+<li><p><strong>separator</strong> (<em>string</em>) – The separating character. Default = “;”</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -173,10 +236,16 @@ of the given field (e.g. “keywords”) by a given separator.</p>
 <dt class="sig sig-object py" id="bp_text.database.Database">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.database.</span></span><span class="sig-name descname"><span class="pre">Database</span></span><a class="reference internal" href="../_modules/bp_text/database.html#Database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.Database" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>An abstract superclass for a database.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.database.Database.load">
 <em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#Database.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.Database.load" title="Link to this definition"></a></dt>
 <dd><p>Load a database from a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>string</em>) – The path to the database file.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -184,7 +253,13 @@ of the given field (e.g. “keywords”) by a given separator.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="bp_text.database.convert_latex_umlauts">
 <span class="sig-prename descclassname"><span class="pre">bp_text.database.</span></span><span class="sig-name descname"><span class="pre">convert_latex_umlauts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#convert_latex_umlauts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.convert_latex_umlauts" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Convert LaTeX umlauts to ASCII umlauts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>string</em>) – Text to convert.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 

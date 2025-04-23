@@ -5,7 +5,7 @@ from a BibTeX file (as database).
 Created: 2025-03-23
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:00:46 Sat Mar 29 2025 CET
+$$ Last modified:  16:53:39 Wed Apr 23 2025 CEST
 """
 
 import abc
@@ -16,13 +16,39 @@ import bibtexparser
 
 
 class Database(abc.ABC):
+    """An abstract superclass for a database. 
+
+    """
     @abc.abstractmethod
     def load(self, file_path: str):
-        """Load a database from a file."""
+        """Load a database from a file.
+
+        :param file_path: The path to the database file.
+        :type file_path: string
+        """
         pass
 
 
 class BibTexDatabase(Database):
+    """Implementation of a BibTeX database.  This class provides the user with
+    various methods to interact with the stored data.
+
+    NB: This class is limited to read-only use.  In order to modify the contents
+    of the actual database it is recommended to use a specialized software (e.g.
+    BibDesk).
+
+    The `data` attribute contains the parsed data. 
+
+    :param file_path: The path to the .bib file.
+    :type file_path: string
+    :param split_keywords: When true, split all keywords in the `keywords`
+        field into a list, assuming they are separated by a comma (",").
+        Default = True
+    :type split_keywords: boolean
+    :param split_files: When true, split all files in the `file` field into a
+        list, assuming they are separated by a semicolon (";").  Default = True
+    :type split_files: boolean
+    """
     def __init__(
             self,
             file_path: str,
@@ -38,7 +64,7 @@ class BibTexDatabase(Database):
 
     @property
     def data(self):
-        """Getter for data"""
+        """The parsed data.  """
         return self._data
 
     @data.setter
@@ -47,14 +73,26 @@ class BibTexDatabase(Database):
 
     @property
     def entries(self):
-        """Getter for db entries"""
+        """The database entries as a `dict`. """
         return self._data.entries_dict
 
     def load(self,
              file_path:str,
              split_keywords = True,
              split_files = True):
-        """Load and parse a BibTeX file."""
+        """Load and parse a BibTeX file.
+
+        :param file_path: The path to the BibTeX file.
+        :type file_path: string
+        :param split_keywords: When true, split all keywords in the `keywords`
+            field into a list, assuming they are separated by a comma (",").
+            Default = True
+        :type split_keywords: boolean
+        :param split_files: When true, split all files in the `file` field into
+            a list, assuming they are separated by a semicolon (";").
+            Default = True
+        :type split_files: boolean
+        """
         if not os.path.exists(file_path):  # Check if the file exists
             print(f"Error: The file {file_path} does not exist.")
             return
@@ -68,9 +106,13 @@ class BibTexDatabase(Database):
     def split_fields_by(self,
                         field: str,
                         separator = ";"):
-        """
-        Splits the data/value of all entries in the database (destructively)
+        """Splits the data/value of all entries in the database (destructively)
         of the given field (e.g. "keywords") by a given separator.
+
+        :param field: The field name (e.g. "keywords").
+        :type field: string
+        :param separator: The separating character. Default = ";"
+        :type separator: string
         """
         ## sanity checks
         if not field:
@@ -89,16 +131,23 @@ class BibTexDatabase(Database):
         return self.data
 
     def get_entry_by_key(self, key):
-        """
-        Getter for a specific entry by citation key in the db.
+        """Get a specific entry by citation-key in the db.
+
+        :param key: The citation key (e.g. "@adorno1960") to look for. 
+        :type key: string
         """
         return self.entries.get(key)
 
     def find_entries(self, field: str, search: str):
-        """
-        Find entries matching the search string in the given field.
+        """Find entries matching the search string in the given field.
 
-        Return: A list with items of <class 'bibtexparser.model.Entry'>
+        :param field: The field name (e.g. "keywords").
+        :type field: string
+        :param search: The search string.
+        :type search: string
+        :return: A list with items of `<class 'bibtexparser.model.Entry'>`
+        :rtype: list
+
         """
         matches = []
 
@@ -122,6 +171,11 @@ class BibTexDatabase(Database):
     
 
     def get_nth_entry(self, n):
+        """Get the nth entry in the database.
+
+        :param n: Index (zero-based) of the entry in the database.
+        :type n: integer
+        """
         entries = self.data.entries
         if (n < len(entries)):
             return entries[n]
@@ -134,6 +188,11 @@ class BibTexDatabase(Database):
 ################################################################################
 ## convert latex umlauts (esp. in file) to ascii umlauts
 def convert_latex_umlauts(text):
+    """Convert LaTeX umlauts to ASCII umlauts.
+
+    :param text: Text to convert.
+    :type text: string
+    """
     # Dictionary mapping LaTeX umlaut sequences to Unicode characters
     umlaut_map = {
         '{\\"a}': 'ä', '{\\"A}': 'Ä',

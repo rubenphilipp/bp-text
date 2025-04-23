@@ -77,7 +77,7 @@
 <span class="sd">Created: 2025-03-23</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  23:00:46 Sat Mar 29 2025 CET</span>
+<span class="sd">$$ Last modified:  16:53:39 Wed Apr 23 2025 CEST</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">abc</span>
@@ -90,11 +90,18 @@
 <div class="viewcode-block" id="Database">
 <a class="viewcode-back" href="../../generated/bp_text.database.html#bp_text.database.Database">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Database</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An abstract superclass for a database. </span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="Database.load">
 <a class="viewcode-back" href="../../generated/bp_text.database.html#bp_text.database.Database.load">[docs]</a>
     <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a database from a file.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a database from a file.</span>
+
+<span class="sd">        :param file_path: The path to the database file.</span>
+<span class="sd">        :type file_path: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 </div>
 
@@ -103,6 +110,25 @@
 <div class="viewcode-block" id="BibTexDatabase">
 <a class="viewcode-back" href="../../generated/bp_text.database.html#bp_text.database.BibTexDatabase">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BibTexDatabase</span><span class="p">(</span><span class="n">Database</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementation of a BibTeX database.  This class provides the user with</span>
+<span class="sd">    various methods to interact with the stored data.</span>
+
+<span class="sd">    NB: This class is limited to read-only use.  In order to modify the contents</span>
+<span class="sd">    of the actual database it is recommended to use a specialized software (e.g.</span>
+<span class="sd">    BibDesk).</span>
+
+<span class="sd">    The `data` attribute contains the parsed data. </span>
+
+<span class="sd">    :param file_path: The path to the .bib file.</span>
+<span class="sd">    :type file_path: string</span>
+<span class="sd">    :param split_keywords: When true, split all keywords in the `keywords`</span>
+<span class="sd">        field into a list, assuming they are separated by a comma (&quot;,&quot;).</span>
+<span class="sd">        Default = True</span>
+<span class="sd">    :type split_keywords: boolean</span>
+<span class="sd">    :param split_files: When true, split all files in the `file` field into a</span>
+<span class="sd">        list, assuming they are separated by a semicolon (&quot;;&quot;).  Default = True</span>
+<span class="sd">    :type split_files: boolean</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="BibTexDatabase.__init__">
 <a class="viewcode-back" href="../../generated/bp_text.database.html#bp_text.database.BibTexDatabase.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -121,7 +147,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter for data&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The parsed data.  &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
 
     <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
@@ -130,7 +156,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">entries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter for db entries&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The database entries as a `dict`. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">entries_dict</span>
 
 <div class="viewcode-block" id="BibTexDatabase.load">
@@ -139,7 +165,19 @@
              <span class="n">file_path</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span>
              <span class="n">split_keywords</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
              <span class="n">split_files</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load and parse a BibTeX file.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load and parse a BibTeX file.</span>
+
+<span class="sd">        :param file_path: The path to the BibTeX file.</span>
+<span class="sd">        :type file_path: string</span>
+<span class="sd">        :param split_keywords: When true, split all keywords in the `keywords`</span>
+<span class="sd">            field into a list, assuming they are separated by a comma (&quot;,&quot;).</span>
+<span class="sd">            Default = True</span>
+<span class="sd">        :type split_keywords: boolean</span>
+<span class="sd">        :param split_files: When true, split all files in the `file` field into</span>
+<span class="sd">            a list, assuming they are separated by a semicolon (&quot;;&quot;).</span>
+<span class="sd">            Default = True</span>
+<span class="sd">        :type split_files: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>  <span class="c1"># Check if the file exists</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: The file </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span><span class="p">)</span>
             <span class="k">return</span>
@@ -156,9 +194,13 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">split_fields_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                         <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                         <span class="n">separator</span> <span class="o">=</span> <span class="s2">&quot;;&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Splits the data/value of all entries in the database (destructively)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Splits the data/value of all entries in the database (destructively)</span>
 <span class="sd">        of the given field (e.g. &quot;keywords&quot;) by a given separator.</span>
+
+<span class="sd">        :param field: The field name (e.g. &quot;keywords&quot;).</span>
+<span class="sd">        :type field: string</span>
+<span class="sd">        :param separator: The separating character. Default = &quot;;&quot;</span>
+<span class="sd">        :type separator: string</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">## sanity checks</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">field</span><span class="p">:</span>
@@ -180,8 +222,10 @@
 <div class="viewcode-block" id="BibTexDatabase.get_entry_by_key">
 <a class="viewcode-back" href="../../generated/bp_text.database.html#bp_text.database.BibTexDatabase.get_entry_by_key">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_entry_by_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Getter for a specific entry by citation key in the db.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a specific entry by citation-key in the db.</span>
+
+<span class="sd">        :param key: The citation key (e.g. &quot;@adorno1960&quot;) to look for. </span>
+<span class="sd">        :type key: string</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
 
@@ -189,10 +233,15 @@
 <div class="viewcode-block" id="BibTexDatabase.find_entries">
 <a class="viewcode-back" href="../../generated/bp_text.database.html#bp_text.database.BibTexDatabase.find_entries">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">find_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Find entries matching the search string in the given field.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find entries matching the search string in the given field.</span>
 
-<span class="sd">        Return: A list with items of &lt;class &#39;bibtexparser.model.Entry&#39;&gt;</span>
+<span class="sd">        :param field: The field name (e.g. &quot;keywords&quot;).</span>
+<span class="sd">        :type field: string</span>
+<span class="sd">        :param search: The search string.</span>
+<span class="sd">        :type search: string</span>
+<span class="sd">        :return: A list with items of `&lt;class &#39;bibtexparser.model.Entry&#39;&gt;`</span>
+<span class="sd">        :rtype: list</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">matches</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -219,6 +268,11 @@
 <div class="viewcode-block" id="BibTexDatabase.get_nth_entry">
 <a class="viewcode-back" href="../../generated/bp_text.database.html#bp_text.database.BibTexDatabase.get_nth_entry">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_nth_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the nth entry in the database.</span>
+
+<span class="sd">        :param n: Index (zero-based) of the entry in the database.</span>
+<span class="sd">        :type n: integer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">entries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">entries</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">entries</span><span class="p">)):</span>
             <span class="k">return</span> <span class="n">entries</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
@@ -235,6 +289,11 @@
 <div class="viewcode-block" id="convert_latex_umlauts">
 <a class="viewcode-back" href="../../generated/bp_text.database.html#bp_text.database.convert_latex_umlauts">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">convert_latex_umlauts</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert LaTeX umlauts to ASCII umlauts.</span>
+
+<span class="sd">    :param text: Text to convert.</span>
+<span class="sd">    :type text: string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Dictionary mapping LaTeX umlaut sequences to Unicode characters</span>
     <span class="n">umlaut_map</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;{</span><span class="se">\\</span><span class="s1">&quot;a}&#39;</span><span class="p">:</span> <span class="s1">&#39;ä&#39;</span><span class="p">,</span> <span class="s1">&#39;{</span><span class="se">\\</span><span class="s1">&quot;A}&#39;</span><span class="p">:</span> <span class="s1">&#39;Ä&#39;</span><span class="p">,</span>
