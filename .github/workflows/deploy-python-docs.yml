@@ -31,10 +31,21 @@ jobs:
           cd build/html
           touch .nojekyll
 
+      - name: Copy additional docs from main/docs
+        run: |
+          mkdir -p temp/docs
+          cp -r docs/* temp/docs/
+
+      - name: Prepare deployment directory
+        run: |
+          mkdir -p final-deploy/doc/python
+          cp -r python/docs/build/html/* final-deploy/doc/python/
+          cp -r temp/docs final-deploy/docs/
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: gh-pages
-          folder: python/docs/build/html
-          target-folder: docs/python
+          folder: final-deploy
+          target-folder: docs
           clean: false
