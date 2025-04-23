@@ -32,3 +32,4 @@ undoing* (working title) by Fabian Bentrup and Ruben Philipp.
 
    usage
    api
+   examples
