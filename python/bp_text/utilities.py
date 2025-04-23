@@ -4,7 +4,7 @@ This module implements utility functions.
 Created: 2025-03-28
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  16:39:52 Wed Apr 23 2025 CEST
+$$ Last modified:  20:45:06 Wed Apr 23 2025 CEST
 """
 
 import hashlib
@@ -42,7 +42,8 @@ def write_pickle(obj, file_path,
     """This function serializes (pickles) an object and stores it in a file
     given as `file_path`.
 
-    :param file_path: The path where to store the pickle file. 
+    :param file_path: The path where to store the pickle file.  It is
+       recommended to use the `.pickle` suffix. 
     :type file_path: string
     :param protocol: The pickle protocol. Default = `pickle.HIGHEST_PROTOCOL`
     :type protocol: integer

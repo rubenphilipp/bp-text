@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  20:39:25 Wed Apr 23 2025 CEST
+$$ Last modified:  20:40:56 Wed Apr 23 2025 CEST
 """
 
 import os
@@ -354,12 +354,14 @@ class PdfFile:
         try:
             # convert pdf to images
             if self._verbose:
+                print(f"OCR: Processing {self._file}:")
                 print("OCR: Converting pages to images...")
+                
             images = convert_from_path(self._file,
                                        dpi=self._ocr_dpi)
             for i, image in enumerate(images):
                 if self._verbose:
-                    print(f"OCR: Processing page {i}/{len(images)}...")
+                    print(f"OCR: Processing page {i+1}/{len(images)}...")
                     
                 page_text = pytesseract.image_to_string(
                     image,
