@@ -27,6 +27,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest", "black", "flake8"]
+docs = ["sphinx", "sphinx-rtd-theme"]
 
 [tool.setuptools]
 packages = ["bp_text"]

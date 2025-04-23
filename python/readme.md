@@ -45,5 +45,17 @@ pip install /path/to/bp-text/python/
       - https://github.com/tesseract-ocr/tesseract
 
 
+## Build Documentation
+
+The documentation of this module is built using [Sphinx](http://sphinx-doc.org).
+In order to rebuild the doc, it is necessary to install the related dependencies
+via:
+
+```shell
+pip install "bp_text[docs]"
+```
+
+
+
 [^1]: On MacOS, it's recommended to use pyenv in conjunction with pyenv-venv to
     manage python versions and virtual environments.
