@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:31:03 Sat Mar 29 2025 CET
+$$ Last modified:  16:03:29 Wed Apr 23 2025 CEST
 """
 
 import os
@@ -31,6 +31,8 @@ from . import utilities
 
 class PdfPage(Page):
     """
+    
+    
     A PDF page.
     """
     def __init__(self,
@@ -83,7 +85,13 @@ class PdfPage(Page):
     def extract_text(self, update_text = True):
         """
         Extract text from a PDF page using direct extraction.
-        Returns the text as a string. 
+        Returns the text as a string.
+
+        :param update_text: Update the text attribute with the extracted text?
+        :type update_text: boolean
+        :return: The retrieved text.
+        :rtype: string
+        
         """
         if not self.data:
             print("Error: No data.")
@@ -360,6 +368,8 @@ class PdfFile:
             return sorted(langs.items(),
                           key=lambda item: item[1],
                           reverse=True)[0][0]
+
+    
 
         
 ################################################################################

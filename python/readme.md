@@ -55,6 +55,25 @@ via:
 pip install "bp_text[docs]"
 ```
 
+Then, in the `docs/` directory, run...
+
+```shell
+build html
+```
+
+...in order to build the HTML documentation. 
+
+It might be necessary to re-build the complete documentation before
+(re-)generating it:
+
+```shell
+make clean
+make html
+```
+
+**NB:** This Sphinx documentation uses `sphinx.ext.autodoc` for the
+documentation of inline commentary.
+
 
 
 [^1]: On MacOS, it's recommended to use pyenv in conjunction with pyenv-venv to
