@@ -186,6 +186,11 @@ __pycache__/
 
 python/experiments/
 
+## doc
+
+python/docs/build/*
+!python/docs/build/html/
+
 ################################################################################
 ### BUILD
 
