@@ -7,6 +7,14 @@ This is the Python part of the *bp-text* project.
 
 ## Installation Notes
 
+The easiest way to install this package is by calling:
+
+```shell
+pip install bp_text
+# or with an absolute path
+pip install /path/to/bp-text/python/
+```
+
 ### Dependencies
 
 - Python 3
