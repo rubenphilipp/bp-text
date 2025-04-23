@@ -7,32 +7,32 @@ on:
 
 
 jobs:
-  - build-and-deploy:
-      runs-on: ubuntu-latest
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkoud the repository
+        uses: actions/checkout@v3
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
-      steps:
-        - name: Checkoud the repository
-          uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          pip install 'python/'
+          pip install 'python/[docs]'
 
-        - name: Set up Python
-          uses: actions/setup-python@v4
-          with:
-            python-version: '3.x'
+      - name: Build the documentation
+        run: |
+          cd python/docs
+          make clear && make html
 
-        - name: Install dependencies
-          run: |
-            pip install 'python/'
-            pip install 'python/[docs]'
-
-        - name: Build the documentation
-          run: |
-            cd python/docs
-            make clear && make html
-
-        - name: Deploy to GitHub Pages
-          uses: JamesIves/github-pages-deploy-action@4.1.4
-          with:
-            branch: gh-pages
-            folder: python/docs/build/html
-            target-fodler: docs/python
-            clean: false
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: python/docs/build/html
+          target-fodler: docs/python
+          clean: false
