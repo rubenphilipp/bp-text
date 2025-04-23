@@ -31,3 +31,12 @@ which should be provided by `BibDesk` by default and should also be the standard
 field when exporting a library from Zotero e.g. via BetterBibTeX.  
 
 Citation keys should, of course, be unique. 
+
+
+Languages
+---------
+
+Tokenization and tagging in this library is based on the `Flair
+<https://flairnlp.github.io>` library.  This library is (as of 2025-04-23)
+mainly focused on European languages, and so is this project.  When parsing
+text, this should not be forgotten. 
