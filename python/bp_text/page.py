@@ -4,7 +4,7 @@ This module implements the page class.
 Created: 2025-03-28
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  21:30:11 Fri Mar 28 2025 CET
+$$ Last modified:  16:58:40 Wed Apr 23 2025 CEST
 """
 
 from abc import ABC, abstractmethod
@@ -19,8 +19,23 @@ from . import utilities
 ################################################################################
 
 class Page(ABC):
-    """
-    Abstract base class for a page. 
+    """Abstract base class for a page.
+
+    :param page_num: The page number (zero-based) of the page in the related
+        file.
+    :type page_num: int
+    :param page_label: The actual page label of the page.  Its value and meaning
+        differs from the page_num as it is related to the actual page numbering
+        e.g. in a document.  Thus, it could also be a roman numeral or be
+        counted from a starting index different from 0. 
+    :type page_label: string
+    :param data: Holds page data.
+    :type data: undefined
+    :param text: Holds the actual text of the page.
+    :type text: string
+    :param lang: The language code of the primary language in the alpha3/ISO
+        639-2 form.
+    :type lang: string
     """
     def __init__(self,
                  page_num = None,
@@ -95,11 +110,18 @@ class Page(ABC):
     ########################################
 
     def update(self):
+        """Updates the instance. 
+        """
         ## detect and update language
         self.detect_lang(set_lang = True)
 
     def detect_lang(self, set_lang = True):
-        """Detect the language of text"""
+        """Detect the primary language of text in the page.
+
+        :param set_lang: When true, automatically set the language attribute of
+           the page. Default = True.
+        :type set_lang: boolean
+        """
         lang = None
         detector = language.LanguageDetector().detector
         if self.text != "":
@@ -112,6 +134,11 @@ class Page(ABC):
         return langcode
 
     def count_words(self):
+        """Counts the words in the text.
+
+        :return: The number of words in the text.
+        :rtype: integer
+        """
         return len(self._text.split())
 
 

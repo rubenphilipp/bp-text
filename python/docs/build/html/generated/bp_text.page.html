@@ -92,7 +92,7 @@
 <p>This module implements the page class.</p>
 <p>Created: 2025-03-28
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  21:30:11 Fri Mar 28 2025 CET</p>
+<p>$$ Last modified:  16:58:40 Wed Apr 23 2025 CEST</p>
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -106,6 +106,22 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.page.</span></span><span class="sig-name descname"><span class="pre">Page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/page.html#Page"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.page.Page" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Abstract base class for a page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>page_num</strong> (<em>int</em>) – The page number (zero-based) of the page in the related
+file.</p></li>
+<li><p><strong>page_label</strong> (<em>string</em>) – The actual page label of the page.  Its value and meaning
+differs from the page_num as it is related to the actual page numbering
+e.g. in a document.  Thus, it could also be a roman numeral or be
+counted from a starting index different from 0.</p></li>
+<li><p><strong>data</strong> (<em>undefined</em>) – Holds page data.</p></li>
+<li><p><strong>text</strong> (<em>string</em>) – Holds the actual text of the page.</p></li>
+<li><p><strong>lang</strong> (<em>string</em>) – The language code of the primary language in the alpha3/ISO
+639-2 form.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.page.Page.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/page.html#Page.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.page.Page.__init__" title="Link to this definition"></a></dt>
@@ -114,7 +130,16 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.page.Page.count_words">
 <span class="sig-name descname"><span class="pre">count_words</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/page.html#Page.count_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.page.Page.count_words" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Counts the words in the text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of words in the text.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>integer</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.page.Page.data">
@@ -124,7 +149,13 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.page.Page.detect_lang">
 <span class="sig-name descname"><span class="pre">detect_lang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">set_lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/page.html#Page.detect_lang"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.page.Page.detect_lang" title="Link to this definition"></a></dt>
-<dd><p>Detect the language of text</p>
+<dd><p>Detect the primary language of text in the page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>set_lang</strong> (<em>boolean</em>) – When true, automatically set the language attribute of
+the page. Default = True.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
@@ -150,7 +181,8 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.page.Page.update">
 <span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/page.html#Page.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.page.Page.update" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Updates the instance.</p>
+</dd></dl>
 
 </dd></dl>
 
