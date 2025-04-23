@@ -76,7 +76,7 @@
 <span class="sd">Created: 2025-03-28</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  15:16:42 Fri Mar 28 2025 CET</span>
+<span class="sd">$$ Last modified:  16:39:52 Wed Apr 23 2025 CEST</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
@@ -89,12 +89,17 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">file_checksum</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span>
                   <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;sha256&quot;</span><span class="p">,</span>
                   <span class="n">chunk_size</span><span class="o">=</span><span class="mi">8192</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This file creates a checksum for a file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function creates a checksum for a file.</span>
 
-<span class="sd">    - chunk_size: the chunk size in Bytes.</span>
-<span class="sd">    - file_path: the path to the file.</span>
-<span class="sd">    - algorithm: the hash algorihm e.g. sha256, md5, sha1 etc.)</span>
+<span class="sd">    :param file_path: Path to the file to be checksummed.</span>
+<span class="sd">    :type file_path: string</span>
+<span class="sd">    :param algorithm: The hash algorithm (e.g. &quot;sha256&quot;, &quot;md5&quot;, &quot;sha1&quot;).</span>
+<span class="sd">        Default = &quot;sha256&quot;</span>
+<span class="sd">    :type algorithm: string</span>
+<span class="sd">    :param chunk_size: The chunk size for checksum creation in Bytes.</span>
+<span class="sd">        Default = 8192</span>
+<span class="sd">    :type chunk_size: integer</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">hash_func</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">algorithm</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -111,7 +116,14 @@
 <a class="viewcode-back" href="../../generated/bp_text.utilities.html#bp_text.utilities.write_pickle">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">write_pickle</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span>
                  <span class="n">protocol</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Serializes/pickles an object to the given file path&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function serializes (pickles) an object and stores it in a file</span>
+<span class="sd">    given as `file_path`.</span>
+
+<span class="sd">    :param file_path: The path where to store the pickle file. </span>
+<span class="sd">    :type file_path: string</span>
+<span class="sd">    :param protocol: The pickle protocol. Default = `pickle.HIGHEST_PROTOCOL`</span>
+<span class="sd">    :type protocol: integer</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">protocol</span><span class="p">)</span></div>
 
@@ -120,7 +132,11 @@
 <div class="viewcode-block" id="read_pickle">
 <a class="viewcode-back" href="../../generated/bp_text.utilities.html#bp_text.utilities.read_pickle">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">read_pickle</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads a pickle file and returns the data it holds.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a serialized (pickled) file and return the data it holds.</span>
+
+<span class="sd">    :param file_path: The path to the serialized data.</span>
+<span class="sd">    :type file_path: string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>

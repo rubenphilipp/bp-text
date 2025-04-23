@@ -94,42 +94,62 @@
 <p>This module implements utility functions.</p>
 <p>Created: 2025-03-28
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  15:16:42 Fri Mar 28 2025 CET</p>
+<p>$$ Last modified:  16:39:52 Wed Apr 23 2025 CEST</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.utilities.file_checksum" title="bp_text.utilities.file_checksum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">file_checksum</span></code></a>(file_path[, algorithm, chunk_size])</p></td>
-<td><p>This file creates a checksum for a file.</p></td>
+<td><p>This function creates a checksum for a file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#bp_text.utilities.read_pickle" title="bp_text.utilities.read_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_pickle</span></code></a>(file_path)</p></td>
-<td><p>Reads a pickle file and returns the data it holds.</p></td>
+<td><p>Read a serialized (pickled) file and return the data it holds.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.utilities.write_pickle" title="bp_text.utilities.write_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_pickle</span></code></a>(obj, file_path[, protocol])</p></td>
-<td><p>Serializes/pickles an object to the given file path</p></td>
+<td><p>This function serializes (pickles) an object and stores it in a file given as <cite>file_path</cite>.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="bp_text.utilities.file_checksum">
 <span class="sig-prename descclassname"><span class="pre">bp_text.utilities.</span></span><span class="sig-name descname"><span class="pre">file_checksum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sha256'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8192</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/utilities.html#file_checksum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.utilities.file_checksum" title="Link to this definition"></a></dt>
-<dd><p>This file creates a checksum for a file.</p>
-<ul class="simple">
-<li><p>chunk_size: the chunk size in Bytes.</p></li>
-<li><p>file_path: the path to the file.</p></li>
-<li><p>algorithm: the hash algorihm e.g. sha256, md5, sha1 etc.)</p></li>
+<dd><p>This function creates a checksum for a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>string</em>) – Path to the file to be checksummed.</p></li>
+<li><p><strong>algorithm</strong> (<em>string</em>) – The hash algorithm (e.g. “sha256”, “md5”, “sha1”).
+Default = “sha256”</p></li>
+<li><p><strong>chunk_size</strong> (<em>integer</em>) – The chunk size for checksum creation in Bytes.
+Default = 8192</p></li>
 </ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="bp_text.utilities.read_pickle">
 <span class="sig-prename descclassname"><span class="pre">bp_text.utilities.</span></span><span class="sig-name descname"><span class="pre">read_pickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/utilities.html#read_pickle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.utilities.read_pickle" title="Link to this definition"></a></dt>
-<dd><p>Reads a pickle file and returns the data it holds.</p>
+<dd><p>Read a serialized (pickled) file and return the data it holds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>string</em>) – The path to the serialized data.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="bp_text.utilities.write_pickle">
 <span class="sig-prename descclassname"><span class="pre">bp_text.utilities.</span></span><span class="sig-name descname"><span class="pre">write_pickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/utilities.html#write_pickle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.utilities.write_pickle" title="Link to this definition"></a></dt>
-<dd><p>Serializes/pickles an object to the given file path</p>
+<dd><p>This function serializes (pickles) an object and stores it in a file
+given as <cite>file_path</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>string</em>) – The path where to store the pickle file.</p></li>
+<li><p><strong>protocol</strong> (<em>integer</em>) – The pickle protocol. Default = <cite>pickle.HIGHEST_PROTOCOL</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

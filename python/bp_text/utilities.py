@@ -4,7 +4,7 @@ This module implements utility functions.
 Created: 2025-03-28
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  15:16:42 Fri Mar 28 2025 CET
+$$ Last modified:  16:39:52 Wed Apr 23 2025 CEST
 """
 
 import hashlib
@@ -15,12 +15,17 @@ import pickle
 def file_checksum(file_path,
                   algorithm="sha256",
                   chunk_size=8192):
-    """
-    This file creates a checksum for a file.
+    """This function creates a checksum for a file.
 
-    - chunk_size: the chunk size in Bytes.
-    - file_path: the path to the file.
-    - algorithm: the hash algorihm e.g. sha256, md5, sha1 etc.)
+    :param file_path: Path to the file to be checksummed.
+    :type file_path: string
+    :param algorithm: The hash algorithm (e.g. "sha256", "md5", "sha1").
+        Default = "sha256"
+    :type algorithm: string
+    :param chunk_size: The chunk size for checksum creation in Bytes.
+        Default = 8192
+    :type chunk_size: integer
+
     """
     hash_func = hashlib.new(algorithm)
     with open(file_path, "rb") as f:
@@ -34,13 +39,24 @@ def file_checksum(file_path,
 
 def write_pickle(obj, file_path,
                  protocol = pickle.HIGHEST_PROTOCOL):
-    """Serializes/pickles an object to the given file path"""
+    """This function serializes (pickles) an object and stores it in a file
+    given as `file_path`.
+
+    :param file_path: The path where to store the pickle file. 
+    :type file_path: string
+    :param protocol: The pickle protocol. Default = `pickle.HIGHEST_PROTOCOL`
+    :type protocol: integer
+    """
     with open(file_path, "wb") as f:
         pickle.dump(obj, f, protocol)
 
 
 def read_pickle(file_path):
-    """Reads a pickle file and returns the data it holds."""
+    """Read a serialized (pickled) file and return the data it holds.
+
+    :param file_path: The path to the serialized data.
+    :type file_path: string
+    """
     data = None
     with open(file_path, "rb") as f:
         data = pickle.load(f)

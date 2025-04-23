@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  16:03:29 Wed Apr 23 2025 CEST
+$$ Last modified:  16:33:46 Wed Apr 23 2025 CEST
 """
 
 import os
@@ -30,10 +30,33 @@ from . import utilities
 ################################################################################
 
 class PdfPage(Page):
-    """
-    
-    
-    A PDF page.
+    """This is a class implementation for a PDF page.  A PDF page holds is a
+    reference to a page in a PDF document, usually related to a
+    :py:class:`bp_text.pdf.PdfFile` object.
+
+    The data attribute is also capable of holding a PyPDF2.PageObject
+    (optional), while the text attribute can contain text retrieved from the
+    file (e.g. via OCR or direct extraction --
+    cf. :py:func:`PdfPage.extract_text` or :py:func:`PdfFile.extract_text`).
+
+    :param page_num: The page number (zero-based) of the page in the related
+        file.
+    :type page_num: int
+    :param page_label: The actual page label of the page in the PDF file.
+        The actual PDF page number/label is defined in the PDF header and could
+        differ from the `page_num` (e.g. by varying the start index being a
+        roman instead of an arabic numeral.
+    :type page_label: string
+    :param data: A `PyPDF2.PageObject`. Default = None
+    :type data: A `PyPDF2.PageObject`
+    :param text: The text contained in the page (when retrieved).
+    :type text: string
+    :param lang: The language code of the primary language in the alpha3/ISO
+        639-2 form.
+    :type lang: string
+    :param file: An optional (back-)reference to a PdfFile object.
+    :type file: A :py:class:`PdfFile` object. 
+
     """
     def __init__(self,
                  page_num = None,
@@ -44,6 +67,8 @@ class PdfPage(Page):
                  lang = "",
                  ## can include a reference to a PdfFile object
                  file = None):
+        """Constructor method.
+        """
         super(PdfPage, self).__init__(page_num,
                                       page_label,
                                       data,
@@ -57,10 +82,16 @@ class PdfPage(Page):
 
     @property
     def data(self):
+        """
+        Read/write property for the data of the object. 
+        """
         return self._data
 
     @data.setter
     def data(self, val):
+        """
+        Set the `data` value of the object. 
+        """
         ## test if data is a PyPDF2 PageObject
         if val != None and not isinstance(val, PyPDF2.PageObject):
             print(f"Error: The value for data is not a PyPDF2.PageObject, but "
@@ -70,6 +101,9 @@ class PdfPage(Page):
 
     @property
     def file(self):
+        """
+        Read/write property. 
+        """
         return self._file
 
     @file.setter
@@ -110,7 +144,25 @@ class PdfPage(Page):
 
 class PdfFile:
     """
-    A PDF file. 
+    This is a class implementation of a PDF file.  A PDF file object is related
+    to an actual PDF file (e.g. retrieved from a database entry).  Its methods
+    facilitate e.g. the retrieval of data/text from the pages. 
+
+    :param file: The filepath.
+    :type file: string
+    :param auto_extract: Automatically extract the text from all pages in the
+        file when instantiating the object? This also automatically creates
+        :py:class:`PdfPage` objects for each page. Default = True
+    :type auto_extract: boolean
+    :param use_ocr: Use OCR by default for text extraction? Default = False
+    :type ose_ocr: boolean
+    :param fallback_to_ocr: If text extraction without OCR yields little text,
+        fallback to OCR? Default = True
+    :type fallback_to_ocr: boolean
+    :param ocr_dpi: The DPI amount for OCR. Default = 300
+    :type ocr_dpi: integer
+    :param ocr_default_lang: The default language for OCR. Default = "eng"
+    :type ocr_default_lang: string
     """
     def __init__(self,
                  file: str,
@@ -146,6 +198,8 @@ class PdfFile:
         
     @property
     def file(self):
+        """The filepath to the PDF. 
+        """
         return self._file
 
     @file.setter
@@ -155,11 +209,15 @@ class PdfFile:
 
     @property
     def file_checksum(self):
+        """Checksum (SHA256) of the PDF file (read-only). 
+        """
         return self._file_checksum
 
 
     @property
     def lang(self):
+        """The language. 
+        """
         return self._lang
 
     @lang.setter
@@ -172,6 +230,8 @@ class PdfFile:
 
     @property
     def data(self):
+        """The data. 
+        """
         return self._data
 
     @data.setter
@@ -180,10 +240,14 @@ class PdfFile:
 
     @property
     def reader(self):
+        """The `PyPDF2.PdfReader` object (read-only). 
+        """
         return self._reader
 
     @property
     def auto_extract(self):
+        """Do auto-extraction?
+        """
         return self._auto_extract
 
     @auto_extract.setter
@@ -197,7 +261,8 @@ class PdfFile:
     ########################################
 
     def update(self):
-        """Update the instance"""
+        """Updates the instance.
+        """
         ## (re-)initialize the reader object
         if os.path.isfile(self._file):
             try:
@@ -303,7 +368,12 @@ class PdfFile:
     def get_page_label(self, page_num):
         """
         Returns the label (i.e. the page number according to the PDF number
-        tree) of a pdf page by index (page_num, zero-based). 
+        tree) of a pdf page by index (page_num, zero-based).
+
+        :param page_num: The page number (zero-based) the label should be
+            retrieved from.
+        :type page_num: integer
+        
         """
         if not self._number_tree:
             # no number tree, use page numstring instead

@@ -93,15 +93,15 @@
 <p>This module implements functionality for PDF files.</p>
 <p>Created: 2025-03-27
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  16:01:22 Wed Apr 23 2025 CEST</p>
+<p>$$ Last modified:  16:33:46 Wed Apr 23 2025 CEST</p>
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.pdf.PdfFile" title="bp_text.pdf.PdfFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PdfFile</span></code></a>(file[, auto_extract, use_ocr, ...])</p></td>
-<td><p>A PDF file.</p></td>
+<td><p>This is a class implementation of a PDF file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#bp_text.pdf.PdfPage" title="bp_text.pdf.PdfPage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PdfPage</span></code></a>([page_num, page_label, data, text, ...])</p></td>
-<td><p>A PDF page.</p></td>
+<td><p>This is a class implementation for a PDF page.</p></td>
 </tr>
 </tbody>
 </table>
@@ -109,7 +109,24 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <dt class="sig sig-object py" id="bp_text.pdf.PdfFile">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.pdf.</span></span><span class="sig-name descname"><span class="pre">PdfFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_extract</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ocr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback_to_ocr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ocr_dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ocr_default_lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'eng'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pdf.html#PdfFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pdf.PdfFile" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A PDF file.</p>
+<p>This is a class implementation of a PDF file.  A PDF file object is related
+to an actual PDF file (e.g. retrieved from a database entry).  Its methods
+facilitate e.g. the retrieval of data/text from the pages.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> (<em>string</em>) – The filepath.</p></li>
+<li><p><strong>auto_extract</strong> (<em>boolean</em>) – Automatically extract the text from all pages in the
+file when instantiating the object? This also automatically creates
+<a class="reference internal" href="#bp_text.pdf.PdfPage" title="bp_text.pdf.PdfPage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PdfPage</span></code></a> objects for each page. Default = True</p></li>
+<li><p><strong>use_ocr</strong> – Use OCR by default for text extraction? Default = False</p></li>
+<li><p><strong>fallback_to_ocr</strong> (<em>boolean</em>) – If text extraction without OCR yields little text,
+fallback to OCR? Default = True</p></li>
+<li><p><strong>ocr_dpi</strong> (<em>integer</em>) – The DPI amount for OCR. Default = 300</p></li>
+<li><p><strong>ocr_default_lang</strong> (<em>string</em>) – The default language for OCR. Default = “eng”</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfFile.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_extract</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ocr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback_to_ocr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ocr_dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ocr_default_lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'eng'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pdf.html#PdfFile.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pdf.PdfFile.__init__" title="Link to this definition"></a></dt>
@@ -118,12 +135,14 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfFile.auto_extract">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">auto_extract</span></span><a class="headerlink" href="#bp_text.pdf.PdfFile.auto_extract" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Do auto-extraction?</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfFile.data">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#bp_text.pdf.PdfFile.data" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>The data.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfFile.extract_text">
@@ -149,18 +168,26 @@ Returns a list of PdfPage objects.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfFile.file">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">file</span></span><a class="headerlink" href="#bp_text.pdf.PdfFile.file" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>The filepath to the PDF.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfFile.file_checksum">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">file_checksum</span></span><a class="headerlink" href="#bp_text.pdf.PdfFile.file_checksum" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Checksum (SHA256) of the PDF file (read-only).</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfFile.get_page_label">
 <span class="sig-name descname"><span class="pre">get_page_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page_num</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pdf.html#PdfFile.get_page_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pdf.PdfFile.get_page_label" title="Link to this definition"></a></dt>
 <dd><p>Returns the label (i.e. the page number according to the PDF number
 tree) of a pdf page by index (page_num, zero-based).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>page_num</strong> (<em>integer</em>) – The page number (zero-based) the label should be
+retrieved from.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -172,17 +199,19 @@ tree) of a pdf page by index (page_num, zero-based).</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfFile.lang">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lang</span></span><a class="headerlink" href="#bp_text.pdf.PdfFile.lang" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>The language.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfFile.reader">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reader</span></span><a class="headerlink" href="#bp_text.pdf.PdfFile.reader" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>The <cite>PyPDF2.PdfReader</cite> object (read-only).</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfFile.update">
 <span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pdf.html#PdfFile.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pdf.PdfFile.update" title="Link to this definition"></a></dt>
-<dd><p>Update the instance</p>
+<dd><p>Updates the instance.</p>
 </dd></dl>
 
 </dd></dl>
@@ -191,11 +220,35 @@ tree) of a pdf page by index (page_num, zero-based).</p>
 <dt class="sig sig-object py" id="bp_text.pdf.PdfPage">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.pdf.</span></span><span class="sig-name descname"><span class="pre">PdfPage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pdf.html#PdfPage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pdf.PdfPage" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="bp_text.page.html#bp_text.page.Page" title="bp_text.page.Page"><code class="xref py py-class docutils literal notranslate"><span class="pre">Page</span></code></a></p>
-<p>A PDF page.</p>
+<p>This is a class implementation for a PDF page.  A PDF page holds is a
+reference to a page in a PDF document, usually related to a
+<a class="reference internal" href="#bp_text.pdf.PdfFile" title="bp_text.pdf.PdfFile"><code class="xref py py-class docutils literal notranslate"><span class="pre">bp_text.pdf.PdfFile</span></code></a> object.</p>
+<p>The data attribute is also capable of holding a PyPDF2.PageObject
+(optional), while the text attribute can contain text retrieved from the
+file (e.g. via OCR or direct extraction –
+cf. <a class="reference internal" href="#bp_text.pdf.PdfPage.extract_text" title="bp_text.pdf.PdfPage.extract_text"><code class="xref py py-func docutils literal notranslate"><span class="pre">PdfPage.extract_text()</span></code></a> or <a class="reference internal" href="#bp_text.pdf.PdfFile.extract_text" title="bp_text.pdf.PdfFile.extract_text"><code class="xref py py-func docutils literal notranslate"><span class="pre">PdfFile.extract_text()</span></code></a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>page_num</strong> (<em>int</em>) – The page number (zero-based) of the page in the related
+file.</p></li>
+<li><p><strong>page_label</strong> (<em>string</em>) – The actual page label of the page in the PDF file.
+The actual PDF page number/label is defined in the PDF header and could
+differ from the <cite>page_num</cite> (e.g. by varying the start index being a
+roman instead of an arabic numeral.</p></li>
+<li><p><strong>data</strong> (A <cite>PyPDF2.PageObject</cite>) – A <cite>PyPDF2.PageObject</cite>. Default = None</p></li>
+<li><p><strong>text</strong> (<em>string</em>) – The text contained in the page (when retrieved).</p></li>
+<li><p><strong>lang</strong> (<em>string</em>) – The language code of the primary language in the alpha3/ISO
+639-2 form.</p></li>
+<li><p><strong>file</strong> (A <a class="reference internal" href="#bp_text.pdf.PdfFile" title="bp_text.pdf.PdfFile"><code class="xref py py-class docutils literal notranslate"><span class="pre">PdfFile</span></code></a> object.) – An optional (back-)reference to a PdfFile object.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfPage.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pdf.html#PdfPage.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pdf.PdfPage.__init__" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Constructor method.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfPage.count_words">
@@ -205,7 +258,8 @@ tree) of a pdf page by index (page_num, zero-based).</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfPage.data">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#bp_text.pdf.PdfPage.data" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Read/write property for the data of the object.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfPage.detect_lang">
@@ -217,8 +271,7 @@ tree) of a pdf page by index (page_num, zero-based).</p>
 <dt class="sig sig-object py" id="bp_text.pdf.PdfPage.extract_text">
 <span class="sig-name descname"><span class="pre">extract_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">update_text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pdf.html#PdfPage.extract_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pdf.PdfPage.extract_text" title="Link to this definition"></a></dt>
 <dd><p>Extract text from a PDF page using direct extraction.
-Returns the text as a string.
-<a class="reference internal" href="#bp_text.pdf.PdfFile.update" title="bp_text.pdf.PdfFile.update"><code class="xref py py-func docutils literal notranslate"><span class="pre">bp_text.pdf.PdfFile.update()</span></code></a></p>
+Returns the text as a string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>update_text</strong> (<em>boolean</em>) – Update the text attribute with the extracted text?</p>
@@ -235,7 +288,8 @@ Returns the text as a string.
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfPage.file">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">file</span></span><a class="headerlink" href="#bp_text.pdf.PdfPage.file" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Read/write property.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfPage.lang">

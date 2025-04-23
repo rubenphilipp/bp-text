@@ -76,7 +76,7 @@
 <span class="sd">Created: 2025-03-27</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  16:01:22 Wed Apr 23 2025 CEST</span>
+<span class="sd">$$ Last modified:  16:33:46 Wed Apr 23 2025 CEST</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -104,8 +104,33 @@
 <div class="viewcode-block" id="PdfPage">
 <a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfPage">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PdfPage</span><span class="p">(</span><span class="n">Page</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A PDF page.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a class implementation for a PDF page.  A PDF page holds is a</span>
+<span class="sd">    reference to a page in a PDF document, usually related to a</span>
+<span class="sd">    :py:class:`bp_text.pdf.PdfFile` object.</span>
+
+<span class="sd">    The data attribute is also capable of holding a PyPDF2.PageObject</span>
+<span class="sd">    (optional), while the text attribute can contain text retrieved from the</span>
+<span class="sd">    file (e.g. via OCR or direct extraction --</span>
+<span class="sd">    cf. :py:func:`PdfPage.extract_text` or :py:func:`PdfFile.extract_text`).</span>
+
+<span class="sd">    :param page_num: The page number (zero-based) of the page in the related</span>
+<span class="sd">        file.</span>
+<span class="sd">    :type page_num: int</span>
+<span class="sd">    :param page_label: The actual page label of the page in the PDF file.</span>
+<span class="sd">        The actual PDF page number/label is defined in the PDF header and could</span>
+<span class="sd">        differ from the `page_num` (e.g. by varying the start index being a</span>
+<span class="sd">        roman instead of an arabic numeral.</span>
+<span class="sd">    :type page_label: string</span>
+<span class="sd">    :param data: A `PyPDF2.PageObject`. Default = None</span>
+<span class="sd">    :type data: A `PyPDF2.PageObject`</span>
+<span class="sd">    :param text: The text contained in the page (when retrieved).</span>
+<span class="sd">    :type text: string</span>
+<span class="sd">    :param lang: The language code of the primary language in the alpha3/ISO</span>
+<span class="sd">        639-2 form.</span>
+<span class="sd">    :type lang: string</span>
+<span class="sd">    :param file: An optional (back-)reference to a PdfFile object.</span>
+<span class="sd">    :type file: A :py:class:`PdfFile` object. </span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="PdfPage.__init__">
 <a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfPage.__init__">[docs]</a>
@@ -118,6 +143,8 @@
                  <span class="n">lang</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
                  <span class="c1">## can include a reference to a PdfFile object</span>
                  <span class="n">file</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PdfPage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">page_num</span><span class="p">,</span>
                                       <span class="n">page_label</span><span class="p">,</span>
                                       <span class="n">data</span><span class="p">,</span>
@@ -132,10 +159,16 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read/write property for the data of the object. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
 
     <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the `data` value of the object. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">## test if data is a PyPDF2 PageObject</span>
         <span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">PyPDF2</span><span class="o">.</span><span class="n">PageObject</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: The value for data is not a PyPDF2.PageObject, but &quot;</span>
@@ -145,6 +178,9 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read/write property. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span>
 
     <span class="nd">@file</span><span class="o">.</span><span class="n">setter</span>
@@ -163,7 +199,6 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Extract text from a PDF page using direct extraction.</span>
 <span class="sd">        Returns the text as a string.</span>
-<span class="sd">        :py:func:`bp_text.pdf.PdfFile.update`</span>
 
 <span class="sd">        :param update_text: Update the text attribute with the extracted text?</span>
 <span class="sd">        :type update_text: boolean</span>
@@ -192,7 +227,25 @@
 <a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfFile">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PdfFile</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A PDF file. </span>
+<span class="sd">    This is a class implementation of a PDF file.  A PDF file object is related</span>
+<span class="sd">    to an actual PDF file (e.g. retrieved from a database entry).  Its methods</span>
+<span class="sd">    facilitate e.g. the retrieval of data/text from the pages. </span>
+
+<span class="sd">    :param file: The filepath.</span>
+<span class="sd">    :type file: string</span>
+<span class="sd">    :param auto_extract: Automatically extract the text from all pages in the</span>
+<span class="sd">        file when instantiating the object? This also automatically creates</span>
+<span class="sd">        :py:class:`PdfPage` objects for each page. Default = True</span>
+<span class="sd">    :type auto_extract: boolean</span>
+<span class="sd">    :param use_ocr: Use OCR by default for text extraction? Default = False</span>
+<span class="sd">    :type ose_ocr: boolean</span>
+<span class="sd">    :param fallback_to_ocr: If text extraction without OCR yields little text,</span>
+<span class="sd">        fallback to OCR? Default = True</span>
+<span class="sd">    :type fallback_to_ocr: boolean</span>
+<span class="sd">    :param ocr_dpi: The DPI amount for OCR. Default = 300</span>
+<span class="sd">    :type ocr_dpi: integer</span>
+<span class="sd">    :param ocr_default_lang: The default language for OCR. Default = &quot;eng&quot;</span>
+<span class="sd">    :type ocr_default_lang: string</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="PdfFile.__init__">
 <a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfFile.__init__">[docs]</a>
@@ -231,6 +284,8 @@
         
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The filepath to the PDF. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span>
 
     <span class="nd">@file</span><span class="o">.</span><span class="n">setter</span>
@@ -240,11 +295,15 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">file_checksum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checksum (SHA256) of the PDF file (read-only). </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_checksum</span>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">lang</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The language. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lang</span>
 
     <span class="nd">@lang</span><span class="o">.</span><span class="n">setter</span>
@@ -257,6 +316,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The data. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
 
     <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
@@ -265,10 +326,14 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">reader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The `PyPDF2.PdfReader` object (read-only). </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">auto_extract</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Do auto-extraction?</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_extract</span>
 
     <span class="nd">@auto_extract</span><span class="o">.</span><span class="n">setter</span>
@@ -284,7 +349,8 @@
 <div class="viewcode-block" id="PdfFile.update">
 <a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfFile.update">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the instance&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates the instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">## (re-)initialize the reader object</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
@@ -402,7 +468,12 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">get_page_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_num</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the label (i.e. the page number according to the PDF number</span>
-<span class="sd">        tree) of a pdf page by index (page_num, zero-based). </span>
+<span class="sd">        tree) of a pdf page by index (page_num, zero-based).</span>
+
+<span class="sd">        :param page_num: The page number (zero-based) the label should be</span>
+<span class="sd">            retrieved from.</span>
+<span class="sd">        :type page_num: integer</span>
+<span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_tree</span><span class="p">:</span>
             <span class="c1"># no number tree, use page numstring instead</span>
