@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  17:37:49 Wed Apr 23 2025 CEST
+$$ Last modified:  20:33:28 Wed Apr 23 2025 CEST
 """
 
 import os
@@ -182,6 +182,9 @@ class PdfFile:
     :type ocr_dpi: integer
     :param ocr_default_lang: The default language for OCR. Default = "eng"
     :type ocr_default_lang: string
+    :param verbose: Print additional information during performance when True.
+       Default = False
+    :type verbose: boolean
     """
     def __init__(self,
                  file: str,
@@ -189,7 +192,8 @@ class PdfFile:
                  use_ocr = False,
                  fallback_to_ocr = True,
                  ocr_dpi = 300,
-                 ocr_default_lang = 'eng'):
+                 ocr_default_lang = 'eng',
+                 verbose=False):
         ## The filepath
         self._file = file
         ## a sha256 checksum for the file
@@ -210,6 +214,7 @@ class PdfFile:
         self._ocr_default_lang = ocr_default_lang
         ## The PDF text contents
         self._data = None
+        self._verbose = verbose
         ########################################
         self.update()
 
@@ -277,6 +282,17 @@ class PdfFile:
             print(f"Error: '{val}' is not of type Boolean")
             return False
 
+
+    @property
+    def verbose(self):
+        """Verbose setter/getter (bool)
+        """
+        return self._verbose
+
+    @verbose.setter
+    def verbose(self, val):
+        self._verbose = val
+
     ########################################
 
     def update(self):
@@ -340,6 +356,9 @@ class PdfFile:
             images = convert_from_path(self._file,
                                        dpi=self._ocr_dpi)
             for i, image in enumerate(images):
+                if self._verbose:
+                    print(f"OCR: Processing page {i}/{len(images)}")
+                    
                 page_text = pytesseract.image_to_string(
                     image,
                     lang = self._ocr_default_lang)

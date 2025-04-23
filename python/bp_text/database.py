@@ -5,7 +5,7 @@ from a BibTeX file (as database).
 Created: 2025-03-23
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  17:32:55 Wed Apr 23 2025 CEST
+$$ Last modified:  19:33:14 Wed Apr 23 2025 CEST
 """
 
 import abc
@@ -78,7 +78,18 @@ class BibTexDatabase(Database):
 
     @property
     def entries(self):
-        """The database entries as a `dict`. """
+        """The database entries as a `dict`.
+        
+        Example::
+
+           # get the value of the file field of the entry with the citation
+           # key "heinlein2020"
+           db.entries["heinlein2020"].fields_dict["file"].value
+           # => ['heinlein2020 - katastrophen.pdf']
+           
+           # ...which can also be expressed in a shorter form
+           db.entries["heinlein2020"].get("file").value
+        """
         return self._data.entries_dict
 
     def load(self,
