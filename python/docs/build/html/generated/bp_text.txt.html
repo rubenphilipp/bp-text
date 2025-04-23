@@ -91,12 +91,12 @@
 <p>This module implements functionality for TXT files.</p>
 <p>Created: 2025-03-29
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  00:14:09 Sun Mar 30 2025 CET</p>
+<p>$$ Last modified:  17:30:59 Wed Apr 23 2025 CEST</p>
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.txt.TxtFile" title="bp_text.txt.TxtFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TxtFile</span></code></a>(file[, lang, data])</p></td>
-<td><p>A TXT file.</p></td>
+<td><p>Implementation of the text-file (txt) class.</p></td>
 </tr>
 </tbody>
 </table>
@@ -104,7 +104,17 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <dt class="sig sig-object py" id="bp_text.txt.TxtFile">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.txt.</span></span><span class="sig-name descname"><span class="pre">TxtFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/txt.html#TxtFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.txt.TxtFile" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A TXT file.</p>
+<p>Implementation of the text-file (txt) class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> (<em>string</em>) – The path to the text file.</p></li>
+<li><p><strong>lang</strong> (<em>string</em>) – The language of the text file (e.g. “en”, “de” etc.).</p></li>
+<li><p><strong>data</strong> (<em>string</em>) – The content of the text file. This will be automatically set
+by reading the data from the file(-path).</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.txt.TxtFile.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/txt.html#TxtFile.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.txt.TxtFile.__init__" title="Link to this definition"></a></dt>
@@ -113,12 +123,14 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.txt.TxtFile.data">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#bp_text.txt.TxtFile.data" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Getter/setter for the data (i.e. the txtfile content).</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.txt.TxtFile.file">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">file</span></span><a class="headerlink" href="#bp_text.txt.TxtFile.file" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Getter/setter for the file-path.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.txt.TxtFile.file_checksum">
@@ -128,17 +140,21 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.txt.TxtFile.get_primary_lang">
 <span class="sig-name descname"><span class="pre">get_primary_lang</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/txt.html#TxtFile.get_primary_lang"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.txt.TxtFile.get_primary_lang" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Detect the primary language of the text in <cite>data</cite> and set the
+<cite>lang</cite> attribute accordingly.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.txt.TxtFile.lang">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lang</span></span><a class="headerlink" href="#bp_text.txt.TxtFile.lang" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Getter/setter for the language.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.txt.TxtFile.update">
 <span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/txt.html#TxtFile.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.txt.TxtFile.update" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Updates the instance.</p>
+</dd></dl>
 
 </dd></dl>
 

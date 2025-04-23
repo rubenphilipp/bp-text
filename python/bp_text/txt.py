@@ -4,7 +4,7 @@ This module implements functionality for TXT files.
 Created: 2025-03-29
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  00:14:09 Sun Mar 30 2025 CET
+$$ Last modified:  17:30:59 Wed Apr 23 2025 CEST
 """
 
 import os
@@ -18,8 +18,15 @@ from . import utilities
 ################################################################################
 
 class TxtFile:
-    """
-    A TXT file.
+    """Implementation of the text-file (txt) class. 
+
+    :param file: The path to the text file.
+    :type file: string
+    :param lang: The language of the text file (e.g. "en", "de" etc.).
+    :type lang: string
+    :param data: The content of the text file. This will be automatically set
+        by reading the data from the file(-path).
+    :type data: string
     """
     def __init__(self,
                  file: str,
@@ -35,6 +42,8 @@ class TxtFile:
 
     @property
     def file(self):
+        """Getter/setter for the file-path. 
+        """
         return self._file
 
     @file.setter
@@ -44,6 +53,8 @@ class TxtFile:
 
     @property
     def lang(self):
+        """Getter/setter for the language. 
+        """
         return self._lang
 
     @lang.setter
@@ -53,6 +64,8 @@ class TxtFile:
 
     @property
     def data(self):
+        """Getter/setter for the data (i.e. the txtfile content). 
+        """
         return self._data
 
     @data.setter
@@ -68,6 +81,8 @@ class TxtFile:
     ########################################
 
     def update(self):
+        """Updates the instance. 
+        """
         if not os.path.isfile(self._file):
             print(f"Error: The file {self._file} does not exist. ")
             return False
@@ -86,6 +101,9 @@ class TxtFile:
         return self
 
     def get_primary_lang(self):
+        """Detect the primary language of the text in `data` and set the
+        `lang` attribute accordingly. 
+        """
         if self._data == "" or self._data == None:
             print("Error: Cannot detect language. No data!")
             return False
