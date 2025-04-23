@@ -184,6 +184,8 @@ Temporary Items
 *.egg-info
 __pycache__/
 
+python/experiments/
+
 ################################################################################
 ### BUILD
 
