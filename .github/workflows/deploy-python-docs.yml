@@ -28,8 +28,6 @@ jobs:
         run: |
           cd python/docs
           make clean && make html
-          cd build/html
-          touch .nojekyll
 
       - name: Copy additional docs from main/docs
         run: |
@@ -39,8 +37,9 @@ jobs:
       - name: Prepare deployment directory
         run: |
           mkdir -p final-deploy/doc/python
+          cp -r temp/docs final-deploy/
           cp -r python/docs/build/html/* final-deploy/doc/python/
-          cp -r temp/docs final-deploy/docs/
+          touch final-deploy/doc/python/.nojekyll
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
