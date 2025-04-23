@@ -5,7 +5,7 @@ from a BibTeX file (as database).
 Created: 2025-03-23
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  19:33:14 Wed Apr 23 2025 CEST
+$$ Last modified:  21:02:51 Wed Apr 23 2025 CEST
 """
 
 import abc
@@ -148,6 +148,8 @@ class BibTexDatabase(Database):
 
     def get_entry_by_key(self, key):
         """Get a specific entry by citation-key in the db.
+
+        This is an alias to `self.entries.get(key)`.
 
         :param key: The citation key (e.g. "@adorno1960") to look for. 
         :type key: string

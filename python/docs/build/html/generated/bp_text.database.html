@@ -97,7 +97,7 @@
 from a BibTeX file (as database).</p>
 <p>Created: 2025-03-23
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  19:33:14 Wed Apr 23 2025 CEST</p>
+<p>$$ Last modified:  21:02:51 Wed Apr 23 2025 CEST</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -195,6 +195,7 @@ list, assuming they are separated by a semicolon (“;”).  Default = True</p><
 <dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.get_entry_by_key">
 <span class="sig-name descname"><span class="pre">get_entry_by_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#BibTexDatabase.get_entry_by_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.BibTexDatabase.get_entry_by_key" title="Link to this definition"></a></dt>
 <dd><p>Get a specific entry by citation-key in the db.</p>
+<p>This is an alias to <cite>self.entries.get(key)</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>key</strong> (<em>string</em>) – The citation key (e.g. “&#64;adorno1960”) to look for.</p>
