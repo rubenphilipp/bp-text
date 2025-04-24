@@ -8,7 +8,7 @@ be later used for analysis or text-production.
 Created: 2025-04-24
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:18:24 Thu Apr 24 2025 CEST
+$$ Last modified:  23:33:31 Thu Apr 24 2025 CEST
 
 """
 
@@ -69,10 +69,50 @@ class Text:
         self._tagger_ner = tagger_ner
         self.update()
 
+    @property
+    def text(self):
+        """Getter/setter for text (string).
+        
+        Changing the text also causes re-generation of the sentence analyses.
+        """
+        return self._text
+
+    @text.setter
+    def text(self, val):
+        if isinstance(val, str):
+            self._text = val
+        else:
+            print("Error: value for text is not a String.")
+
+        self.update()
+
+    @property
+    def sentences(self):
+        """Getter for the sentences (i.e. the tokenized and analysed elements
+        of the text). Read-only.
+        """
+        return self._sentences
     
 
     def update(self):
-        pass
+        """Update the instance.
+
+        This also method also performs the text segmentation and analysis. 
+        """
+        # sanity checks
+        if not isinstance(self._text, str):
+            print("Error: Text.text is not a string.")
+            return False
+
+        ## split sentences
+        sentences = self._splitter.split(self._text)
+        self._sentences = sentences
+
+        ## analyse the sentences
+        self._tagger_pos.predict(self._sentences)
+        self._tagger_ner.predict(self._sentences)
+
+        return True
 
 
 

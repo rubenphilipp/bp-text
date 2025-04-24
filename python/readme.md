@@ -15,6 +15,14 @@ pip install bp_text
 pip install /path/to/bp-text/python/
 ```
 
+### Models
+
+This project uses [Flair](https://flairnlp.github.io) to analyze text.  By
+default, it uses some rather large (i.e. ~3G) models which will be loaded when
+first installed in an environment.  For more information see esp. the doc for
+the `text` module.
+
+
 ### Dependencies
 
 - Python 3

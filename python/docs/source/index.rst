@@ -14,7 +14,12 @@ in a database (as of now in form of a BibTeX file), analyzing them (e.g. by
 tokenizing the PDF-text) and generating new material from the source text(s).
 
 This project has been initially created for the project *the prospect of its own
-undoing* (working title) by Fabian Bentrup and Ruben Philipp. 
+undoing* (working title) by Fabian Bentrup and Ruben Philipp.
+
+This project uses Flair (https://flairnlp.github.io) to analyze text.  By
+default, it uses some rather large (i.e. ~3G) models which will be loaded when
+first installed in an environment.  For more information see esp. the doc for
+the `text` module.
 
 
 .. note::
