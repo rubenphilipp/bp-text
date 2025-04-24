@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  20:40:56 Wed Apr 23 2025 CEST
+$$ Last modified:  16:50:50 Thu Apr 24 2025 CEST
 """
 
 import os
@@ -52,7 +52,7 @@ class PdfPage(Page):
     :param text: The text contained in the page (when retrieved).
     :type text: string
     :param lang: The language code of the primary language in the alpha3/ISO
-        639-2 form.
+        639-3 form.
     :type lang: string
     :param file: An optional (back-)reference to a PdfFile object.
     :type file: A :py:class:`PdfFile` object. 
