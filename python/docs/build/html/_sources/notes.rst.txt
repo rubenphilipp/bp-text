@@ -39,7 +39,26 @@ The langid for German, for example, is `ngerman` (i.e. new German spelling).
 See *Table 2: Supported Languages* in the BibLaTeX documentation
 (https://ctan.org/pkg/biblatex).  Although it is allowed to omit specifying a
 primary language, it is highly recommended as e.g. the PdfFile class will use
-the language when performing OCR.  
+the language when performing OCR.
+
+Some notes on BibDesk
+^^^^^^^^^^^^^^^^^^^^^
+
+Some BibTeX fields used `bp_text` are not available in BibDesk by default.
+Thus, it is recommended to add these to the Default Fields via `BibDesk
+Preferences -> Fields -> Custom BibTeX Fields`.  These are some fields which
+should be added.  Make sure to tick the "Is Default" checkbox. 
+
++--------+-------+
+|Field   |Type   |
++========+=======+
+|Keywords|Textual|
++--------+-------+
+|File    |Textual|
++--------+-------+
+|Langid  |Textual|
++--------+-------+
+
 
 
 Languages
