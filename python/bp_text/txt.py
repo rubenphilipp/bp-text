@@ -4,7 +4,7 @@ This module implements functionality for TXT files.
 Created: 2025-03-29
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  17:39:37 Wed Apr 23 2025 CEST
+$$ Last modified:  00:17:24 Fri Apr 25 2025 CEST
 """
 
 import os
@@ -14,11 +14,14 @@ import langcodes
 
 from . import language
 from . import utilities
+from . import text
 
 ################################################################################
 
 class TxtFile:
     """Implementation of the text-file (txt) class.
+
+    The `text` attribute holds a text object for the text-file. 
 
     Example::
 
@@ -35,16 +38,23 @@ class TxtFile:
     :param data: The content of the text file. This will be automatically set
         by reading the data from the file(-path).
     :type data: string
+    :param verbose: When True, print additional info while processing.
+       Default = True
+    :type verbose: boolean
     """
     def __init__(self,
                  file: str,
                  lang = "",
-                 data = None):
+                 data = None,
+                 verbose = True):
         self._file = file
         self._lang = lang
         self._data = data
         ## a sha256 checksum for the file
         self._file_checksum = None
+        # empty text at start
+        self._text = None
+        self._verbose = verbose
         self.update()
 
 
@@ -72,19 +82,37 @@ class TxtFile:
 
     @property
     def data(self):
-        """Getter/setter for the data (i.e. the txtfile content). 
+        """Getter/setter for the data (i.e. the txtfile content).
+
+        Setting the data also updates the text attribute. 
         """
         return self._data
 
     @data.setter
     def data(self, val):
         self._data = val
+        self.update()
 
     @property
     def file_checksum(self):
         return self._file_checksum
 
+    @property
+    def text(self):
+        """Getter for the text (i.e. a tokenized and analyzed text object,
+        cf. :py:class:`bp_text.text.Text`). 
+        """
+        return self._text
 
+    @property
+    def verbose(self):
+        """Setter/getter for verbose (bool).
+        """
+        return self._verbose
+
+    @verbose.setter
+    def verbose(self, val):
+        self._verbose = val
 
     ########################################
 
@@ -97,7 +125,7 @@ class TxtFile:
 
         ## set data
         with open(self.file, "r") as f:
-            self.data = f.read()
+            self._data = f.read()
 
         ## calculate file checksum
         self._file_checksum = utilities.file_checksum(self._file,
@@ -105,6 +133,9 @@ class TxtFile:
 
         ## set language
         self.lang = self.get_primary_lang()
+
+        ## generate text object
+        self._text = text.Text(self.data, lang=self.lang, verbose=self._verbose)
         
         return self
 
