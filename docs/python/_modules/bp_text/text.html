@@ -82,7 +82,7 @@
 <span class="sd">Created: 2025-04-24</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  23:45:25 Thu Apr 24 2025 CEST</span>
+<span class="sd">$$ Last modified:  23:49:31 Thu Apr 24 2025 CEST</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -115,6 +115,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">get_pos_tagger</span><span class="p">():</span>
     <span class="k">global</span> <span class="n">_text_tagger_pos</span>
     <span class="k">if</span> <span class="n">_text_tagger_pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initializing POS tagger...&quot;</span><span class="p">)</span>
         <span class="n">_text_tagger_pos</span> <span class="o">=</span> <span class="n">Classifier</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;pos-multi&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_text_tagger_pos</span></div>
 
@@ -124,6 +125,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">get_ner_tagger</span><span class="p">():</span>
     <span class="k">global</span> <span class="n">_text_tagger_ner</span>
     <span class="k">if</span> <span class="n">_text_tagger_ner</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initializing NER tagger...&quot;</span><span class="p">)</span>
         <span class="n">_text_tagger_ner</span> <span class="o">=</span> <span class="n">Classifier</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;ner-large&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_text_tagger_ner</span></div>
 
