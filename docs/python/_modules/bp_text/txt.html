@@ -78,7 +78,7 @@
 <span class="sd">Created: 2025-03-29</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  17:39:37 Wed Apr 23 2025 CEST</span>
+<span class="sd">$$ Last modified:  00:17:24 Fri Apr 25 2025 CEST</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -88,6 +88,7 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">language</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">utilities</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">text</span>
 
 <span class="c1">################################################################################</span>
 
@@ -95,6 +96,8 @@
 <a class="viewcode-back" href="../../generated/bp_text.txt.html#bp_text.txt.TxtFile">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TxtFile</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementation of the text-file (txt) class.</span>
+
+<span class="sd">    The `text` attribute holds a text object for the text-file. </span>
 
 <span class="sd">    Example::</span>
 
@@ -111,18 +114,25 @@
 <span class="sd">    :param data: The content of the text file. This will be automatically set</span>
 <span class="sd">        by reading the data from the file(-path).</span>
 <span class="sd">    :type data: string</span>
+<span class="sd">    :param verbose: When True, print additional info while processing.</span>
+<span class="sd">       Default = True</span>
+<span class="sd">    :type verbose: boolean</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="TxtFile.__init__">
 <a class="viewcode-back" href="../../generated/bp_text.txt.html#bp_text.txt.TxtFile.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">lang</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-                 <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+                 <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="n">file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lang</span> <span class="o">=</span> <span class="n">lang</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">data</span>
         <span class="c1">## a sha256 checksum for the file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_file_checksum</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># empty text at start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 
@@ -151,19 +161,37 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter/setter for the data (i.e. the txtfile content). </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter/setter for the data (i.e. the txtfile content).</span>
+
+<span class="sd">        Setting the data also updates the text attribute. </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
 
     <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">file_checksum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_checksum</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter for the text (i.e. a tokenized and analyzed text object,</span>
+<span class="sd">        cf. :py:class:`bp_text.text.Text`). </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Setter/getter for verbose (bool).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span>
+
+    <span class="nd">@verbose</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="o">=</span> <span class="n">val</span>
 
     <span class="c1">########################################</span>
 
@@ -178,7 +206,7 @@
 
         <span class="c1">## set data</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
         <span class="c1">## calculate file checksum</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_file_checksum</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">file_checksum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">,</span>
@@ -186,6 +214,9 @@
 
         <span class="c1">## set language</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lang</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_primary_lang</span><span class="p">()</span>
+
+        <span class="c1">## generate text object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">)</span>
         
         <span class="k">return</span> <span class="bp">self</span></div>
 
