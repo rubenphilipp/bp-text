@@ -8,7 +8,7 @@ be later used for analysis or text-production.
 Created: 2025-04-24
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:45:25 Thu Apr 24 2025 CEST
+$$ Last modified:  23:49:31 Thu Apr 24 2025 CEST
 
 """
 
@@ -36,12 +36,14 @@ def get_text_splitter():
 def get_pos_tagger():
     global _text_tagger_pos
     if _text_tagger_pos is None:
+        print("Initializing POS tagger...")
         _text_tagger_pos = Classifier.load('pos-multi')
     return _text_tagger_pos
 
 def get_ner_tagger():
     global _text_tagger_ner
     if _text_tagger_ner is None:
+        print("Initializing NER tagger...")
         _text_tagger_ner = Classifier.load('ner-large')
     return _text_tagger_ner
 
