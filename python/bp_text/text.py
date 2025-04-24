@@ -8,7 +8,7 @@ be later used for analysis or text-production.
 Created: 2025-04-24
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  00:17:04 Fri Apr 25 2025 CEST
+$$ Last modified:  23:49:31 Thu Apr 24 2025 CEST
 
 """
 
@@ -78,16 +78,13 @@ class Text:
        Default = text_tagger_ner
     :type tagger_ner: None or a Flair NER tagger object of type
        <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
-    :param verbose: When True, print additional info. Default = True
-    :type verbose: boolean
     """
     def __init__(self,
                  text = "",
                  lang = "en",
                  splitter = None,
                  tagger_pos = None,
-                 tagger_ner = None,
-                 verbose = True):
+                 tagger_ner = None):
         self._text = text
         self._lang = lang
         self._sentences = None
@@ -106,8 +103,7 @@ class Text:
             self._tagger_ner = get_ner_tagger()
         else:
             self._tagger_ner = tagger_ner
-
-        self._verbose = verbose
+            
         self.update()
 
     @property
@@ -133,16 +129,7 @@ class Text:
         of the text). Read-only.
         """
         return self._sentences
-
-    @property
-    def verbose(self):
-        """Setter/getter for verbose (bool).
-        """
-        return self._verbose
-
-    @verbose.setter
-    def verbose(self, val):
-        self._verbose = val
+    
 
     def update(self):
         """Update the instance.
@@ -159,12 +146,7 @@ class Text:
         self._sentences = sentences
 
         ## analyse the sentences
-        if self._verbose:
-            print("Text: predicting POS...")
         self._tagger_pos.predict(self._sentences)
-
-        if self._verbose:
-            print("Text: predicting NER...")
         self._tagger_ner.predict(self._sentences)
 
         return True
