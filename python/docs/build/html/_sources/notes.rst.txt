@@ -49,15 +49,17 @@ Thus, it is recommended to add these to the Default Fields via `BibDesk
 Preferences -> Fields -> Custom BibTeX Fields`.  These are some fields which
 should be added.  Make sure to tick the "Is Default" checkbox. 
 
-+--------+-------+
-|Field   |Type   |
-+========+=======+
-|Keywords|Textual|
-+--------+-------+
-|File    |Textual|
-+--------+-------+
-|Langid  |Textual|
-+--------+-------+
++--------+--------------+-------+
+|Field   |Type          |Is     |
+|        |              |Default|
++========+==============+=======+
+|Keywords|Textual       |Y      |
++--------+--------------+-------+
+|File    |Textual       |Y      |
+|        |              |       |
++--------+--------------+-------+
+|Langid  |Textual       |Y      |
++--------+--------------+-------+
 
 
 

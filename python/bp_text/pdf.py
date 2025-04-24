@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  17:08:48 Thu Apr 24 2025 CEST
+$$ Last modified:  21:12:47 Thu Apr 24 2025 CEST
 """
 
 import os
@@ -254,7 +254,9 @@ class PdfFile:
 
     @property
     def data(self):
-        """The data. 
+        """The data.
+        This is a list of :py:class:`PdfPage` objects, provided the data has
+        been extracted (cf. `auto_extract`). 
         """
         return self._data
 
