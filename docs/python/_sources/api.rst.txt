@@ -12,9 +12,10 @@ Modules
    :recursive:
 
    bp_text.utilities
-   bp_text.database
-   bp_text.page
    bp_text.language
+   bp_text.database
+   bp_text.text
+   bp_text.page
    bp_text.pdf
    bp_text.txt
    
