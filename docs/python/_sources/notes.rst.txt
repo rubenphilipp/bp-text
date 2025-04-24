@@ -30,7 +30,16 @@ Keywords can also be included.  They should be placed in a `keywords` field
 which should be provided by `BibDesk` by default and should also be the standard
 field when exporting a library from Zotero e.g. via BetterBibTeX.  
 
-Citation keys should, of course, be unique. 
+Citation keys should, of course, be unique.
+
+The primary language of a document is expected to be stored in the `langid`
+field.  This is a BibLaTeX field and expects languages to be identified by an
+idiosyncratic id which is not the same as standard ISO-639-1 language codes.
+The langid for German, for example, is `ngerman` (i.e. new German spelling).
+See *Table 2: Supported Languages* in the BibLaTeX documentation
+(https://ctan.org/pkg/biblatex).  Although it is allowed to omit specifying a
+primary language, it is highly recommended as e.g. the PdfFile class will use
+the language when performing OCR.  
 
 
 Languages
@@ -40,3 +49,5 @@ Tokenization and tagging in this library is based on the `Flair
 <https://flairnlp.github.io>` library.  This library is (as of 2025-04-23)
 mainly focused on European languages, and so is this project.  When parsing
 text, this should not be forgotten. 
+
+

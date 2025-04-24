@@ -78,7 +78,7 @@
 <span class="sd">Created: 2025-03-27</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  17:52:26 Thu Apr 24 2025 CEST</span>
+<span class="sd">$$ Last modified:  20:12:09 Thu Apr 24 2025 CEST</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">lingua</span><span class="w"> </span><span class="kn">import</span> <span class="n">Language</span><span class="p">,</span> <span class="n">LanguageDetectorBuilder</span>
@@ -222,7 +222,7 @@
     <span class="s1">&#39;en&#39;</span><span class="p">:</span> <span class="s1">&#39;english&#39;</span><span class="p">,</span>
     <span class="s1">&#39;fi&#39;</span><span class="p">:</span> <span class="s1">&#39;finnish&#39;</span><span class="p">,</span>
     <span class="s1">&#39;fr&#39;</span><span class="p">:</span> <span class="s1">&#39;french&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;de&#39;</span><span class="p">:</span> <span class="s1">&#39;german&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;de&#39;</span><span class="p">:</span> <span class="s1">&#39;ngerman&#39;</span><span class="p">,</span>
     <span class="s1">&#39;el&#39;</span><span class="p">:</span> <span class="s1">&#39;greek&#39;</span><span class="p">,</span>
     <span class="s1">&#39;hu&#39;</span><span class="p">:</span> <span class="s1">&#39;hungarian&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is&#39;</span><span class="p">:</span> <span class="s1">&#39;icelandic&#39;</span><span class="p">,</span>
@@ -318,6 +318,13 @@
 <span class="sd">    - `iso_code_639_1`: an ISO-639-1 code (e.g. `DE` or `EN`)</span>
 <span class="sd">    - `iso_code_639_3`: an ISO-639-3 code (e.g. `DEU` or `ENG`)</span>
 
+<span class="sd">    Example::</span>
+
+<span class="sd">       convert_langcode(&quot;ngerman&quot;)</span>
+<span class="sd">       # =&gt; &#39;de&#39;</span>
+<span class="sd">       convert_langcode(&quot;en&quot;, &quot;iso_code_639_1&quot;, &quot;langid&quot;)</span>
+<span class="sd">       # =&gt; &#39;english&#39;</span>
+
 <span class="sd">    :param langcode: The language code to translate.</span>
 <span class="sd">    :type langcode: string</span>
 <span class="sd">    :param inFormat: The input format (i.e. of `langcode`).  Must be one of the</span>
@@ -330,8 +337,38 @@
 <span class="sd">    :rtype: string</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">pass</span></div>
+    <span class="k">if</span> <span class="n">inFormat</span> <span class="o">==</span> <span class="n">outFormat</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;convert_langcode: inFormat is the same as outFormat. Ignoring.&quot;</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">inFormat</span> <span class="o">==</span> <span class="s2">&quot;langid&quot;</span><span class="p">:</span>
+        <span class="n">iso1</span> <span class="o">=</span> <span class="n">standardize_langid</span><span class="p">(</span><span class="n">langcode</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">outFormat</span> <span class="o">==</span> <span class="s2">&quot;iso_code_639_3&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">langcodes</span><span class="o">.</span><span class="n">Language</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">iso1</span><span class="p">)</span><span class="o">.</span><span class="n">to_alpha3</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">outFormat</span> <span class="o">==</span> <span class="s2">&quot;iso_code_639_1&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">iso1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;convert_langcode: Invalid outFormat &#39;</span><span class="si">{</span><span class="n">outFormat</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">inFormat</span> <span class="o">==</span> <span class="s2">&quot;iso_code_639_1&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">outFormat</span> <span class="o">==</span> <span class="s2">&quot;iso_code_639_3&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">langcodes</span><span class="o">.</span><span class="n">Language</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">langcode</span><span class="p">)</span><span class="o">.</span><span class="n">to_alpha3</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">outFormat</span> <span class="o">==</span> <span class="s2">&quot;langid&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">iso_639_1_to_langid</span><span class="p">(</span><span class="n">langcode</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;convert_langcode: Invalid outFormat &#39;</span><span class="si">{</span><span class="n">outFormat</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">inFormat</span> <span class="o">==</span> <span class="s2">&quot;iso_code_639_3&quot;</span><span class="p">:</span>
+        <span class="n">iso1</span> <span class="o">=</span> <span class="n">langcodes</span><span class="o">.</span><span class="n">standardize_tag</span><span class="p">(</span><span class="n">langcode</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">outFormat</span> <span class="o">==</span> <span class="s2">&quot;iso_code_639_1&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">iso1</span>
+        <span class="k">elif</span> <span class="n">outFormat</span> <span class="o">==</span> <span class="s2">&quot;langid&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">iso_639_1_to_langid</span><span class="p">(</span><span class="n">iso1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;convert_langcode: Invalid outFormat &#39;</span><span class="si">{</span><span class="n">outFormat</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+        
+        
 
 <span class="c1">################################################################################</span>
 <span class="c1">## EOF language.py</span>
