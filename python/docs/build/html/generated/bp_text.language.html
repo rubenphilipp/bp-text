@@ -52,7 +52,12 @@
 <li class="toctree-l3"><a class="reference internal" href="bp_text.page.html">bp_text.page</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">bp_text.language</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#bp_text.language.LanguageDetector"><code class="docutils literal notranslate"><span class="pre">LanguageDetector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bp_text.language.biblatex_langid_to_iso"><code class="docutils literal notranslate"><span class="pre">biblatex_langid_to_iso</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bp_text.language.convert_langcode"><code class="docutils literal notranslate"><span class="pre">convert_langcode()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#bp_text.language.default_languages"><code class="docutils literal notranslate"><span class="pre">default_languages</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bp_text.language.iso_639_1_to_langid"><code class="docutils literal notranslate"><span class="pre">iso_639_1_to_langid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bp_text.language.iso_to_biblatex_langid"><code class="docutils literal notranslate"><span class="pre">iso_to_biblatex_langid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bp_text.language.standardize_langid"><code class="docutils literal notranslate"><span class="pre">standardize_langid()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="bp_text.pdf.html">bp_text.pdf</a></li>
@@ -95,12 +100,32 @@
 <p>This module contains functionality dealing with languages (e.g. detection).</p>
 <p>Created: 2025-03-27
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  17:16:42 Wed Apr 23 2025 CEST</p>
+<p>$$ Last modified:  20:42:06 Thu Apr 24 2025 CEST</p>
 <p class="rubric">Module Attributes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.language.default_languages" title="bp_text.language.default_languages"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_languages</span></code></a></p></td>
 <td><p>The default languages used by the detection algorithm.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bp_text.language.biblatex_langid_to_iso" title="bp_text.language.biblatex_langid_to_iso"><code class="xref py py-obj docutils literal notranslate"><span class="pre">biblatex_langid_to_iso</span></code></a></p></td>
+<td><p>Table/dict to convert a BibLaTeX <cite>langid</cite> to a ISO-639-1 code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.language.iso_to_biblatex_langid" title="bp_text.language.iso_to_biblatex_langid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iso_to_biblatex_langid</span></code></a></p></td>
+<td><p>Table/dict to convert an ISO-639-1 code to a BibLaTeX langid.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.language.convert_langcode" title="bp_text.language.convert_langcode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_langcode</span></code></a>(langcode[, inFormat, outFormat])</p></td>
+<td><p>Convert a language code to a different form.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bp_text.language.iso_639_1_to_langid" title="bp_text.language.iso_639_1_to_langid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iso_639_1_to_langid</span></code></a>(iso_code[, fallback])</p></td>
+<td><p>The inverse of <a class="reference internal" href="#bp_text.language.standardize_langid" title="bp_text.language.standardize_langid"><code class="xref py py-func docutils literal notranslate"><span class="pre">standardize_langid()</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.language.standardize_langid" title="bp_text.language.standardize_langid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">standardize_langid</span></code></a>(langid[, fallback])</p></td>
+<td><p>Standardize (i.e. convert to ISO-639-1) a Bib(La)TeX <cite>langid</cite> (see BibLaTeX documentation for a list of supported langids, <a class="reference external" href="https://ctan.org/pkg/biblatex">https://ctan.org/pkg/biblatex</a>).</p></td>
 </tr>
 </tbody>
 </table>
@@ -153,9 +178,105 @@ to consider. Default = <a class="reference internal" href="#bp_text.language.def
 </dd></dl>
 
 <dl class="py data">
+<dt class="sig sig-object py" id="bp_text.language.biblatex_langid_to_iso">
+<span class="sig-prename descclassname"><span class="pre">bp_text.language.</span></span><span class="sig-name descname"><span class="pre">biblatex_langid_to_iso</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'UKenglish':</span> <span class="pre">'en',</span> <span class="pre">'USenglish':</span> <span class="pre">'en',</span> <span class="pre">'american':</span> <span class="pre">'en',</span> <span class="pre">'australian':</span> <span class="pre">'en',</span> <span class="pre">'austrian':</span> <span class="pre">'de',</span> <span class="pre">'basque':</span> <span class="pre">'eu',</span> <span class="pre">'brazil':</span> <span class="pre">'pt',</span> <span class="pre">'british':</span> <span class="pre">'en',</span> <span class="pre">'bulgarian':</span> <span class="pre">'bg',</span> <span class="pre">'canadian':</span> <span class="pre">'en',</span> <span class="pre">'catalan':</span> <span class="pre">'ca',</span> <span class="pre">'croatian':</span> <span class="pre">'hr',</span> <span class="pre">'czech':</span> <span class="pre">'cs',</span> <span class="pre">'danish':</span> <span class="pre">'da',</span> <span class="pre">'dutch':</span> <span class="pre">'nl',</span> <span class="pre">'english':</span> <span class="pre">'en',</span> <span class="pre">'estonian':</span> <span class="pre">'et',</span> <span class="pre">'finnish':</span> <span class="pre">'fi',</span> <span class="pre">'french':</span> <span class="pre">'fr',</span> <span class="pre">'german':</span> <span class="pre">'de',</span> <span class="pre">'greek':</span> <span class="pre">'el',</span> <span class="pre">'hungarian':</span> <span class="pre">'hu',</span> <span class="pre">'icelandic':</span> <span class="pre">'is',</span> <span class="pre">'italian':</span> <span class="pre">'it',</span> <span class="pre">'latvian':</span> <span class="pre">'lv',</span> <span class="pre">'lithuanian':</span> <span class="pre">'lt',</span> <span class="pre">'magyar':</span> <span class="pre">'hu',</span> <span class="pre">'marathi':</span> <span class="pre">'mr',</span> <span class="pre">'naustrian':</span> <span class="pre">'de',</span> <span class="pre">'newzealand':</span> <span class="pre">'en',</span> <span class="pre">'ngerman':</span> <span class="pre">'de',</span> <span class="pre">'norsk':</span> <span class="pre">'no',</span> <span class="pre">'nswissgerman':</span> <span class="pre">'de',</span> <span class="pre">'nynorsk':</span> <span class="pre">'nn',</span> <span class="pre">'polish':</span> <span class="pre">'pl',</span> <span class="pre">'portuges':</span> <span class="pre">'pt',</span> <span class="pre">'portuguese':</span> <span class="pre">'pt',</span> <span class="pre">'romanian':</span> <span class="pre">'ro',</span> <span class="pre">'russian':</span> <span class="pre">'ru',</span> <span class="pre">'serbian':</span> <span class="pre">'sr',</span> <span class="pre">'serbianc':</span> <span class="pre">'sr',</span> <span class="pre">'slovak':</span> <span class="pre">'sk',</span> <span class="pre">'slovene':</span> <span class="pre">'sl',</span> <span class="pre">'slovenian':</span> <span class="pre">'sl',</span> <span class="pre">'spanish':</span> <span class="pre">'es',</span> <span class="pre">'swedish':</span> <span class="pre">'sv',</span> <span class="pre">'swissgerman':</span> <span class="pre">'de',</span> <span class="pre">'turkish':</span> <span class="pre">'tr',</span> <span class="pre">'ukrainian':</span> <span class="pre">'uk'}</span></em><a class="headerlink" href="#bp_text.language.biblatex_langid_to_iso" title="Link to this definition"></a></dt>
+<dd><p>Table/dict to convert a BibLaTeX <cite>langid</cite> to a ISO-639-1 code.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bp_text.language.convert_langcode">
+<span class="sig-prename descclassname"><span class="pre">bp_text.language.</span></span><span class="sig-name descname"><span class="pre">convert_langcode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">langcode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inFormat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'langid'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outFormat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'iso_code_639_1'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/language.html#convert_langcode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.language.convert_langcode" title="Link to this definition"></a></dt>
+<dd><p>Convert a language code to a different form.  This could for example
+be used to translate a Bib(La)TeX <cite>langid</cite> to an ISO-639-3 code (or vice
+versa).</p>
+<p>Possible in- and out-formats are:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><cite>langid</cite>: a Bib(La)TeX <cite>langid</cite> (e.g. <cite>ngerman</cite> or <cite>english</cite>, cf.</dt><dd><p>BibLaTeX documentation at <a class="reference external" href="https://ctan.org/pkg/biblatex">https://ctan.org/pkg/biblatex</a>)</p>
+</dd>
+</dl>
+</li>
+<li><p><cite>iso_code_639_1</cite>: an ISO-639-1 code (e.g. <cite>DE</cite> or <cite>EN</cite>)</p></li>
+<li><p><cite>iso_code_639_3</cite>: an ISO-639-3 code (e.g. <cite>DEU</cite> or <cite>ENG</cite>)</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">convert_langcode</span><span class="p">(</span><span class="s2">&quot;ngerman&quot;</span><span class="p">)</span>
+<span class="c1"># =&gt; &#39;de&#39;</span>
+<span class="n">convert_langcode</span><span class="p">(</span><span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="s2">&quot;iso_code_639_1&quot;</span><span class="p">,</span> <span class="s2">&quot;langid&quot;</span><span class="p">)</span>
+<span class="c1"># =&gt; &#39;english&#39;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>langcode</strong> (<em>string</em>) – The language code to translate.</p></li>
+<li><p><strong>inFormat</strong> (<em>string</em>) – The input format (i.e. of <cite>langcode</cite>).  Must be one of the
+possible in/out formats (see above).  Default = “langid”</p></li>
+<li><p><strong>outFormat</strong> (<em>string</em>) – The output format (i.e. of the return value). Must be one
+of the possible in/out formats (see above).  Default = “iso_code_639_3”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The converted langcode in the <cite>outFormat</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
 <dt class="sig sig-object py" id="bp_text.language.default_languages">
 <span class="sig-prename descclassname"><span class="pre">bp_text.language.</span></span><span class="sig-name descname"><span class="pre">default_languages</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[Language.ENGLISH,</span> <span class="pre">Language.FRENCH,</span> <span class="pre">Language.GERMAN,</span> <span class="pre">Language.SPANISH]</span></em><a class="headerlink" href="#bp_text.language.default_languages" title="Link to this definition"></a></dt>
 <dd><p>The default languages used by the detection algorithm.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bp_text.language.iso_639_1_to_langid">
+<span class="sig-prename descclassname"><span class="pre">bp_text.language.</span></span><span class="sig-name descname"><span class="pre">iso_639_1_to_langid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iso_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'english'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/language.html#iso_639_1_to_langid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.language.iso_639_1_to_langid" title="Link to this definition"></a></dt>
+<dd><p>The inverse of <a class="reference internal" href="#bp_text.language.standardize_langid" title="bp_text.language.standardize_langid"><code class="xref py py-func docutils literal notranslate"><span class="pre">standardize_langid()</span></code></a>.  Converts an ISO-639-1 code
+to a BibLaTeX <cite>langid</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iso_code</strong> (<em>string</em>) – The ISO-639-1 code (e.g. “de”) to convert.</p></li>
+<li><p><strong>fallback</strong> (<em>string</em>) – The fallback language to return if no translation found
+in the translation table. Should be a valid BibLaTeX langid (cf.
+BibLaTeX documentation). Default = “english”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bp_text.language.iso_to_biblatex_langid">
+<span class="sig-prename descclassname"><span class="pre">bp_text.language.</span></span><span class="sig-name descname"><span class="pre">iso_to_biblatex_langid</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'bg':</span> <span class="pre">'bulgarian',</span> <span class="pre">'ca':</span> <span class="pre">'catalan',</span> <span class="pre">'cs':</span> <span class="pre">'czech',</span> <span class="pre">'da':</span> <span class="pre">'danish',</span> <span class="pre">'de':</span> <span class="pre">'ngerman',</span> <span class="pre">'el':</span> <span class="pre">'greek',</span> <span class="pre">'en':</span> <span class="pre">'english',</span> <span class="pre">'es':</span> <span class="pre">'spanish',</span> <span class="pre">'eu':</span> <span class="pre">'basque',</span> <span class="pre">'fi':</span> <span class="pre">'finnish',</span> <span class="pre">'fr':</span> <span class="pre">'french',</span> <span class="pre">'hr':</span> <span class="pre">'croatian',</span> <span class="pre">'hu':</span> <span class="pre">'hungarian',</span> <span class="pre">'is':</span> <span class="pre">'icelandic',</span> <span class="pre">'it':</span> <span class="pre">'italian',</span> <span class="pre">'lt':</span> <span class="pre">'lithuanian',</span> <span class="pre">'lv':</span> <span class="pre">'latvian',</span> <span class="pre">'mr':</span> <span class="pre">'marathi',</span> <span class="pre">'nl':</span> <span class="pre">'dutch',</span> <span class="pre">'nn':</span> <span class="pre">'nynorsk',</span> <span class="pre">'no':</span> <span class="pre">'norsk',</span> <span class="pre">'pl':</span> <span class="pre">'polish',</span> <span class="pre">'pt':</span> <span class="pre">'portuguese',</span> <span class="pre">'ro':</span> <span class="pre">'romanian',</span> <span class="pre">'ru':</span> <span class="pre">'russian',</span> <span class="pre">'sk':</span> <span class="pre">'slovak',</span> <span class="pre">'sl':</span> <span class="pre">'slovenian',</span> <span class="pre">'sr':</span> <span class="pre">'serbian',</span> <span class="pre">'sv':</span> <span class="pre">'swedish',</span> <span class="pre">'tr':</span> <span class="pre">'turkish',</span> <span class="pre">'uk':</span> <span class="pre">'ukrainian'}</span></em><a class="headerlink" href="#bp_text.language.iso_to_biblatex_langid" title="Link to this definition"></a></dt>
+<dd><p>Table/dict to convert an ISO-639-1 code to a BibLaTeX langid.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bp_text.language.standardize_langid">
+<span class="sig-prename descclassname"><span class="pre">bp_text.language.</span></span><span class="sig-name descname"><span class="pre">standardize_langid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">langid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'en'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/language.html#standardize_langid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.language.standardize_langid" title="Link to this definition"></a></dt>
+<dd><p>Standardize (i.e. convert to ISO-639-1) a Bib(La)TeX <cite>langid</cite> (see
+BibLaTeX documentation for a list of supported langids,
+<a class="reference external" href="https://ctan.org/pkg/biblatex">https://ctan.org/pkg/biblatex</a>).  If no matches are found, it falls back to
+the given fallback variable and prints a notice.  If no fallback is
+specified, it returns None and prints a notice.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">standardize_langid</span><span class="p">(</span><span class="s2">&quot;ngerman&quot;</span><span class="p">)</span>
+<span class="c1"># =&gt; &#39;de&#39;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>langid</strong> (<em>string</em>) – The langid to standardize/parse.</p></li>
+<li><p><strong>fallback</strong> (<em>string</em>) – Any string (preferably an ISO-639-1 code) the function
+should fall back to in the case no matching translation is found.
+Default = “en”</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

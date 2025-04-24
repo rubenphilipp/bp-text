@@ -78,10 +78,11 @@
 <span class="sd">Created: 2025-03-27</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  17:16:42 Wed Apr 23 2025 CEST</span>
+<span class="sd">$$ Last modified:  20:42:06 Thu Apr 24 2025 CEST</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">lingua</span><span class="w"> </span><span class="kn">import</span> <span class="n">Language</span><span class="p">,</span> <span class="n">LanguageDetectorBuilder</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">langcodes</span>
 
 <span class="c1">################################################################################</span>
 
@@ -153,7 +154,223 @@
 
 
 
+        
+<span class="c1">################################################################################</span>
+<span class="c1">################################################################################</span>
 
+
+<span class="c1">#: Table/dict to convert a BibLaTeX `langid` to a ISO-639-1 code.</span>
+<span class="n">biblatex_langid_to_iso</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;basque&quot;</span><span class="p">:</span> <span class="s2">&quot;eu&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;bulgarian&quot;</span><span class="p">:</span> <span class="s2">&quot;bg&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;catalan&quot;</span><span class="p">:</span> <span class="s2">&quot;ca&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;croatian&quot;</span><span class="p">:</span> <span class="s2">&quot;hr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;czech&quot;</span><span class="p">:</span> <span class="s2">&quot;cs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;danish&quot;</span><span class="p">:</span> <span class="s2">&quot;da&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dutch&quot;</span><span class="p">:</span> <span class="s2">&quot;nl&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;american&quot;</span><span class="p">:</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;USenglish&quot;</span><span class="p">:</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;english&quot;</span><span class="p">:</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;british&quot;</span><span class="p">:</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UKenglish&quot;</span><span class="p">:</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;canadian&quot;</span><span class="p">:</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;australian&quot;</span><span class="p">:</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;newzealand&quot;</span><span class="p">:</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;estonian&quot;</span><span class="p">:</span> <span class="s2">&quot;et&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;finnish&quot;</span><span class="p">:</span> <span class="s2">&quot;fi&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;french&quot;</span><span class="p">:</span> <span class="s2">&quot;fr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;german&quot;</span><span class="p">:</span> <span class="s2">&quot;de&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;austrian&quot;</span><span class="p">:</span> <span class="s2">&quot;de&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;swissgerman&quot;</span><span class="p">:</span> <span class="s2">&quot;de&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ngerman&quot;</span><span class="p">:</span> <span class="s2">&quot;de&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;naustrian&quot;</span><span class="p">:</span> <span class="s2">&quot;de&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nswissgerman&quot;</span><span class="p">:</span> <span class="s2">&quot;de&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;greek&quot;</span><span class="p">:</span> <span class="s2">&quot;el&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;magyar&quot;</span><span class="p">:</span> <span class="s2">&quot;hu&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hungarian&quot;</span><span class="p">:</span> <span class="s2">&quot;hu&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;icelandic&quot;</span><span class="p">:</span> <span class="s2">&quot;is&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;italian&quot;</span><span class="p">:</span> <span class="s2">&quot;it&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;latvian&quot;</span><span class="p">:</span> <span class="s2">&quot;lv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lithuanian&quot;</span><span class="p">:</span> <span class="s2">&quot;lt&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;marathi&quot;</span><span class="p">:</span> <span class="s2">&quot;mr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;norsk&quot;</span><span class="p">:</span> <span class="s2">&quot;no&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nynorsk&quot;</span><span class="p">:</span> <span class="s2">&quot;nn&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;polish&quot;</span><span class="p">:</span> <span class="s2">&quot;pl&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;brazil&quot;</span><span class="p">:</span> <span class="s2">&quot;pt&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;portuguese&quot;</span><span class="p">:</span> <span class="s2">&quot;pt&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;portuges&quot;</span><span class="p">:</span> <span class="s2">&quot;pt&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;romanian&quot;</span><span class="p">:</span> <span class="s2">&quot;ro&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;russian&quot;</span><span class="p">:</span> <span class="s2">&quot;ru&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;serbian&quot;</span><span class="p">:</span> <span class="s2">&quot;sr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;serbianc&quot;</span><span class="p">:</span> <span class="s2">&quot;sr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;slovak&quot;</span><span class="p">:</span> <span class="s2">&quot;sk&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;slovene&quot;</span><span class="p">:</span> <span class="s2">&quot;sl&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;slovenian&quot;</span><span class="p">:</span> <span class="s2">&quot;sl&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;spanish&quot;</span><span class="p">:</span> <span class="s2">&quot;es&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;swedish&quot;</span><span class="p">:</span> <span class="s2">&quot;sv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;turkish&quot;</span><span class="p">:</span> <span class="s2">&quot;tr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ukrainian&quot;</span><span class="p">:</span> <span class="s2">&quot;uk&quot;</span>
+<span class="p">}</span>
+
+<span class="c1">#: Table/dict to convert an ISO-639-1 code to a BibLaTeX langid. </span>
+<span class="n">iso_to_biblatex_langid</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;eu&#39;</span><span class="p">:</span> <span class="s1">&#39;basque&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;bg&#39;</span><span class="p">:</span> <span class="s1">&#39;bulgarian&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ca&#39;</span><span class="p">:</span> <span class="s1">&#39;catalan&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;hr&#39;</span><span class="p">:</span> <span class="s1">&#39;croatian&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cs&#39;</span><span class="p">:</span> <span class="s1">&#39;czech&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;da&#39;</span><span class="p">:</span> <span class="s1">&#39;danish&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;nl&#39;</span><span class="p">:</span> <span class="s1">&#39;dutch&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;en&#39;</span><span class="p">:</span> <span class="s1">&#39;english&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;fi&#39;</span><span class="p">:</span> <span class="s1">&#39;finnish&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;fr&#39;</span><span class="p">:</span> <span class="s1">&#39;french&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;de&#39;</span><span class="p">:</span> <span class="s1">&#39;ngerman&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;el&#39;</span><span class="p">:</span> <span class="s1">&#39;greek&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;hu&#39;</span><span class="p">:</span> <span class="s1">&#39;hungarian&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is&#39;</span><span class="p">:</span> <span class="s1">&#39;icelandic&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;it&#39;</span><span class="p">:</span> <span class="s1">&#39;italian&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;lv&#39;</span><span class="p">:</span> <span class="s1">&#39;latvian&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;lt&#39;</span><span class="p">:</span> <span class="s1">&#39;lithuanian&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mr&#39;</span><span class="p">:</span> <span class="s1">&#39;marathi&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;no&#39;</span><span class="p">:</span> <span class="s1">&#39;norsk&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;nn&#39;</span><span class="p">:</span> <span class="s1">&#39;nynorsk&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;pl&#39;</span><span class="p">:</span> <span class="s1">&#39;polish&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;pt&#39;</span><span class="p">:</span> <span class="s1">&#39;portuguese&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ro&#39;</span><span class="p">:</span> <span class="s1">&#39;romanian&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ru&#39;</span><span class="p">:</span> <span class="s1">&#39;russian&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sr&#39;</span><span class="p">:</span> <span class="s1">&#39;serbian&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sk&#39;</span><span class="p">:</span> <span class="s1">&#39;slovak&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sl&#39;</span><span class="p">:</span> <span class="s1">&#39;slovenian&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;es&#39;</span><span class="p">:</span> <span class="s1">&#39;spanish&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sv&#39;</span><span class="p">:</span> <span class="s1">&#39;swedish&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;tr&#39;</span><span class="p">:</span> <span class="s1">&#39;turkish&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;uk&#39;</span><span class="p">:</span> <span class="s1">&#39;ukrainian&#39;</span><span class="p">}</span>
+
+<div class="viewcode-block" id="standardize_langid">
+<a class="viewcode-back" href="../../generated/bp_text.language.html#bp_text.language.standardize_langid">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">standardize_langid</span><span class="p">(</span><span class="n">langid</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="s2">&quot;en&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Standardize (i.e. convert to ISO-639-1) a Bib(La)TeX `langid` (see</span>
+<span class="sd">    BibLaTeX documentation for a list of supported langids,</span>
+<span class="sd">    https://ctan.org/pkg/biblatex).  If no matches are found, it falls back to</span>
+<span class="sd">    the given fallback variable and prints a notice.  If no fallback is</span>
+<span class="sd">    specified, it returns None and prints a notice. </span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">       standardize_langid(&quot;ngerman&quot;)</span>
+<span class="sd">       # =&gt; &#39;de&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    :param langid: The langid to standardize/parse.</span>
+<span class="sd">    :type langid: string</span>
+<span class="sd">    :param fallback: Any string (preferably an ISO-639-1 code) the function</span>
+<span class="sd">       should fall back to in the case no matching translation is found.</span>
+<span class="sd">       Default = &quot;en&quot;</span>
+<span class="sd">    :type fallback: string</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">biblatex_langid_to_iso</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">langid</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">elif</span> <span class="n">fallback</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;langid &#39;</span><span class="si">{</span><span class="n">langid</span><span class="si">}</span><span class="s2">&#39; not found. Falling back to &#39;</span><span class="si">{</span><span class="n">fallback</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fallback</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;langid &#39;</span><span class="si">{</span><span class="n">langid</span><span class="si">}</span><span class="s2">&#39; not found. No fallback specified.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="iso_639_1_to_langid">
+<a class="viewcode-back" href="../../generated/bp_text.language.html#bp_text.language.iso_639_1_to_langid">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">iso_639_1_to_langid</span><span class="p">(</span><span class="n">iso_code</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="s2">&quot;english&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The inverse of :py:func:`standardize_langid`.  Converts an ISO-639-1 code</span>
+<span class="sd">    to a BibLaTeX `langid`.</span>
+
+<span class="sd">    :param iso_code: The ISO-639-1 code (e.g. &quot;de&quot;) to convert. </span>
+<span class="sd">    :type iso_code: string</span>
+<span class="sd">    :param fallback: The fallback language to return if no translation found</span>
+<span class="sd">       in the translation table. Should be a valid BibLaTeX langid (cf.</span>
+<span class="sd">       BibLaTeX documentation). Default = &quot;english&quot;</span>
+<span class="sd">    :type fallback: string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">iso_to_biblatex_langid</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">iso_code</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">elif</span> <span class="n">fallback</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;no langid found for iso_code &#39;</span><span class="si">{</span><span class="n">iso_code</span><span class="si">}</span><span class="s2">&#39;. &quot;</span> <span class="o">+</span>
+              <span class="sa">f</span><span class="s2">&quot;Falling back to &#39;</span><span class="si">{</span><span class="n">fallback</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fallback</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;no langid found for iso_code &#39;</span><span class="si">{</span><span class="n">iso_code</span><span class="si">}</span><span class="s2">&#39;. &quot;</span> <span class="o">+</span>
+              <span class="s2">&quot;No fallback specified.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="convert_langcode">
+<a class="viewcode-back" href="../../generated/bp_text.language.html#bp_text.language.convert_langcode">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_langcode</span><span class="p">(</span><span class="n">langcode</span><span class="p">,</span> <span class="n">inFormat</span><span class="o">=</span><span class="s2">&quot;langid&quot;</span><span class="p">,</span> <span class="n">outFormat</span><span class="o">=</span><span class="s2">&quot;iso_code_639_1&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a language code to a different form.  This could for example</span>
+<span class="sd">    be used to translate a Bib(La)TeX `langid` to an ISO-639-3 code (or vice</span>
+<span class="sd">    versa).</span>
+
+<span class="sd">    Possible in- and out-formats are:</span>
+<span class="sd">    </span>
+<span class="sd">    * `langid`: a Bib(La)TeX `langid` (e.g. `ngerman` or `english`, cf.</span>
+<span class="sd">       BibLaTeX documentation at https://ctan.org/pkg/biblatex)</span>
+<span class="sd">    * `iso_code_639_1`: an ISO-639-1 code (e.g. `DE` or `EN`)</span>
+<span class="sd">    * `iso_code_639_3`: an ISO-639-3 code (e.g. `DEU` or `ENG`)</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">       convert_langcode(&quot;ngerman&quot;)</span>
+<span class="sd">       # =&gt; &#39;de&#39;</span>
+<span class="sd">       convert_langcode(&quot;en&quot;, &quot;iso_code_639_1&quot;, &quot;langid&quot;)</span>
+<span class="sd">       # =&gt; &#39;english&#39;</span>
+
+<span class="sd">    :param langcode: The language code to translate.</span>
+<span class="sd">    :type langcode: string</span>
+<span class="sd">    :param inFormat: The input format (i.e. of `langcode`).  Must be one of the</span>
+<span class="sd">        possible in/out formats (see above).  Default = &quot;langid&quot;</span>
+<span class="sd">    :type inFormat: string</span>
+<span class="sd">    :param outFormat: The output format (i.e. of the return value). Must be one</span>
+<span class="sd">        of the possible in/out formats (see above).  Default = &quot;iso_code_639_3&quot;</span>
+<span class="sd">    :type outFormat: string</span>
+<span class="sd">    :return: The converted langcode in the `outFormat`.</span>
+<span class="sd">    :rtype: string</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">inFormat</span> <span class="o">==</span> <span class="n">outFormat</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;convert_langcode: inFormat is the same as outFormat. Ignoring.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">inFormat</span> <span class="o">==</span> <span class="s2">&quot;langid&quot;</span><span class="p">:</span>
+        <span class="n">iso1</span> <span class="o">=</span> <span class="n">standardize_langid</span><span class="p">(</span><span class="n">langcode</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">outFormat</span> <span class="o">==</span> <span class="s2">&quot;iso_code_639_3&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">langcodes</span><span class="o">.</span><span class="n">Language</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">iso1</span><span class="p">)</span><span class="o">.</span><span class="n">to_alpha3</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">outFormat</span> <span class="o">==</span> <span class="s2">&quot;iso_code_639_1&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">iso1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;convert_langcode: Invalid outFormat &#39;</span><span class="si">{</span><span class="n">outFormat</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">inFormat</span> <span class="o">==</span> <span class="s2">&quot;iso_code_639_1&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">outFormat</span> <span class="o">==</span> <span class="s2">&quot;iso_code_639_3&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">langcodes</span><span class="o">.</span><span class="n">Language</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">langcode</span><span class="p">)</span><span class="o">.</span><span class="n">to_alpha3</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">outFormat</span> <span class="o">==</span> <span class="s2">&quot;langid&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">iso_639_1_to_langid</span><span class="p">(</span><span class="n">langcode</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;convert_langcode: Invalid outFormat &#39;</span><span class="si">{</span><span class="n">outFormat</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">inFormat</span> <span class="o">==</span> <span class="s2">&quot;iso_code_639_3&quot;</span><span class="p">:</span>
+        <span class="n">iso1</span> <span class="o">=</span> <span class="n">langcodes</span><span class="o">.</span><span class="n">standardize_tag</span><span class="p">(</span><span class="n">langcode</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">outFormat</span> <span class="o">==</span> <span class="s2">&quot;iso_code_639_1&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">iso1</span>
+        <span class="k">elif</span> <span class="n">outFormat</span> <span class="o">==</span> <span class="s2">&quot;langid&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">iso_639_1_to_langid</span><span class="p">(</span><span class="n">iso1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;convert_langcode: Invalid outFormat &#39;</span><span class="si">{</span><span class="n">outFormat</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+        
+        
 
 <span class="c1">################################################################################</span>
 <span class="c1">## EOF language.py</span>

@@ -4,7 +4,7 @@ This module contains functionality dealing with languages (e.g. detection).
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  20:36:35 Thu Apr 24 2025 CEST
+$$ Last modified:  20:45:39 Thu Apr 24 2025 CEST
 """
 
 from lingua import Language, LanguageDetectorBuilder
@@ -71,10 +71,12 @@ class LanguageDetector:
             .from_languages(*self._languages).build()
 
 
+        
 ################################################################################
 ################################################################################
 
-#: Table/dict to convert a BibLaTeX `langid` to a ISO-639-1 code.
+
+# Table/dict to convert a BibLaTeX `langid` to a ISO-639-1 code.
 biblatex_langid_to_iso = {
     "basque": "eu",
     "bulgarian": "bg",
@@ -127,7 +129,7 @@ biblatex_langid_to_iso = {
     "ukrainian": "uk"
 }
 
-#: Table/dict to convert an ISO-639-1 code to a BibLaTeX langid. 
+# Table/dict to convert an ISO-639-1 code to a BibLaTeX langid. 
 iso_to_biblatex_langid = {
     'eu': 'basque',
     'bg': 'bulgarian',
@@ -161,7 +163,7 @@ iso_to_biblatex_langid = {
     'tr': 'turkish',
     'uk': 'ukrainian'}
 
-def standardize_langid(langid, fallback="en"):
+def langid_to_iso_639_1(langid, fallback="en"):
     """Standardize (i.e. convert to ISO-639-1) a Bib(La)TeX `langid` (see
     BibLaTeX documentation for a list of supported langids,
     https://ctan.org/pkg/biblatex).  If no matches are found, it falls back to
@@ -170,7 +172,7 @@ def standardize_langid(langid, fallback="en"):
 
     Example::
 
-       standardize_langid("ngerman")
+       langid_to_iso_639_1("ngerman")
        # => 'de'
     
     :param langid: The langid to standardize/parse.
@@ -192,8 +194,8 @@ def standardize_langid(langid, fallback="en"):
         return None
 
 def iso_639_1_to_langid(iso_code, fallback="english"):
-    """The inverse of :py:func:`standardize_langid`.  Converts an ISO-639-1 code
-    to a BibLaTeX `langid`.
+    """The inverse of :py:func:`langid_to_iso_639_1`.  Converts an ISO-639-1
+    code to a BibLaTeX `langid`.
 
     :param iso_code: The ISO-639-1 code (e.g. "de") to convert. 
     :type iso_code: string
@@ -221,11 +223,11 @@ def convert_langcode(langcode, inFormat="langid", outFormat="iso_code_639_1"):
     versa).
 
     Possible in- and out-formats are:
-
-    - `langid`: a Bib(La)TeX `langid` (e.g. `ngerman` or `english`, cf.
+    
+    * `langid`: a Bib(La)TeX `langid` (e.g. `ngerman` or `english`, cf.
        BibLaTeX documentation at https://ctan.org/pkg/biblatex)
-    - `iso_code_639_1`: an ISO-639-1 code (e.g. `DE` or `EN`)
-    - `iso_code_639_3`: an ISO-639-3 code (e.g. `DEU` or `ENG`)
+    * `iso_code_639_1`: an ISO-639-1 code (e.g. `DE` or `EN`)
+    * `iso_code_639_3`: an ISO-639-3 code (e.g. `DEU` or `ENG`)
 
     Example::
 
@@ -250,7 +252,7 @@ def convert_langcode(langcode, inFormat="langid", outFormat="iso_code_639_1"):
         print("convert_langcode: inFormat is the same as outFormat. Ignoring.")
 
     if inFormat == "langid":
-        iso1 = standardize_langid(langcode)
+        iso1 = langid_to_iso_639_1(langcode)
         if outFormat == "iso_code_639_3":
             return langcodes.Language.get(iso1).to_alpha3()
         elif outFormat == "iso_code_639_1":
