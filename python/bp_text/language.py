@@ -4,7 +4,7 @@ This module contains functionality dealing with languages (e.g. detection).
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  17:52:26 Thu Apr 24 2025 CEST
+$$ Last modified:  20:12:09 Thu Apr 24 2025 CEST
 """
 
 from lingua import Language, LanguageDetectorBuilder
@@ -139,7 +139,7 @@ iso_to_biblatex_langid = {
     'en': 'english',
     'fi': 'finnish',
     'fr': 'french',
-    'de': 'german',
+    'de': 'ngerman',
     'el': 'greek',
     'hu': 'hungarian',
     'is': 'icelandic',
@@ -227,6 +227,13 @@ def convert_langcode(langcode, inFormat="langid", outFormat="iso_code_639_1"):
     - `iso_code_639_1`: an ISO-639-1 code (e.g. `DE` or `EN`)
     - `iso_code_639_3`: an ISO-639-3 code (e.g. `DEU` or `ENG`)
 
+    Example::
+
+       convert_langcode("ngerman")
+       # => 'de'
+       convert_langcode("en", "iso_code_639_1", "langid")
+       # => 'english'
+
     :param langcode: The language code to translate.
     :type langcode: string
     :param inFormat: The input format (i.e. of `langcode`).  Must be one of the
@@ -239,7 +246,37 @@ def convert_langcode(langcode, inFormat="langid", outFormat="iso_code_639_1"):
     :rtype: string
     
     """
-    pass
+    if inFormat == outFormat:
+        print("convert_langcode: inFormat is the same as outFormat. Ignoring.")
+
+    if inFormat == "langid":
+        iso1 = standardize_langid(langcode)
+        if outFormat == "iso_code_639_3":
+            return langcodes.Language.get(iso1).to_alpha3()
+        elif outFormat == "iso_code_639_1":
+            return iso1
+        else:
+            print(f"convert_langcode: Invalid outFormat '{outFormat}'.")
+            return None
+    elif inFormat == "iso_code_639_1":
+        if outFormat == "iso_code_639_3":
+            return langcodes.Language.get(langcode).to_alpha3()
+        elif outFormat == "langid":
+            return iso_639_1_to_langid(langcode)
+        else:
+            print(f"convert_langcode: Invalid outFormat '{outFormat}'.")
+            return None
+    elif inFormat == "iso_code_639_3":
+        iso1 = langcodes.standardize_tag(langcode)
+        if outFormat == "iso_code_639_1":
+            return iso1
+        elif outFormat == "langid":
+            return iso_639_1_to_langid(iso1)
+        else:
+            print(f"convert_langcode: Invalid outFormat '{outFormat}'.")
+            return None
+        
+        
 
 ################################################################################
 ## EOF language.py

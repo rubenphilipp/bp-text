@@ -48,6 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Notes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#working-with-bibtex-files">Working with BibTeX files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#languages">Languages</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
@@ -99,6 +100,22 @@ is conceived.</p>
 <p>Keywords can also be included.  They should be placed in a <cite>keywords</cite> field
 which should be provided by <cite>BibDesk</cite> by default and should also be the standard
 field when exporting a library from Zotero e.g. via BetterBibTeX.</p>
+<p>Citation keys should, of course, be unique.</p>
+<p>The primary language of a document is expected to be stored in the <cite>langid</cite>
+field.  This is a BibLaTeX field and expects languages to be identified by an
+idiosyncratic id which is not the same as standard ISO-639-1 language codes.
+The langid for German, for example, is <cite>ngerman</cite> (i.e. new German spelling).
+See <em>Table 2: Supported Languages</em> in the BibLaTeX documentation
+(<a class="reference external" href="https://ctan.org/pkg/biblatex">https://ctan.org/pkg/biblatex</a>).  Although it is allowed to omit specifying a
+primary language, it is highly recommended as e.g. the PdfFile class will use
+the language when performing OCR.</p>
+</section>
+<section id="languages">
+<h2>Languages<a class="headerlink" href="#languages" title="Link to this heading"></a></h2>
+<p>Tokenization and tagging in this library is based on the <cite>Flair
+&lt;https://flairnlp.github.io&gt;</cite> library.  This library is (as of 2025-04-23)
+mainly focused on European languages, and so is this project.  When parsing
+text, this should not be forgotten.</p>
 </section>
 </section>
 
