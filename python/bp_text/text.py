@@ -8,7 +8,7 @@ be later used for analysis or text-production.
 Created: 2025-04-24
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:38:35 Thu Apr 24 2025 CEST
+$$ Last modified:  23:45:25 Thu Apr 24 2025 CEST
 
 """
 
@@ -63,29 +63,45 @@ class Text:
     :param lang: The primary language of the text as a ISO 639-1 code.
        Default = "en"
     :type lang: string
-    :param splitter: A Flair sentence splitter object.
-       Default = `text_splitter`
-    :type splitter: <class 'flair.splitter.SegtokSentenceSplitter'> or
+    :param splitter: A Flair sentence splitter object. None uses the default
+       splitter. 
+       Default = None
+    :type splitter: None or <class 'flair.splitter.SegtokSentenceSplitter'> or
        similar.
-    :param tagger_pos: A Flair POS tagger object. Default = text_tagger_pos
-    :type tagger_pos: A Flair POS tagger object of type
+    :param tagger_pos: A Flair POS tagger object. None uses the default tagger.
+       Default = None
+    :type tagger_pos: None or a Flair POS tagger object of type
        <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
-    :param tagger_ner: A Flair NER tagger object. Default = text_tagger_ner
-    :type tagger_ner: A Flair NER tagger object of type
+    :param tagger_ner: A Flair NER tagger object. None uses the default tagger.
+       Default = text_tagger_ner
+    :type tagger_ner: None or a Flair NER tagger object of type
        <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
     """
     def __init__(self,
                  text = "",
                  lang = "en",
-                 splitter = get_text_splitter(),
-                 tagger_pos = get_pos_tagger(),
-                 tagger_ner = get_ner_tagger()):
+                 splitter = None,
+                 tagger_pos = None,
+                 tagger_ner = None):
         self._text = text
         self._lang = lang
         self._sentences = None
-        self._splitter = splitter
-        self._tagger_pos = tagger_pos
-        self._tagger_ner = tagger_ner
+        
+        if not splitter:
+            self._splitter = get_text_splitter()
+        else:
+            self._splitter = splitter
+        
+        if not tagger_pos:
+            self._tagger_pos = get_pos_tagger()
+        else:
+            self._tagger_pos = tagger_pos
+
+        if not tagger_ner:
+            self._tagger_ner = get_ner_tagger()
+        else:
+            self._tagger_ner = tagger_ner
+            
         self.update()
 
     @property
