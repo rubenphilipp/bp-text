@@ -8,7 +8,7 @@ be later used for analysis or text-production.
 Created: 2025-04-24
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:33:31 Thu Apr 24 2025 CEST
+$$ Last modified:  23:38:35 Thu Apr 24 2025 CEST
 
 """
 
@@ -22,9 +22,28 @@ from flair.nn import Classifier
 ### Flair NLP objects
 ### NB: loading might take a while here
 
-text_splitter = SegtokSentenceSplitter()
-text_tagger_pos = Classifier.load('pos-multi')
-text_tagger_ner = Classifier.load('ner-large')
+# Globals, but uninitialized
+_text_splitter = None
+_text_tagger_pos = None
+_text_tagger_ner = None
+
+def get_text_splitter():
+    global _text_splitter
+    if _text_splitter is None:
+        _text_splitter = SegtokSentenceSplitter()
+    return _text_splitter
+
+def get_pos_tagger():
+    global _text_tagger_pos
+    if _text_tagger_pos is None:
+        _text_tagger_pos = Classifier.load('pos-multi')
+    return _text_tagger_pos
+
+def get_ner_tagger():
+    global _text_tagger_ner
+    if _text_tagger_ner is None:
+        _text_tagger_ner = Classifier.load('ner-large')
+    return _text_tagger_ner
 
 
 ################################################################################
@@ -58,9 +77,9 @@ class Text:
     def __init__(self,
                  text = "",
                  lang = "en",
-                 splitter = text_splitter,
-                 tagger_pos = text_tagger_pos,
-                 tagger_ner = text_tagger_ner):
+                 splitter = get_text_splitter(),
+                 tagger_pos = get_pos_tagger(),
+                 tagger_ner = get_ner_tagger()):
         self._text = text
         self._lang = lang
         self._sentences = None
