@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bp_text"
-version = "0.0.1"
+dynamic = ["version"]
 description = "Python algorithmic text generation tools."
 authors = [
     { name = "Ruben Philipp", email = "me@rubenphilipp.com" }
@@ -24,6 +24,9 @@ dependencies = [
     "roman>=5.0",
     "langcodes>=3.5.0"
 ]
+
+[tool.setuptools.dynamic]
+version = { attr = "bp_text.__version__" }
 
 [project.optional-dependencies]
 dev = ["pytest", "black", "flake8"]

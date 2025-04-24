@@ -4,3 +4,6 @@ import bp_text.page
 import bp_text.language
 import bp_text.pdf
 import bp_text.txt
+
+
+__version__ = "0.0.1"
