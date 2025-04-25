@@ -102,7 +102,7 @@ It uses various algorithms to e.g. detect parts of speech or entities which can
 be later used for analysis or text-production.</p>
 <p>Created: 2025-04-24
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  23:45:25 Thu Apr 24 2025 CEST</p>
+<p>$$ Last modified:  12:34:57 Fri Apr 25 2025 CEST</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -148,10 +148,12 @@ Default = “en”</p></li>
 splitter. 
 Default = None</p></li>
 <li><p><strong>tagger_pos</strong> (<em>None</em><em> or </em><em>a Flair POS tagger object</em><em> of </em><em>type
-&lt;class 'flair.models.sequence_tagger_model.SequenceTagger'&gt;.</em>) – A Flair POS tagger object. None uses the default tagger.
+&lt;class 'flair.models.sequence_tagger_model.SequenceTagger'&gt;.</em>) – A Flair POS tagger object. <cite>None</cite> uses the default
+tagger, <cite>False</cite> skips POS tagging. 
 Default = None</p></li>
 <li><p><strong>tagger_ner</strong> (<em>None</em><em> or </em><em>a Flair NER tagger object</em><em> of </em><em>type
-&lt;class 'flair.models.sequence_tagger_model.SequenceTagger'&gt;.</em>) – A Flair NER tagger object. None uses the default tagger.
+&lt;class 'flair.models.sequence_tagger_model.SequenceTagger'&gt;.</em>) – A Flair NER tagger object. <cite>None</cite> uses the default
+tagger, <cite>False</cite> skips NER tagging.
 Default = text_tagger_ner</p></li>
 </ul>
 </dd>

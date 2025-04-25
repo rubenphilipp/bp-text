@@ -82,7 +82,7 @@
 <span class="sd">Created: 2025-04-24</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  23:45:25 Thu Apr 24 2025 CEST</span>
+<span class="sd">$$ Last modified:  12:34:57 Fri Apr 25 2025 CEST</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -115,6 +115,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">get_pos_tagger</span><span class="p">():</span>
     <span class="k">global</span> <span class="n">_text_tagger_pos</span>
     <span class="k">if</span> <span class="n">_text_tagger_pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initializing POS tagger...&quot;</span><span class="p">)</span>
         <span class="n">_text_tagger_pos</span> <span class="o">=</span> <span class="n">Classifier</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;pos-multi&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_text_tagger_pos</span></div>
 
@@ -124,6 +125,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">get_ner_tagger</span><span class="p">():</span>
     <span class="k">global</span> <span class="n">_text_tagger_ner</span>
     <span class="k">if</span> <span class="n">_text_tagger_ner</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initializing NER tagger...&quot;</span><span class="p">)</span>
         <span class="n">_text_tagger_ner</span> <span class="o">=</span> <span class="n">Classifier</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;ner-large&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_text_tagger_ner</span></div>
 
@@ -153,11 +155,13 @@
 <span class="sd">       Default = None</span>
 <span class="sd">    :type splitter: None or &lt;class &#39;flair.splitter.SegtokSentenceSplitter&#39;&gt; or</span>
 <span class="sd">       similar.</span>
-<span class="sd">    :param tagger_pos: A Flair POS tagger object. None uses the default tagger.</span>
+<span class="sd">    :param tagger_pos: A Flair POS tagger object. `None` uses the default</span>
+<span class="sd">       tagger, `False` skips POS tagging. </span>
 <span class="sd">       Default = None</span>
 <span class="sd">    :type tagger_pos: None or a Flair POS tagger object of type</span>
 <span class="sd">       &lt;class &#39;flair.models.sequence_tagger_model.SequenceTagger&#39;&gt;.</span>
-<span class="sd">    :param tagger_ner: A Flair NER tagger object. None uses the default tagger.</span>
+<span class="sd">    :param tagger_ner: A Flair NER tagger object. `None` uses the default</span>
+<span class="sd">       tagger, `False` skips NER tagging.</span>
 <span class="sd">       Default = text_tagger_ner</span>
 <span class="sd">    :type tagger_ner: None or a Flair NER tagger object of type</span>
 <span class="sd">       &lt;class &#39;flair.models.sequence_tagger_model.SequenceTagger&#39;&gt;.</span>
@@ -179,12 +183,12 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_splitter</span> <span class="o">=</span> <span class="n">splitter</span>
         
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">tagger_pos</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tagger_pos</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span> <span class="o">=</span> <span class="n">get_pos_tagger</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span> <span class="o">=</span> <span class="n">tagger_pos</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">tagger_ner</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tagger_ner</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span> <span class="o">=</span> <span class="n">get_ner_tagger</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span> <span class="o">=</span> <span class="n">tagger_ner</span>
@@ -234,8 +238,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_sentences</span> <span class="o">=</span> <span class="n">sentences</span>
 
         <span class="c1">## analyse the sentences</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sentences</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sentences</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span> <span class="o">!=</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sentences</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span> <span class="o">!=</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sentences</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">True</span></div>
 </div>

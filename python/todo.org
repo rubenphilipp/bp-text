@@ -1,4 +1,4 @@
-- implement text class
-- adjust all text attributes in PdfPage, Page (its superclass) to use the text
-  class 
-- also add a text attribute to the TxtFile class using the text class
+- switch to spacy
+  - reason: objects can be serialized
+- implement pool (?) class
+  - also include a caching mechanism via pickle
