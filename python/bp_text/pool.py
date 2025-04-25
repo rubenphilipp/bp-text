@@ -8,7 +8,7 @@ provided by the BibTex entries.
 Created: 2025-04-25
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:25:08 Fri Apr 25 2025 CEST
+$$ Last modified:  23:27:45 Fri Apr 25 2025 CEST
 
 """
 
@@ -174,7 +174,7 @@ class Pool:
         self.data = data
 
 
-    @param
+    @property
     def data(self):
         """Getter/setter for the data of the `Pool`.
 
