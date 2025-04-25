@@ -14,20 +14,20 @@ jobs:
       - name: Checkoud the repository
         uses: actions/checkout@v3
         
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
+      # - name: Set up Python
+      #   uses: actions/setup-python@v4
+      #   with:
+      #     python-version: '3.x'
 
-      - name: Install dependencies
-        run: |
-          pip install 'python/'
-          pip install 'python/[docs]'
+      # - name: Install dependencies
+      #   run: |
+      #     pip install 'python/'
+      #     pip install 'python/[docs]'
 
-      - name: Build the documentation
-        run: |
-          cd python/docs
-          make clean && make html
+      # - name: Build the documentation
+      #   run: |
+      #     cd python/docs
+      #     make clean && make html
 
       - name: Copy additional docs from main/docs
         run: |
