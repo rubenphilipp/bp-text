@@ -13,8 +13,7 @@ class TestTxt(unittest.TestCase):
         Use this to initialize any objects or data needed for testing.
         """
         ## skipping NER tagging here
-        self.txt1 = txt.TxtFile(os.path.join(DATA_DIR, "nietzsche 1_s.txt"),
-                                tagger_pos=None, tagger_ner = False)
+        self.txt1 = txt.TxtFile(os.path.join(DATA_DIR, "nietzsche 1_s.txt"))
         pass
 
     def test_get_lang(self):
