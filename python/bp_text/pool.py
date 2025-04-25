@@ -8,7 +8,7 @@ provided by the BibTex entries.
 Created: 2025-04-25
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:30:24 Fri Apr 25 2025 CEST
+$$ Last modified:  00:05:30 Sat Apr 26 2025 CEST
 
 """
 
@@ -57,22 +57,22 @@ class PoolItem:
     :type data: list
     :param default_get_data_func: The default function to retrieve a data object
        via :py:func:`get_data` (cf. :py:func:`get_data`).
-       Default = `(lambda ignore: 0)`, which causes `get_data` to always return
-       the first element of the `data`.
+       Default = None, which falls back to the default which causes `get_data`
+       to always return the first element of the `data`.
     :type default_get_data_func: A function which must be a function taking the
        `PoolItem` as its argument and must return an index to the element of
-       `data` which should be retrieved.
+       `data` which should be retrieved. Set to `None` to use the default. 
 
     """
     def __init__(self,
                  meta = {},
                  data = [],
-                 default_get_data_func = (lambda ignore: 0)):
+                 default_get_data_func = None):
         self.meta = meta
         self.data = data
         ## the index of the next data object
         self._next_data = 0
-        self._default_get_data_func = default_get_data_func
+        self.default_get_data_func = default_get_data_func
 
     ########################################
 
@@ -118,6 +118,21 @@ class PoolItem:
         else:
             raise ValueError("PoolItem.data must be a list of PdfFile or "
                              + "TxtFile objects. ")
+
+    @property
+    def default_get_data_func(self):
+        return self._default_get_data_func
+
+    @default_get_data_func.setter
+    def default_get_data_func(self, val):
+        if callable(val):
+            self._default_get_data_func = val
+        elif val == None:
+            self._default_get_data_func = (lambda ignore: 0)
+        else:
+            raise ValueError("PoolItem.default_get_data_func must be None or "
+                             + "a function. ")
+        
 
     def get_data(self, func = None):
         """This function returns a single data object from the data list instead
