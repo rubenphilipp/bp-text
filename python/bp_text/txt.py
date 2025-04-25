@@ -4,7 +4,7 @@ This module implements functionality for TXT files.
 Created: 2025-03-29
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  12:29:11 Fri Apr 25 2025 CEST
+$$ Last modified:  12:31:29 Fri Apr 25 2025 CEST
 """
 
 import os
@@ -21,6 +21,10 @@ from . import text
 class TxtFile:
     """Implementation of the text-file (txt) class.
 
+    Note: While the `data` attribute holds the raw text read from the file, the
+    `text` attribute holds a :py:class:`Text` object generated from the contents
+    of the source file.  This object is already segmented and tokenized.
+
     Example::
 
         ## instantiate the text file object and read its contents
@@ -36,6 +40,7 @@ class TxtFile:
     :param data: The content of the text file. This will be automatically set
         by reading the data from the file(-path).
     :type data: string
+
     """
     def __init__(self,
                  file: str,
