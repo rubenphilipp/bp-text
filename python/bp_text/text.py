@@ -8,7 +8,7 @@ be later used for analysis or text-production.
 Created: 2025-04-24
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:49:31 Thu Apr 24 2025 CEST
+$$ Last modified:  12:34:57 Fri Apr 25 2025 CEST
 
 """
 
@@ -70,11 +70,13 @@ class Text:
        Default = None
     :type splitter: None or <class 'flair.splitter.SegtokSentenceSplitter'> or
        similar.
-    :param tagger_pos: A Flair POS tagger object. None uses the default tagger.
+    :param tagger_pos: A Flair POS tagger object. `None` uses the default
+       tagger, `False` skips POS tagging. 
        Default = None
     :type tagger_pos: None or a Flair POS tagger object of type
        <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
-    :param tagger_ner: A Flair NER tagger object. None uses the default tagger.
+    :param tagger_ner: A Flair NER tagger object. `None` uses the default
+       tagger, `False` skips NER tagging.
        Default = text_tagger_ner
     :type tagger_ner: None or a Flair NER tagger object of type
        <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
@@ -94,12 +96,12 @@ class Text:
         else:
             self._splitter = splitter
         
-        if not tagger_pos:
+        if tagger_pos == None:
             self._tagger_pos = get_pos_tagger()
         else:
             self._tagger_pos = tagger_pos
 
-        if not tagger_ner:
+        if tagger_ner == None:
             self._tagger_ner = get_ner_tagger()
         else:
             self._tagger_ner = tagger_ner
@@ -146,8 +148,11 @@ class Text:
         self._sentences = sentences
 
         ## analyse the sentences
-        self._tagger_pos.predict(self._sentences)
-        self._tagger_ner.predict(self._sentences)
+        if self._tagger_pos != False:
+            self._tagger_pos.predict(self._sentences)
+
+        if self._tagger_ner != False:
+            self._tagger_ner.predict(self._sentences)
 
         return True
 
