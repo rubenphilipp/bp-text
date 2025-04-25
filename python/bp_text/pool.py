@@ -8,7 +8,7 @@ provided by the BibTex entries.
 Created: 2025-04-25
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:10:56 Fri Apr 25 2025 CEST
+$$ Last modified:  23:25:08 Fri Apr 25 2025 CEST
 
 """
 
@@ -49,8 +49,6 @@ class PoolItem:
 
     They are meant to be placed into a :py:class:`Pool`.
 
-    :param key: A (unique) key. This is most likely a BibTeX citekey.
-    :type key: string
     :param meta: A dict holding metadata, most likely derived from a BibTeX
        entry.
     :type meta: dict
@@ -59,7 +57,7 @@ class PoolItem:
     :type data: list
     :param default_get_data_func: The default function to retrieve a data object
        via :py:func:`get_data` (cf. :py:func:`get_data`).
-       Default = (lambda ignore: 0), which causes `get_data` to always return
+       Default = `(lambda ignore: 0)`, which causes `get_data` to always return
        the first element of the `data`.
     :type default_get_data_func: A function which must be a function taking the
        `PoolItem` as its argument and must return an index to the element of
@@ -67,11 +65,9 @@ class PoolItem:
 
     """
     def __init__(self,
-                 key,
                  meta = {},
                  data = [],
                  default_get_data_func = (lambda ignore: 0)):
-        self.key = key
         self.meta = meta
         self.data = data
         ## the index of the next data object
@@ -79,20 +75,6 @@ class PoolItem:
         self._default_get_data_func = default_get_data_func
 
     ########################################
-
-    @property
-    def key(self):
-        """Getter/setter for the key. 
-        """
-        return self._key
-
-    @key.setter
-    def key(self, val):
-        if not isinstance(val, str):
-            print(f"PoolItem: ERROR '{val}' is not a valid key (must be "
-                  + "a string.")
-            return False
-        self._key = val
 
     @property
     def next_data(self):
@@ -179,12 +161,41 @@ class Pool:
     object.  Its main purpose is to facilitate interacting with a corpus of
     texts and the metadata provided by the BibTex entries.
 
-    
+    The `data` of the pool is a `dict` of :py:class:`PoolItem` objects.  The
+    keys of the `dict` are typically (e.g. when the `Pool` is created from a
+    :py:class:`BibTexDatabase`) citation keys.
+
+    :param data: A `dict` with an initial set of :py:class:`PoolItem` objects.
+    :type data: dict
 
     """
     def __init__(self,
-                 pool_items):
-        pass
+                 data = {}):
+        self.data = data
+
+
+    @param
+    def data(self):
+        """Getter/setter for the data of the `Pool`.
+
+        This is a `dict` with :py:class:`PoolItem` objects.  Keys are usually
+        citekeys. 
+        """
+        return self._data
+
+    @data.setter
+    def data(self, val):
+        if not (
+            isinstance(val, dict)
+            and all(x, PoolItem) for x in val.values()
+        ):
+            raise ValueError("Pool: data must be a dict. all values need "
+                             + "to be PoolItem instances.")
+
+        self._data = val
+
+    
+            
 
 ################################################################################
 ### EOF pool.py
