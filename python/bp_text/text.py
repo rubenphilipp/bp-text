@@ -8,7 +8,7 @@ be later used for analysis or text-production.
 Created: 2025-04-24
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  19:41:19 Fri Apr 25 2025 CEST
+$$ Last modified:  19:42:30 Fri Apr 25 2025 CEST
 
 """
 
@@ -41,7 +41,7 @@ LANG_SPACY_MODELS = {
 }
 
 #: Helper to cache the spacy modles
-@lru_cache(maxsize=5)  # adjust based on number of language models you use
+@lru_cache(maxsize=10)  # adjust based on number of language models you use
 def get_nlp(model_name: str):
     if model_name:
         try:
