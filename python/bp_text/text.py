@@ -8,10 +8,11 @@ be later used for analysis or text-production.
 Created: 2025-04-24
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  19:04:10 Fri Apr 25 2025 CEST
+$$ Last modified:  19:41:19 Fri Apr 25 2025 CEST
 
 """
 
+from functools import lru_cache
 import os
 
 import spacy
@@ -38,6 +39,22 @@ LANG_SPACY_MODELS = {
     'pl': 'pl_core_news_sm',
     'sv': 'sv_core_news_sm',
 }
+
+#: Helper to cache the spacy modles
+@lru_cache(maxsize=5)  # adjust based on number of language models you use
+def get_nlp(model_name: str):
+    if model_name:
+        try:
+            return spacy.load(model_name)
+        except OSError:
+            print(f"Model '{model_name}' not found. "
+                  + "Attempting to download...")
+            # download the model if it does not exist
+            subprocess.run(["python", "-m", "spacy", "download",
+                            model_name])
+            return spacy.load(model_name)
+    else:
+        return False
 
 
 ################################################################################
@@ -109,19 +126,12 @@ class Text:
         model_name = LANG_SPACY_MODELS.get(self._lang)
         
         ## perform analysis
-        if model_name:
-            try:
-                nlp = spacy.load(model_name)
-            except OSError:
-                # download the model if it does not exist
-                subprocess.run(["python", "-m", "spacy", "download",
-                                model_name])
-                nlp = spacy.load(model_name)
-        else:
+        nlp = get_nlp(model_name)
+        if nlp == False:
             print("Text.update(): ERROR. No spaCy model for language "
-                  + f"'{self._lang}' in LANG_SPACY_MODELS. ")
+              + f"'{self._lang}' in LANG_SPACY_MODELS. ")
             return False
-                
+        
         doc = nlp(self._text)
         self._doc = doc
 
