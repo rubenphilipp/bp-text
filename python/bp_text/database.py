@@ -5,7 +5,7 @@ from a BibTeX file (as database).
 Created: 2025-03-23
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  01:28:30 Sat Apr 26 2025 CEST
+$$ Last modified:  01:58:39 Sat Apr 26 2025 CEST
 """
 
 import abc
@@ -18,6 +18,7 @@ from . import utilities
 from . import __version__
 from . import txt
 from . import pdf
+from . import pool
 
 ################################################################################
 
@@ -275,7 +276,11 @@ class BibTexDatabase(Database):
         if cache:
             ## trailing slash
             cache = Path(cache)
-        
+
+        ## this is the (still) empty data list for the new Pool
+        pool_data = {}
+            
+        ## let's go...
         for key, val in self.entries.items():
             files = val.get("file")
             ## skip when no files are given
@@ -351,7 +356,33 @@ class BibTexDatabase(Database):
                         if verbose:
                             print(f"make_pool: Caching '{cachefile}'...")
                         utilities.write_pickle(fl_ob, cachefile)
-                    
+
+            ## just continue with item if at least one file has been processed
+            if len(files_ob) > 0:
+                new_meta = {}
+                if val.get("author"):
+                    new_meta["author"] = convert_latex_umlauts(
+                        val.get("author").value)
+                if val.get("title"):
+                    new_meta["title"] = convert_latex_umlauts(
+                        val.get("title").value)
+                if val.get("year"):
+                    new_meta["year"] = val.get("year").value
+                if val.get("keywords"):
+                    new_meta["keywords"] = val.get("keywords").value
+                if val.get("langid"):
+                    new_meta["langid"] = val.get("langid").value
+                if val.get("journal"):
+                    new_meta["journal"] = convert_latex_umlauts(
+                        val.get("journal").value)
+
+                pool_data[key] = pool.PoolItem(
+                    key = key,
+                    meta = new_meta,
+                    data = files_ob,
+                    default_get_data_func = default_get_data_func)
+                
+        return pool.Pool(data = pool_data)
 
         
 

@@ -8,7 +8,7 @@ provided by the BibTex entries.
 Created: 2025-04-25
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  00:05:30 Sat Apr 26 2025 CEST
+$$ Last modified:  01:56:37 Sat Apr 26 2025 CEST
 
 """
 
@@ -49,6 +49,8 @@ class PoolItem:
 
     They are meant to be placed into a :py:class:`Pool`.
 
+    :param key: A (unique) key. This is most likely a BibTeX citekey.
+    :type key: string
     :param meta: A dict holding metadata, most likely derived from a BibTeX
        entry.
     :type meta: dict
@@ -65,9 +67,11 @@ class PoolItem:
 
     """
     def __init__(self,
+                 key,
                  meta = {},
                  data = [],
                  default_get_data_func = None):
+        self.key = key
         self.meta = meta
         self.data = data
         ## the index of the next data object
@@ -76,6 +80,20 @@ class PoolItem:
 
     ########################################
 
+    @property
+    def key(self):
+        """Getter/setter for the key. 
+        """
+        return self._key
+    
+    @key.setter
+    def key(self, val):
+        if not isinstance(val, str):
+            print(f"PoolItem: ERROR '{val}' is not a valid key (must be "
+                  + "a string.")
+            return False
+        self._key = val
+    
     @property
     def next_data(self):
         """Getter/setter for the next_data id.  This is an index (zero-based)
