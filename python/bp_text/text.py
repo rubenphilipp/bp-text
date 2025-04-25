@@ -8,7 +8,7 @@ be later used for analysis or text-production.
 Created: 2025-04-24
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  19:42:30 Fri Apr 25 2025 CEST
+$$ Last modified:  23:40:51 Fri Apr 25 2025 CEST
 
 """
 
@@ -86,6 +86,12 @@ class Text:
         self._doc = None
         
         self.update()
+
+    def __call__(self):
+        """Calling the object returns the raw text instead of the annotated
+        `doc`.
+        """
+        return self.text
 
     @property
     def text(self):

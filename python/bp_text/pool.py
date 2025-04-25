@@ -8,7 +8,7 @@ provided by the BibTex entries.
 Created: 2025-04-25
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:27:45 Fri Apr 25 2025 CEST
+$$ Last modified:  23:30:24 Fri Apr 25 2025 CEST
 
 """
 
@@ -193,6 +193,12 @@ class Pool:
                              + "to be PoolItem instances.")
 
         self._data = val
+
+
+    def get(self, key):
+        """Get a py:class:`PoolItem` from the pool by its key. 
+        """
+        return self.data.get(key)
 
     
             

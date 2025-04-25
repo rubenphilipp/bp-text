@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  18:59:56 Fri Apr 25 2025 CEST
+$$ Last modified:  23:36:57 Fri Apr 25 2025 CEST
 """
 
 import os
@@ -496,6 +496,14 @@ class PdfFile:
             return sorted(langs.items(),
                           key=lambda item: item[1],
                           reverse=True)[0][0]
+
+    def get_page(self, page_index):
+        """Returns the `PdfPage` object for the page at index (zero-based).
+        """
+        if page_index < len(self.data):
+            return self.data[page_index]
+        else:
+            return False
 
     
 
