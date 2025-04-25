@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  14:31:06 Fri Apr 25 2025 CEST
+$$ Last modified:  14:59:46 Fri Apr 25 2025 CEST
 """
 
 import os
@@ -369,7 +369,13 @@ class PdfFile:
         """
         text = []
 
+        if self._verbose:
+            print(f"NO OCR: Processing {self._file}:")
+
         for i, page in enumerate(self.reader.pages):
+            if self._verbose:
+                print(f"NO OCR: Processing page {i+1}/"
+                      + f"{len(self.reader.pages)}...")
             page_text = page.extract_text()
             
             page_ob = PdfPage(lang = self.lang,
