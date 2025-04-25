@@ -78,7 +78,7 @@
 <span class="sd">Created: 2025-03-27</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  14:57:50 Fri Apr 25 2025 CEST</span>
+<span class="sd">$$ Last modified:  18:59:56 Fri Apr 25 2025 CEST</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -134,16 +134,6 @@
 <span class="sd">    :type lang: string</span>
 <span class="sd">    :param file: An optional (back-)reference to a PdfFile object.</span>
 <span class="sd">    :type file: A :py:class:`PdfFile` object.</span>
-<span class="sd">    :param tagger_pos: A Flair POS tagger object. `None` uses the default</span>
-<span class="sd">       tagger, `False` skips POS tagging. </span>
-<span class="sd">       Default = None</span>
-<span class="sd">    :type tagger_pos: None or a Flair POS tagger object of type</span>
-<span class="sd">       &lt;class &#39;flair.models.sequence_tagger_model.SequenceTagger&#39;&gt;.</span>
-<span class="sd">    :param tagger_ner: A Flair NER tagger object. `None` uses the default</span>
-<span class="sd">       tagger, `False` skips NER tagging.</span>
-<span class="sd">       Default = text_tagger_ner</span>
-<span class="sd">    :type tagger_ner: None or a Flair NER tagger object of type</span>
-<span class="sd">       &lt;class &#39;flair.models.sequence_tagger_model.SequenceTagger&#39;&gt;.</span>
 <span class="sd">    :param verbose: Print additional information during performance when True.</span>
 <span class="sd">       Default = False</span>
 <span class="sd">    :type verbose: boolean</span>
@@ -160,8 +150,6 @@
                  <span class="n">lang</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
                  <span class="c1">## can include a reference to a PdfFile object</span>
                  <span class="n">file</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">tagger_pos</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">tagger_ner</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -170,8 +158,6 @@
                                       <span class="n">data</span><span class="p">,</span>
                                       <span class="n">raw_text</span><span class="p">,</span>
                                       <span class="n">lang</span><span class="p">,</span>
-                                      <span class="n">tagger_pos</span><span class="p">,</span>
-                                      <span class="n">tagger_ner</span><span class="p">,</span>
                                       <span class="n">verbose</span><span class="p">)</span>
         <span class="c1">## call this again to perform tests</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="n">file</span>
@@ -291,16 +277,7 @@
 <span class="sd">    :param verbose: Print additional information during performance when True.</span>
 <span class="sd">       Default = False</span>
 <span class="sd">    :type verbose: boolean</span>
-<span class="sd">    :param tagger_pos: A Flair POS tagger object. `None` uses the default</span>
-<span class="sd">       tagger, `False` skips POS tagging. </span>
-<span class="sd">       Default = None</span>
-<span class="sd">    :type tagger_pos: None or a Flair POS tagger object of type</span>
-<span class="sd">       &lt;class &#39;flair.models.sequence_tagger_model.SequenceTagger&#39;&gt;.</span>
-<span class="sd">    :param tagger_ner: A Flair NER tagger object. `None` uses the default</span>
-<span class="sd">       tagger, `False` skips NER tagging.</span>
-<span class="sd">       Default = text_tagger_ner</span>
-<span class="sd">    :type tagger_ner: None or a Flair NER tagger object of type</span>
-<span class="sd">       &lt;class &#39;flair.models.sequence_tagger_model.SequenceTagger&#39;&gt;.</span>
+<span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="PdfFile.__init__">
 <a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfFile.__init__">[docs]</a>
@@ -311,9 +288,7 @@
                  <span class="n">fallback_to_ocr</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                  <span class="n">ocr_dpi</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
                  <span class="n">ocr_default_lang</span> <span class="o">=</span> <span class="s1">&#39;eng&#39;</span><span class="p">,</span>
-                 <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">tagger_pos</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">tagger_ner</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+                 <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="c1">## The filepath</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="n">file</span>
         <span class="c1">## a sha256 checksum for the file</span>
@@ -335,9 +310,6 @@
         <span class="c1">## The PDF text contents</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="o">=</span> <span class="n">verbose</span>
-        <span class="c1">## Taggers</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span> <span class="o">=</span> <span class="n">tagger_pos</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span> <span class="o">=</span> <span class="n">tagger_ner</span>
         <span class="c1">########################################</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
@@ -467,7 +439,7 @@
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">pages</span><span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NO OCR: Processing page </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/ &quot;</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NO OCR: Processing page </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/&quot;</span>
                       <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">pages</span><span class="p">)</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
             <span class="n">page_text</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">extract_text</span><span class="p">()</span>
             
@@ -476,9 +448,7 @@
                               <span class="n">data</span> <span class="o">=</span> <span class="n">page</span><span class="p">,</span>
                               <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="p">,</span>
                               <span class="n">page_num</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span>
-                              <span class="n">page_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_page_label</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
-                              <span class="n">tagger_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span><span class="p">,</span>
-                              <span class="n">tagger_ner</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span><span class="p">)</span>
+                              <span class="n">page_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_page_label</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
             <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">page_ob</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">text</span></div>
@@ -512,9 +482,7 @@
                                   <span class="n">page_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_page_label</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
                                   <span class="n">raw_text</span> <span class="o">=</span> <span class="n">page_text</span><span class="p">,</span>
                                   <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="p">,</span>
-                                  <span class="n">lang</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="p">,</span>
-                                  <span class="n">tagger_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span><span class="p">,</span>
-                                  <span class="n">tagger_ner</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span><span class="p">)</span>
+                                  <span class="n">lang</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="p">)</span>
                 <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">page_ob</span><span class="p">)</span>
                 
             <span class="k">return</span> <span class="n">text</span>

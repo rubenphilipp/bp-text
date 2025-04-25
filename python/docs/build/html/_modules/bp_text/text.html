@@ -82,52 +82,55 @@
 <span class="sd">Created: 2025-04-24</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  12:34:57 Fri Apr 25 2025 CEST</span>
+<span class="sd">$$ Last modified:  19:42:30 Fri Apr 25 2025 CEST</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">flair.tokenization</span><span class="w"> </span><span class="kn">import</span> <span class="n">SegtokTokenizer</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">flair.splitter</span><span class="w"> </span><span class="kn">import</span> <span class="n">SegtokSentenceSplitter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">flair.nn</span><span class="w"> </span><span class="kn">import</span> <span class="n">Classifier</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">language</span>
+
+<span class="c1"># from flair.tokenization import SegtokTokenizer</span>
+<span class="c1"># from flair.splitter import SegtokSentenceSplitter</span>
+<span class="c1"># from flair.nn import Classifier</span>
 
 <span class="c1">################################################################################</span>
-<span class="c1">### Flair NLP objects</span>
-<span class="c1">### NB: loading might take a while here</span>
+<span class="c1">### spacy</span>
 
-<span class="c1"># Globals, but uninitialized</span>
-<span class="n">_text_splitter</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">_text_tagger_pos</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">_text_tagger_ner</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1">#: the default spacy models for a given language</span>
+<span class="n">LANG_SPACY_MODELS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;en&#39;</span><span class="p">:</span> <span class="s1">&#39;en_core_web_sm&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;de&#39;</span><span class="p">:</span> <span class="s1">&#39;de_core_news_sm&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;fr&#39;</span><span class="p">:</span> <span class="s1">&#39;fr_core_news_sm&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;es&#39;</span><span class="p">:</span> <span class="s1">&#39;es_core_news_sm&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;it&#39;</span><span class="p">:</span> <span class="s1">&#39;it_core_news_sm&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;pt&#39;</span><span class="p">:</span> <span class="s1">&#39;pt_core_news_sm&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;nl&#39;</span><span class="p">:</span> <span class="s1">&#39;nl_core_news_sm&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;pl&#39;</span><span class="p">:</span> <span class="s1">&#39;pl_core_news_sm&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sv&#39;</span><span class="p">:</span> <span class="s1">&#39;sv_core_news_sm&#39;</span><span class="p">,</span>
+<span class="p">}</span>
 
-<div class="viewcode-block" id="get_text_splitter">
-<a class="viewcode-back" href="../../generated/bp_text.text.html#bp_text.text.get_text_splitter">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_text_splitter</span><span class="p">():</span>
-    <span class="k">global</span> <span class="n">_text_splitter</span>
-    <span class="k">if</span> <span class="n">_text_splitter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">_text_splitter</span> <span class="o">=</span> <span class="n">SegtokSentenceSplitter</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">_text_splitter</span></div>
-
-
-<div class="viewcode-block" id="get_pos_tagger">
-<a class="viewcode-back" href="../../generated/bp_text.text.html#bp_text.text.get_pos_tagger">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_pos_tagger</span><span class="p">():</span>
-    <span class="k">global</span> <span class="n">_text_tagger_pos</span>
-    <span class="k">if</span> <span class="n">_text_tagger_pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initializing POS tagger...&quot;</span><span class="p">)</span>
-        <span class="n">_text_tagger_pos</span> <span class="o">=</span> <span class="n">Classifier</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;pos-multi&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">_text_tagger_pos</span></div>
-
-
-<div class="viewcode-block" id="get_ner_tagger">
-<a class="viewcode-back" href="../../generated/bp_text.text.html#bp_text.text.get_ner_tagger">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_ner_tagger</span><span class="p">():</span>
-    <span class="k">global</span> <span class="n">_text_tagger_ner</span>
-    <span class="k">if</span> <span class="n">_text_tagger_ner</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initializing NER tagger...&quot;</span><span class="p">)</span>
-        <span class="n">_text_tagger_ner</span> <span class="o">=</span> <span class="n">Classifier</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;ner-large&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">_text_tagger_ner</span></div>
+<span class="c1">#: Helper to cache the spacy modles</span>
+<div class="viewcode-block" id="get_nlp">
+<a class="viewcode-back" href="../../generated/bp_text.text.html#bp_text.text.get_nlp">[docs]</a>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># adjust based on number of language models you use</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_nlp</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">model_name</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model &#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">&#39; not found. &quot;</span>
+                  <span class="o">+</span> <span class="s2">&quot;Attempting to download...&quot;</span><span class="p">)</span>
+            <span class="c1"># download the model if it does not exist</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;python&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;spacy&quot;</span><span class="p">,</span> <span class="s2">&quot;download&quot;</span><span class="p">,</span>
+                            <span class="n">model_name</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
 
 
@@ -136,63 +139,33 @@
 <div class="viewcode-block" id="Text">
 <a class="viewcode-back" href="../../generated/bp_text.text.html#bp_text.text.Text">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Text</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a class implementation of a Text object.</span>
-<span class="sd">    A text holds a natural language text as a string and additionally contains</span>
-<span class="sd">    segmented and analysed data derived from the text.  The text is tokenized</span>
-<span class="sd">    into sentences (using Flair) and analyzed e.g. for parts of speech or</span>
-<span class="sd">    entities.  By default, Text uses Flair&#39;s most versatile models (e.g.</span>
-<span class="sd">    &#39;pos-multi&#39; for POS tagging and &#39;ner-large&#39; for NER tagging).  While</span>
-<span class="sd">    introducing some overhead on loading, this comes with the advantage of</span>
-<span class="sd">    being able to more precisely analyse multilingual text.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a class implementation of a Text object.  A text holds a natural</span>
+<span class="sd">    language text as a string and additionally contains segmented and analysed</span>
+<span class="sd">    data derived from the text.  The text is tokenized (using spaCy) and</span>
+<span class="sd">    analyzed e.g. for parts of speech or entities.  By default, Text uses</span>
+<span class="sd">    Flair&#39;s most versatile models (e.g.  &#39;pos-multi&#39; for POS tagging and</span>
+<span class="sd">    &#39;ner-large&#39; for NER tagging).  While introducing some overhead on loading,</span>
+<span class="sd">    this comes with the advantage of being able to more precisely analyse</span>
+<span class="sd">    multilingual text.</span>
+
+<span class="sd">    Note: The `doc` contains the actual segmented text. </span>
 
 <span class="sd">    :param text: The text to be used as a basis for the analysis.</span>
 <span class="sd">    :type text: string</span>
 <span class="sd">    :param lang: The primary language of the text as a ISO 639-1 code.</span>
 <span class="sd">       Default = &quot;en&quot;</span>
 <span class="sd">    :type lang: string</span>
-<span class="sd">    :param splitter: A Flair sentence splitter object. None uses the default</span>
-<span class="sd">       splitter. </span>
-<span class="sd">       Default = None</span>
-<span class="sd">    :type splitter: None or &lt;class &#39;flair.splitter.SegtokSentenceSplitter&#39;&gt; or</span>
-<span class="sd">       similar.</span>
-<span class="sd">    :param tagger_pos: A Flair POS tagger object. `None` uses the default</span>
-<span class="sd">       tagger, `False` skips POS tagging. </span>
-<span class="sd">       Default = None</span>
-<span class="sd">    :type tagger_pos: None or a Flair POS tagger object of type</span>
-<span class="sd">       &lt;class &#39;flair.models.sequence_tagger_model.SequenceTagger&#39;&gt;.</span>
-<span class="sd">    :param tagger_ner: A Flair NER tagger object. `None` uses the default</span>
-<span class="sd">       tagger, `False` skips NER tagging.</span>
-<span class="sd">       Default = text_tagger_ner</span>
-<span class="sd">    :type tagger_ner: None or a Flair NER tagger object of type</span>
-<span class="sd">       &lt;class &#39;flair.models.sequence_tagger_model.SequenceTagger&#39;&gt;.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="Text.__init__">
 <a class="viewcode-back" href="../../generated/bp_text.text.html#bp_text.text.Text.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-                 <span class="n">lang</span> <span class="o">=</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>
-                 <span class="n">splitter</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">tagger_pos</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">tagger_ner</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+                 <span class="n">lang</span> <span class="o">=</span> <span class="s2">&quot;en&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="n">text</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lang</span> <span class="o">=</span> <span class="n">lang</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_sentences</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span> <span class="o">=</span> <span class="kc">None</span>
         
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">splitter</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_splitter</span> <span class="o">=</span> <span class="n">get_text_splitter</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_splitter</span> <span class="o">=</span> <span class="n">splitter</span>
-        
-        <span class="k">if</span> <span class="n">tagger_pos</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span> <span class="o">=</span> <span class="n">get_pos_tagger</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span> <span class="o">=</span> <span class="n">tagger_pos</span>
-
-        <span class="k">if</span> <span class="n">tagger_ner</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span> <span class="o">=</span> <span class="n">get_ner_tagger</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span> <span class="o">=</span> <span class="n">tagger_ner</span>
-            
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 
@@ -214,11 +187,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">sentences</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter for the sentences (i.e. the tokenized and analysed elements</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">doc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter for the doc (i.e. the tokenized and analysed elements</span>
 <span class="sd">        of the text). Read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sentences</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span>
     
 
 <div class="viewcode-block" id="Text.update">
@@ -233,20 +206,21 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: Text.text is not a string.&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="c1">## split sentences</span>
-        <span class="n">sentences</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_splitter</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_text</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_sentences</span> <span class="o">=</span> <span class="n">sentences</span>
-
-        <span class="c1">## analyse the sentences</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span> <span class="o">!=</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sentences</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span> <span class="o">!=</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sentences</span><span class="p">)</span>
+        <span class="c1">## load proper model</span>
+        <span class="n">model_name</span> <span class="o">=</span> <span class="n">LANG_SPACY_MODELS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lang</span><span class="p">)</span>
+        
+        <span class="c1">## perform analysis</span>
+        <span class="n">nlp</span> <span class="o">=</span> <span class="n">get_nlp</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nlp</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Text.update(): ERROR. No spaCy model for language &quot;</span>
+              <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_lang</span><span class="si">}</span><span class="s2">&#39; in LANG_SPACY_MODELS. &quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span> <span class="o">=</span> <span class="n">doc</span>
 
         <span class="k">return</span> <span class="kc">True</span></div>
 </div>
-
 
 
 
