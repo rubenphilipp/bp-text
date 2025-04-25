@@ -82,7 +82,7 @@
 <span class="sd">Created: 2025-04-24</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  00:17:04 Fri Apr 25 2025 CEST</span>
+<span class="sd">$$ Last modified:  12:34:57 Fri Apr 25 2025 CEST</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -155,16 +155,16 @@
 <span class="sd">       Default = None</span>
 <span class="sd">    :type splitter: None or &lt;class &#39;flair.splitter.SegtokSentenceSplitter&#39;&gt; or</span>
 <span class="sd">       similar.</span>
-<span class="sd">    :param tagger_pos: A Flair POS tagger object. None uses the default tagger.</span>
+<span class="sd">    :param tagger_pos: A Flair POS tagger object. `None` uses the default</span>
+<span class="sd">       tagger, `False` skips POS tagging. </span>
 <span class="sd">       Default = None</span>
 <span class="sd">    :type tagger_pos: None or a Flair POS tagger object of type</span>
 <span class="sd">       &lt;class &#39;flair.models.sequence_tagger_model.SequenceTagger&#39;&gt;.</span>
-<span class="sd">    :param tagger_ner: A Flair NER tagger object. None uses the default tagger.</span>
+<span class="sd">    :param tagger_ner: A Flair NER tagger object. `None` uses the default</span>
+<span class="sd">       tagger, `False` skips NER tagging.</span>
 <span class="sd">       Default = text_tagger_ner</span>
 <span class="sd">    :type tagger_ner: None or a Flair NER tagger object of type</span>
 <span class="sd">       &lt;class &#39;flair.models.sequence_tagger_model.SequenceTagger&#39;&gt;.</span>
-<span class="sd">    :param verbose: When True, print additional info. Default = True</span>
-<span class="sd">    :type verbose: boolean</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="Text.__init__">
 <a class="viewcode-back" href="../../generated/bp_text.text.html#bp_text.text.Text.__init__">[docs]</a>
@@ -173,8 +173,7 @@
                  <span class="n">lang</span> <span class="o">=</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>
                  <span class="n">splitter</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">tagger_pos</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">tagger_ner</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+                 <span class="n">tagger_ner</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="n">text</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lang</span> <span class="o">=</span> <span class="n">lang</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sentences</span> <span class="o">=</span> <span class="kc">None</span>
@@ -184,17 +183,16 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_splitter</span> <span class="o">=</span> <span class="n">splitter</span>
         
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">tagger_pos</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tagger_pos</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span> <span class="o">=</span> <span class="n">get_pos_tagger</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span> <span class="o">=</span> <span class="n">tagger_pos</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">tagger_ner</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tagger_ner</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span> <span class="o">=</span> <span class="n">get_ner_tagger</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span> <span class="o">=</span> <span class="n">tagger_ner</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+            
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 
@@ -221,16 +219,7 @@
 <span class="sd">        of the text). Read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sentences</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Setter/getter for verbose (bool).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span>
-
-    <span class="nd">@verbose</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="o">=</span> <span class="n">val</span>
+    
 
 <div class="viewcode-block" id="Text.update">
 <a class="viewcode-back" href="../../generated/bp_text.text.html#bp_text.text.Text.update">[docs]</a>
@@ -249,13 +238,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_sentences</span> <span class="o">=</span> <span class="n">sentences</span>
 
         <span class="c1">## analyse the sentences</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Text: predicting POS...&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sentences</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span> <span class="o">!=</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sentences</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Text: predicting NER...&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sentences</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span> <span class="o">!=</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sentences</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">True</span></div>
 </div>

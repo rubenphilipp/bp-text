@@ -78,7 +78,7 @@
 <span class="sd">Created: 2025-03-29</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  00:17:24 Fri Apr 25 2025 CEST</span>
+<span class="sd">$$ Last modified:  12:37:50 Fri Apr 25 2025 CEST</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -97,7 +97,9 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">TxtFile</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementation of the text-file (txt) class.</span>
 
-<span class="sd">    The `text` attribute holds a text object for the text-file. </span>
+<span class="sd">    Note: While the `data` attribute holds the raw text read from the file, the</span>
+<span class="sd">    `text` attribute holds a :py:class:`Text` object generated from the contents</span>
+<span class="sd">    of the source file.  This object is already segmented and tokenized.</span>
 
 <span class="sd">    Example::</span>
 
@@ -114,9 +116,17 @@
 <span class="sd">    :param data: The content of the text file. This will be automatically set</span>
 <span class="sd">        by reading the data from the file(-path).</span>
 <span class="sd">    :type data: string</span>
-<span class="sd">    :param verbose: When True, print additional info while processing.</span>
-<span class="sd">       Default = True</span>
-<span class="sd">    :type verbose: boolean</span>
+<span class="sd">    :param tagger_pos: A Flair POS tagger object. `None` uses the default</span>
+<span class="sd">       tagger, `False` skips POS tagging. </span>
+<span class="sd">       Default = None</span>
+<span class="sd">    :type tagger_pos: None or a Flair POS tagger object of type</span>
+<span class="sd">       &lt;class &#39;flair.models.sequence_tagger_model.SequenceTagger&#39;&gt;.</span>
+<span class="sd">    :param tagger_ner: A Flair NER tagger object. `None` uses the default</span>
+<span class="sd">       tagger, `False` skips NER tagging.</span>
+<span class="sd">       Default = text_tagger_ner</span>
+<span class="sd">    :type tagger_ner: None or a Flair NER tagger object of type</span>
+<span class="sd">       &lt;class &#39;flair.models.sequence_tagger_model.SequenceTagger&#39;&gt;.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="TxtFile.__init__">
 <a class="viewcode-back" href="../../generated/bp_text.txt.html#bp_text.txt.TxtFile.__init__">[docs]</a>
@@ -124,15 +134,17 @@
                  <span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">lang</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
                  <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+                 <span class="n">tagger_pos</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">tagger_ner</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="n">file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lang</span> <span class="o">=</span> <span class="n">lang</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="c1"># this will be a Text object. empty for now</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span> <span class="o">=</span> <span class="n">tagger_pos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span> <span class="o">=</span> <span class="n">tagger_ner</span>
         <span class="c1">## a sha256 checksum for the file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_file_checksum</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="c1"># empty text at start</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 
@@ -163,7 +175,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter/setter for the data (i.e. the txtfile content).</span>
 
-<span class="sd">        Setting the data also updates the text attribute. </span>
+<span class="sd">        Setting the data (i.e. the raw text) will also update the instace and</span>
+<span class="sd">        re-initializes the text attribute by re-instantiating a Text-object. </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
 
@@ -178,20 +191,12 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter for the text (i.e. a tokenized and analyzed text object,</span>
-<span class="sd">        cf. :py:class:`bp_text.text.Text`). </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter for the Text (read-only).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text</span>
+    
 
-    <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Setter/getter for verbose (bool).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span>
-
-    <span class="nd">@verbose</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="o">=</span> <span class="n">val</span>
+    
 
     <span class="c1">########################################</span>
 
@@ -215,8 +220,10 @@
         <span class="c1">## set language</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lang</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_primary_lang</span><span class="p">()</span>
 
-        <span class="c1">## generate text object</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">)</span>
+        <span class="c1">## create text object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="p">,</span>
+                               <span class="n">tagger_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span><span class="p">,</span>
+                               <span class="n">tagger_ner</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span><span class="p">)</span>
         
         <span class="k">return</span> <span class="bp">self</span></div>
 
