@@ -4,7 +4,7 @@ This module implements the page class.
 Created: 2025-03-28
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  16:58:40 Wed Apr 23 2025 CEST
+$$ Last modified:  14:00:11 Fri Apr 25 2025 CEST
 """
 
 from abc import ABC, abstractmethod
@@ -34,7 +34,7 @@ class Page(ABC):
     :param text: Holds the actual text of the page.
     :type text: string
     :param lang: The language code of the primary language in the alpha3/ISO
-        639-2 form.
+        639-1 form.
     :type lang: string
     """
     def __init__(self,
