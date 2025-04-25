@@ -8,7 +8,7 @@ provided by the BibTex entries.
 Created: 2025-04-25
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:00:56 Fri Apr 25 2025 CEST
+$$ Last modified:  23:10:56 Fri Apr 25 2025 CEST
 
 """
 
@@ -52,18 +52,18 @@ class PoolItem:
     :param key: A (unique) key. This is most likely a BibTeX citekey.
     :type key: string
     :param meta: A dict holding metadata, most likely derived from a BibTeX
-    entry.
+       entry.
     :type meta: dict
     :param data: A list holding one or more text holding objects (e.g. a
-    :py:class:`PdfFile`).
+       :py:class:`PdfFile`).
     :type data: list
     :param default_get_data_func: The default function to retrieve a data object
        via :py:func:`get_data` (cf. :py:func:`get_data`).
        Default = (lambda ignore: 0), which causes `get_data` to always return
        the first element of the `data`.
     :type default_get_data_func: A function which must be a function taking the
-            `PoolItem` as its argument and must return an index to the element
-            of `data` which should be retrieved. 
+       `PoolItem` as its argument and must return an index to the element of
+       `data` which should be retrieved.
 
     """
     def __init__(self,
@@ -150,6 +150,7 @@ class PoolItem:
 
            # this cycles through the data by using the `cycle_data` function
            pitm.get_data(cycle_data)
+        
 
         :param func: A function which must be a function taking the `PoolItem`
             as its argument and must return an index to the element of `data`

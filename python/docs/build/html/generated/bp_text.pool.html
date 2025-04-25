@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bp_text.pool &mdash; bp_text 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Notes" href="../notes.html" />
+    <link rel="prev" title="bp_text.txt" href="bp_text.txt.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            bp_text
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#modules">Modules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="bp_text.utilities.html">bp_text.utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bp_text.language.html">bp_text.language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bp_text.database.html">bp_text.database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bp_text.text.html">bp_text.text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bp_text.page.html">bp_text.page</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bp_text.pdf.html">bp_text.pdf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bp_text.txt.html">bp_text.txt</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">bp_text.pool</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bp_text.pool.Pool"><code class="docutils literal notranslate"><span class="pre">Pool</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bp_text.pool.PoolItem"><code class="docutils literal notranslate"><span class="pre">PoolItem</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bp_text.pool.cycle_data"><code class="docutils literal notranslate"><span class="pre">cycle_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bp_text.pool.random_data"><code class="docutils literal notranslate"><span class="pre">random_data()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../notes.html">Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">bp_text</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API</a></li>
+      <li class="breadcrumb-item active">bp_text.pool</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/generated/bp_text.pool.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-bp_text.pool">
+<span id="bp-text-pool"></span><h1>bp_text.pool<a class="headerlink" href="#module-bp_text.pool" title="Link to this heading"></a></h1>
+<p>This module implements functionality for a (text) pool.</p>
+<p>A text pool is a collection of annotated/tokenized, text-holding objects (e.g.
+PdfFiles, TxtFiles) and can be generated from a BibTexDatabase object.  Its main
+purpose is to facilitate interacting with a corpus of texts and the metadata
+provided by the BibTex entries.</p>
+<p>Created: 2025-04-25
+Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
+<p>$$ Last modified:  23:10:56 Fri Apr 25 2025 CEST</p>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.pool.cycle_data" title="bp_text.pool.cycle_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cycle_data</span></code></a>(ob)</p></td>
+<td><p>This data getter function returns the next data item index and also sets the next item index to return.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bp_text.pool.random_data" title="bp_text.pool.random_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random_data</span></code></a>(ob)</p></td>
+<td><p>This data getter function returns a random data item index.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.pool.Pool" title="bp_text.pool.Pool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Pool</span></code></a>(pool_items)</p></td>
+<td><p>Implementation of the Pool class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bp_text.pool.PoolItem" title="bp_text.pool.PoolItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PoolItem</span></code></a>(key[, meta, data, ...])</p></td>
+<td><p>This class implements a PoolItem.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="bp_text.pool.Pool">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.pool.</span></span><span class="sig-name descname"><span class="pre">Pool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pool_items</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#Pool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.Pool" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Implementation of the Pool class.</p>
+<p>A (text) Pool is a collection of annotated/tokenized, text-holding objects
+(e.g.  PdfFiles, TxtFiles) and can be generated from a BibTexDatabase
+object.  Its main purpose is to facilitate interacting with a corpus of
+texts and the metadata provided by the BibTex entries.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bp_text.pool.Pool.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pool_items</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#Pool.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.Pool.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bp_text.pool.PoolItem">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.pool.</span></span><span class="sig-name descname"><span class="pre">PoolItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta={}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data=[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_get_data_func=&lt;function</span> <span class="pre">PoolItem.&lt;lambda&gt;&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#PoolItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.PoolItem" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class implements a PoolItem.</p>
+<p>PoolItems are containers for metadata (e.g. retrieved from a BibTeX entry in
+a BibTexDatabase) and text holding objects (in the <cite>data</cite> attr),
+e.g. <code class="xref py py-class docutils literal notranslate"><span class="pre">PdfFile</span></code> objects.</p>
+<p>They are meant to be placed into a <a class="reference internal" href="#bp_text.pool.Pool" title="bp_text.pool.Pool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pool</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>string</em>) – A (unique) key. This is most likely a BibTeX citekey.</p></li>
+<li><p><strong>meta</strong> (<em>dict</em>) – A dict holding metadata, most likely derived from a BibTeX
+entry.</p></li>
+<li><p><strong>data</strong> (<em>list</em>) – A list holding one or more text holding objects (e.g. a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PdfFile</span></code>).</p></li>
+<li><p><strong>default_get_data_func</strong> (A function which must be a function taking the
+<cite>PoolItem</cite> as its argument and must return an index to the element of
+<cite>data</cite> which should be retrieved.) – The default function to retrieve a data object
+via <a class="reference internal" href="#bp_text.pool.PoolItem.get_data" title="bp_text.pool.PoolItem.get_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_data()</span></code></a> (cf. <a class="reference internal" href="#bp_text.pool.PoolItem.get_data" title="bp_text.pool.PoolItem.get_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_data()</span></code></a>).
+Default = (lambda ignore: 0), which causes <cite>get_data</cite> to always return
+the first element of the <cite>data</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="bp_text.pool.PoolItem.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta={}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data=[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_get_data_func=&lt;function</span> <span class="pre">PoolItem.&lt;lambda&gt;&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#PoolItem.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.PoolItem.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bp_text.pool.PoolItem.data">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#bp_text.pool.PoolItem.data" title="Link to this definition"></a></dt>
+<dd><p>Getter/setter for the data list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bp_text.pool.PoolItem.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#PoolItem.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.PoolItem.get_data" title="Link to this definition"></a></dt>
+<dd><p>This function returns a single data object from the data list instead
+of the data list itself.  The <cite>func</cite> argument – which must be a
+function taking the <cite>PoolItem</cite> as its argument and must return an index
+to the element of <cite>data</cite> which should be retrieved – specifies which
+element should be returned.  By default, it always returns the first
+item of the <cite>data</cite> list.  There are two more functions specified, which
+could also be used: <a class="reference internal" href="#bp_text.pool.random_data" title="bp_text.pool.random_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">random_data()</span></code></a> and <a class="reference internal" href="#bp_text.pool.cycle_data" title="bp_text.pool.cycle_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">cycle_data()</span></code></a>.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># this cycles through the data by using the `cycle_data` function</span>
+<span class="n">pitm</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">cycle_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>func</strong> (<em>function</em>) – A function which must be a function taking the <cite>PoolItem</cite>
+as its argument and must return an index to the element of <cite>data</cite>
+which should be retrieved.  Default = None which falls back to the
+<cite>self._default_get_data_func</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bp_text.pool.PoolItem.key">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">key</span></span><a class="headerlink" href="#bp_text.pool.PoolItem.key" title="Link to this definition"></a></dt>
+<dd><p>Getter/setter for the key.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bp_text.pool.PoolItem.meta">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">meta</span></span><a class="headerlink" href="#bp_text.pool.PoolItem.meta" title="Link to this definition"></a></dt>
+<dd><p>Getter/setter for the meta dict.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bp_text.pool.PoolItem.next_data">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">next_data</span></span><a class="headerlink" href="#bp_text.pool.PoolItem.next_data" title="Link to this definition"></a></dt>
+<dd><p>Getter/setter for the next_data id.  This is an index (zero-based)
+to the next element that should be retrieved from the data list when
+using <a class="reference internal" href="#bp_text.pool.PoolItem.get_data" title="bp_text.pool.PoolItem.get_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_data()</span></code></a>.  (int)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bp_text.pool.cycle_data">
+<span class="sig-prename descclassname"><span class="pre">bp_text.pool.</span></span><span class="sig-name descname"><span class="pre">cycle_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ob</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#cycle_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.cycle_data" title="Link to this definition"></a></dt>
+<dd><p>This data getter function returns the next data item index and also sets
+the next item index to return.  See <a class="reference internal" href="#bp_text.pool.PoolItem.get_data" title="bp_text.pool.PoolItem.get_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">PoolItem.get_data()</span></code></a> for
+details.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bp_text.pool.random_data">
+<span class="sig-prename descclassname"><span class="pre">bp_text.pool.</span></span><span class="sig-name descname"><span class="pre">random_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ob</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#random_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.random_data" title="Link to this definition"></a></dt>
+<dd><p>This data getter function returns a random data item index.  See
+<a class="reference internal" href="#bp_text.pool.PoolItem.get_data" title="bp_text.pool.PoolItem.get_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">PoolItem.get_data()</span></code></a> for details.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="bp_text.txt.html" class="btn btn-neutral float-left" title="bp_text.txt" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../notes.html" class="btn btn-neutral float-right" title="Notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ruben Philipp.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
