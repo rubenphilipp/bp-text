@@ -4,7 +4,7 @@ This module implements functionality for TXT files.
 Created: 2025-03-29
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  12:37:50 Fri Apr 25 2025 CEST
+$$ Last modified:  18:56:16 Fri Apr 25 2025 CEST
 """
 
 import os
@@ -40,31 +40,17 @@ class TxtFile:
     :param data: The content of the text file. This will be automatically set
         by reading the data from the file(-path).
     :type data: string
-    :param tagger_pos: A Flair POS tagger object. `None` uses the default
-       tagger, `False` skips POS tagging. 
-       Default = None
-    :type tagger_pos: None or a Flair POS tagger object of type
-       <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
-    :param tagger_ner: A Flair NER tagger object. `None` uses the default
-       tagger, `False` skips NER tagging.
-       Default = text_tagger_ner
-    :type tagger_ner: None or a Flair NER tagger object of type
-       <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
 
     """
     def __init__(self,
                  file: str,
                  lang = "",
-                 data = None,
-                 tagger_pos = None,
-                 tagger_ner = None):
+                 data = None):
         self._file = file
         self._lang = lang
         self._data = data
         # this will be a Text object. empty for now
         self._text = None
-        self._tagger_pos = tagger_pos
-        self._tagger_ner = tagger_ner
         ## a sha256 checksum for the file
         self._file_checksum = None
         self.update()
@@ -140,9 +126,7 @@ class TxtFile:
         self.lang = self.get_primary_lang()
 
         ## create text object
-        self._text = text.Text(self._data, lang=self.lang,
-                               tagger_pos = self._tagger_pos,
-                               tagger_ner = self._tagger_ner)
+        self._text = text.Text(self._data, lang=self.lang)
         
         return self
 

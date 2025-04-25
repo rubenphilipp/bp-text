@@ -4,7 +4,7 @@ This module contains functionality dealing with languages (e.g. detection).
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  20:45:39 Thu Apr 24 2025 CEST
+$$ Last modified:  18:46:16 Fri Apr 25 2025 CEST
 """
 
 from lingua import Language, LanguageDetectorBuilder
@@ -15,18 +15,19 @@ import langcodes
 ## globals
 ## the default languages for detection
 #: The default languages used by the detection algorithm.
-default_languages = [Language.ENGLISH, Language.FRENCH,
-             Language.GERMAN, Language.SPANISH]
+DEFAULT_LANGUAGES = [Language.ENGLISH, Language.GERMAN, Language.FRENCH,
+                     Language.SPANISH, Language.ITALIAN, Language.DUTCH,
+                     Language.PORTUGUESE, Language.POLISH, Language.SWEDISH]
 
 class LanguageDetector:
     """A language detector.
 
     :param languages: A list containing all languages (cf. `lingua.Language`)
-        to consider. Default = :any:`default_languages`
+        to consider. Default = :any:`DEFAULT_LANGUAGES`
     :type languages: list of `lingua.Language` objects. 
     """
     def __init__(self,
-                 languages = default_languages):
+                 languages = DEFAULT_LANGUAGES):
         self._languages = languages
         self._detector = None
         ## init

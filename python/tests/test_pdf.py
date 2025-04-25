@@ -13,12 +13,11 @@ class TestPdf(unittest.TestCase):
         Use this to initialize any objects or data needed for testing.
         """
         self.pdf1 = pdf.PdfFile(os.path.join(DATA_DIR, "bajohr2024a_s.pdf"),
-                                tagger_ner=False)
+                                verbose=True)
         ## contains roman numerals on some pages
         self.pdf2 = pdf.PdfFile(
             os.path.join(DATA_DIR, "Infrastructure_Aesthetics_2024.pdf"),
-            tagger_pos = False,
-            tagger_ner = False)
+            verbose=True)
         pass
 
     def test_get_lang(self):
@@ -32,8 +31,7 @@ class TestPdf(unittest.TestCase):
 
     def test_no_auto_extract(self):
         result = pdf.PdfFile(os.path.join(DATA_DIR, "bajohr2024a_s.pdf"),
-                             auto_extract = False,
-                             tagger_ner = False)
+                             auto_extract = False, verbose=True)
         self.assertEqual(isinstance(result, pdf.PdfFile), True)
         
     def text_page_labels(self):

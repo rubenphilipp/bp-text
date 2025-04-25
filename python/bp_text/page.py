@@ -4,7 +4,7 @@ This module implements the page class.
 Created: 2025-03-28
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  14:33:01 Fri Apr 25 2025 CEST
+$$ Last modified:  19:00:29 Fri Apr 25 2025 CEST
 """
 
 from abc import ABC, abstractmethod
@@ -41,16 +41,6 @@ class Page(ABC):
     :param lang: The language code of the primary language in the alpha3/ISO
         639-1 form.
     :type lang: string
-    :param tagger_pos: A Flair POS tagger object. `None` uses the default
-       tagger, `False` skips POS tagging. 
-       Default = None
-    :type tagger_pos: None or a Flair POS tagger object of type
-       <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
-    :param tagger_ner: A Flair NER tagger object. `None` uses the default
-       tagger, `False` skips NER tagging.
-       Default = text_tagger_ner
-    :type tagger_ner: None or a Flair NER tagger object of type
-       <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
     :param verbose: Print additional information during performance when True.
        Default = False
     :type verbose: boolean
@@ -62,8 +52,6 @@ class Page(ABC):
                  data = None,
                  raw_text = "",
                  lang = "",
-                 tagger_pos = None,
-                 tagger_ner = None,
                  verbose = False):
         ## the page number / index
         self._page_num = page_num
@@ -76,8 +64,6 @@ class Page(ABC):
         self._data = data
         ## the slot for the Text object (empty for now)
         self._text = None
-        self._tagger_pos = tagger_pos
-        self._tagger_ner = tagger_ner
         ## the raw text
         self._raw_text = raw_text
         ## the primary language of the page's content
@@ -162,9 +148,7 @@ class Page(ABC):
         # create the text object
         if self._verbose:
             print("Page.update(): Initializing text object. ")
-        self._text = text.Text(self._raw_text, lang=self.lang,
-                               tagger_pos = self._tagger_pos,
-                               tagger_ner = self._tagger_ner)
+        self._text = text.Text(self._raw_text, lang=self.lang)
 
     def detect_lang(self, set_lang = True):
         """Detect the primary language of text in the page.

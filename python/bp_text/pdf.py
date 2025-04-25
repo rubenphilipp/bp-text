@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  14:59:46 Fri Apr 25 2025 CEST
+$$ Last modified:  18:59:56 Fri Apr 25 2025 CEST
 """
 
 import os
@@ -58,16 +58,6 @@ class PdfPage(Page):
     :type lang: string
     :param file: An optional (back-)reference to a PdfFile object.
     :type file: A :py:class:`PdfFile` object.
-    :param tagger_pos: A Flair POS tagger object. `None` uses the default
-       tagger, `False` skips POS tagging. 
-       Default = None
-    :type tagger_pos: None or a Flair POS tagger object of type
-       <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
-    :param tagger_ner: A Flair NER tagger object. `None` uses the default
-       tagger, `False` skips NER tagging.
-       Default = text_tagger_ner
-    :type tagger_ner: None or a Flair NER tagger object of type
-       <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
     :param verbose: Print additional information during performance when True.
        Default = False
     :type verbose: boolean
@@ -82,8 +72,6 @@ class PdfPage(Page):
                  lang = "",
                  ## can include a reference to a PdfFile object
                  file = None,
-                 tagger_pos = None,
-                 tagger_ner = None,
                  verbose = False):
         """Constructor method.
         """
@@ -92,8 +80,6 @@ class PdfPage(Page):
                                       data,
                                       raw_text,
                                       lang,
-                                      tagger_pos,
-                                      tagger_ner,
                                       verbose)
         ## call this again to perform tests
         self._file = file
@@ -206,16 +192,7 @@ class PdfFile:
     :param verbose: Print additional information during performance when True.
        Default = False
     :type verbose: boolean
-    :param tagger_pos: A Flair POS tagger object. `None` uses the default
-       tagger, `False` skips POS tagging. 
-       Default = None
-    :type tagger_pos: None or a Flair POS tagger object of type
-       <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
-    :param tagger_ner: A Flair NER tagger object. `None` uses the default
-       tagger, `False` skips NER tagging.
-       Default = text_tagger_ner
-    :type tagger_ner: None or a Flair NER tagger object of type
-       <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
+    
     """
     def __init__(self,
                  file: str,
@@ -224,9 +201,7 @@ class PdfFile:
                  fallback_to_ocr = True,
                  ocr_dpi = 300,
                  ocr_default_lang = 'eng',
-                 verbose=False,
-                 tagger_pos = None,
-                 tagger_ner = None):
+                 verbose=False):
         ## The filepath
         self._file = file
         ## a sha256 checksum for the file
@@ -248,9 +223,6 @@ class PdfFile:
         ## The PDF text contents
         self._data = None
         self._verbose = verbose
-        ## Taggers
-        self._tagger_pos = tagger_pos
-        self._tagger_ner = tagger_ner
         ########################################
         self.update()
 
@@ -383,9 +355,7 @@ class PdfFile:
                               data = page,
                               file = self,
                               page_num = i,
-                              page_label = self.get_page_label(i),
-                              tagger_pos = self._tagger_pos,
-                              tagger_ner = self._tagger_ner)
+                              page_label = self.get_page_label(i))
             text.append(page_ob)
 
         return text
@@ -416,9 +386,7 @@ class PdfFile:
                                   page_label = self.get_page_label(i),
                                   raw_text = page_text,
                                   file = self,
-                                  lang = self.lang,
-                                  tagger_pos = self._tagger_pos,
-                                  tagger_ner = self._tagger_ner)
+                                  lang = self.lang)
                 text.append(page_ob)
                 
             return text
