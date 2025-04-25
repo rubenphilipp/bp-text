@@ -66,9 +66,9 @@ should be added.  Make sure to tick the "Is Default" checkbox.
 Languages
 ---------
 
-Tokenization and tagging in this library is based on the `Flair
-<https://flairnlp.github.io>` library.  This library is (as of 2025-04-23)
-mainly focused on European languages, and so is this project.  When parsing
-text, this should not be forgotten. 
+Tokenization and tagging in this library is based on the `spaCy
+<https://spacy.io>` library.  `bp_text` tries to automatically determine the
+language of a text and apply the proper model to it.  For more information see
+the documentation for :py:class:`Text`. 
 
 

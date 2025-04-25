@@ -51,10 +51,9 @@
 <li class="toctree-l3"><a class="reference internal" href="bp_text.language.html">bp_text.language</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bp_text.database.html">bp_text.database</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">bp_text.text</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bp_text.text.LANG_SPACY_MODELS"><code class="docutils literal notranslate"><span class="pre">LANG_SPACY_MODELS</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#bp_text.text.Text"><code class="docutils literal notranslate"><span class="pre">Text</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#bp_text.text.get_ner_tagger"><code class="docutils literal notranslate"><span class="pre">get_ner_tagger()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#bp_text.text.get_pos_tagger"><code class="docutils literal notranslate"><span class="pre">get_pos_tagger()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#bp_text.text.get_text_splitter"><code class="docutils literal notranslate"><span class="pre">get_text_splitter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bp_text.text.get_nlp"><code class="docutils literal notranslate"><span class="pre">get_nlp()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="bp_text.page.html">bp_text.page</a></li>
@@ -102,17 +101,19 @@ It uses various algorithms to e.g. detect parts of speech or entities which can
 be later used for analysis or text-production.</p>
 <p>Created: 2025-04-24
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  12:34:57 Fri Apr 25 2025 CEST</p>
+<p>$$ Last modified:  19:42:30 Fri Apr 25 2025 CEST</p>
+<p class="rubric">Module Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.text.LANG_SPACY_MODELS" title="bp_text.text.LANG_SPACY_MODELS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LANG_SPACY_MODELS</span></code></a></p></td>
+<td><p>the default spacy models for a given language</p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.text.get_ner_tagger" title="bp_text.text.get_ner_tagger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ner_tagger</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#bp_text.text.get_pos_tagger" title="bp_text.text.get_pos_tagger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_pos_tagger</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.text.get_text_splitter" title="bp_text.text.get_text_splitter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_text_splitter</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.text.get_nlp" title="bp_text.text.get_nlp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_nlp</span></code></a>(model_name)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -120,53 +121,48 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.text.Text" title="bp_text.text.Text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Text</span></code></a>([text, lang, splitter, tagger_pos, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.text.Text" title="bp_text.text.Text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Text</span></code></a>([text, lang])</p></td>
 <td><p>This is a class implementation of a Text object.</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py data">
+<dt class="sig sig-object py" id="bp_text.text.LANG_SPACY_MODELS">
+<span class="sig-prename descclassname"><span class="pre">bp_text.text.</span></span><span class="sig-name descname"><span class="pre">LANG_SPACY_MODELS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'de':</span> <span class="pre">'de_core_news_sm',</span> <span class="pre">'en':</span> <span class="pre">'en_core_web_sm',</span> <span class="pre">'es':</span> <span class="pre">'es_core_news_sm',</span> <span class="pre">'fr':</span> <span class="pre">'fr_core_news_sm',</span> <span class="pre">'it':</span> <span class="pre">'it_core_news_sm',</span> <span class="pre">'nl':</span> <span class="pre">'nl_core_news_sm',</span> <span class="pre">'pl':</span> <span class="pre">'pl_core_news_sm',</span> <span class="pre">'pt':</span> <span class="pre">'pt_core_news_sm',</span> <span class="pre">'sv':</span> <span class="pre">'sv_core_news_sm'}</span></em><a class="headerlink" href="#bp_text.text.LANG_SPACY_MODELS" title="Link to this definition"></a></dt>
+<dd><p>the default spacy models for a given language</p>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="bp_text.text.Text">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.text.</span></span><span class="sig-name descname"><span class="pre">Text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'en'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splitter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tagger_pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tagger_ner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/text.html#Text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.text.Text" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.text.</span></span><span class="sig-name descname"><span class="pre">Text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'en'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/text.html#Text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.text.Text" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>This is a class implementation of a Text object.
-A text holds a natural language text as a string and additionally contains
-segmented and analysed data derived from the text.  The text is tokenized
-into sentences (using Flair) and analyzed e.g. for parts of speech or
-entities.  By default, Text uses Flair’s most versatile models (e.g.
-‘pos-multi’ for POS tagging and ‘ner-large’ for NER tagging).  While
-introducing some overhead on loading, this comes with the advantage of
-being able to more precisely analyse multilingual text.</p>
+<p>This is a class implementation of a Text object.  A text holds a natural
+language text as a string and additionally contains segmented and analysed
+data derived from the text.  The text is tokenized (using spaCy) and
+analyzed e.g. for parts of speech or entities.  By default, Text uses
+Flair’s most versatile models (e.g.  ‘pos-multi’ for POS tagging and
+‘ner-large’ for NER tagging).  While introducing some overhead on loading,
+this comes with the advantage of being able to more precisely analyse
+multilingual text.</p>
+<p>Note: The <cite>doc</cite> contains the actual segmented text.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>text</strong> (<em>string</em>) – The text to be used as a basis for the analysis.</p></li>
 <li><p><strong>lang</strong> (<em>string</em>) – The primary language of the text as a ISO 639-1 code.
 Default = “en”</p></li>
-<li><p><strong>splitter</strong> (<em>None</em><em> or </em><em>&lt;class 'flair.splitter.SegtokSentenceSplitter'&gt;</em><em> or
-</em><em>similar.</em>) – A Flair sentence splitter object. None uses the default
-splitter. 
-Default = None</p></li>
-<li><p><strong>tagger_pos</strong> (<em>None</em><em> or </em><em>a Flair POS tagger object</em><em> of </em><em>type
-&lt;class 'flair.models.sequence_tagger_model.SequenceTagger'&gt;.</em>) – A Flair POS tagger object. <cite>None</cite> uses the default
-tagger, <cite>False</cite> skips POS tagging. 
-Default = None</p></li>
-<li><p><strong>tagger_ner</strong> (<em>None</em><em> or </em><em>a Flair NER tagger object</em><em> of </em><em>type
-&lt;class 'flair.models.sequence_tagger_model.SequenceTagger'&gt;.</em>) – A Flair NER tagger object. <cite>None</cite> uses the default
-tagger, <cite>False</cite> skips NER tagging.
-Default = text_tagger_ner</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.text.Text.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'en'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splitter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tagger_pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tagger_ner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/text.html#Text.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.text.Text.__init__" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'en'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/text.html#Text.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.text.Text.__init__" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="bp_text.text.Text.sentences">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sentences</span></span><a class="headerlink" href="#bp_text.text.Text.sentences" title="Link to this definition"></a></dt>
-<dd><p>Getter for the sentences (i.e. the tokenized and analysed elements
+<dt class="sig sig-object py" id="bp_text.text.Text.doc">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">doc</span></span><a class="headerlink" href="#bp_text.text.Text.doc" title="Link to this definition"></a></dt>
+<dd><p>Getter for the doc (i.e. the tokenized and analysed elements
 of the text). Read-only.</p>
 </dd></dl>
 
@@ -187,18 +183,8 @@ of the text). Read-only.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="bp_text.text.get_ner_tagger">
-<span class="sig-prename descclassname"><span class="pre">bp_text.text.</span></span><span class="sig-name descname"><span class="pre">get_ner_tagger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/text.html#get_ner_tagger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.text.get_ner_tagger" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="bp_text.text.get_pos_tagger">
-<span class="sig-prename descclassname"><span class="pre">bp_text.text.</span></span><span class="sig-name descname"><span class="pre">get_pos_tagger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/text.html#get_pos_tagger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.text.get_pos_tagger" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="bp_text.text.get_text_splitter">
-<span class="sig-prename descclassname"><span class="pre">bp_text.text.</span></span><span class="sig-name descname"><span class="pre">get_text_splitter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/text.html#get_text_splitter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.text.get_text_splitter" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="bp_text.text.get_nlp">
+<span class="sig-prename descclassname"><span class="pre">bp_text.text.</span></span><span class="sig-name descname"><span class="pre">get_nlp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/text.html#get_nlp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.text.get_nlp" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </section>

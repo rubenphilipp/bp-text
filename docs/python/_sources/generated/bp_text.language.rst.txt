@@ -8,7 +8,7 @@
 
    .. autosummary::
    
-      default_languages
+      DEFAULT_LANGUAGES
    
    .. rubric:: Functions
 

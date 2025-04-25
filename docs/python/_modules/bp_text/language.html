@@ -78,7 +78,7 @@
 <span class="sd">Created: 2025-03-27</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  20:45:39 Thu Apr 24 2025 CEST</span>
+<span class="sd">$$ Last modified:  18:46:16 Fri Apr 25 2025 CEST</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">lingua</span><span class="w"> </span><span class="kn">import</span> <span class="n">Language</span><span class="p">,</span> <span class="n">LanguageDetectorBuilder</span>
@@ -89,8 +89,9 @@
 <span class="c1">## globals</span>
 <span class="c1">## the default languages for detection</span>
 <span class="c1">#: The default languages used by the detection algorithm.</span>
-<span class="n">default_languages</span> <span class="o">=</span> <span class="p">[</span><span class="n">Language</span><span class="o">.</span><span class="n">ENGLISH</span><span class="p">,</span> <span class="n">Language</span><span class="o">.</span><span class="n">FRENCH</span><span class="p">,</span>
-             <span class="n">Language</span><span class="o">.</span><span class="n">GERMAN</span><span class="p">,</span> <span class="n">Language</span><span class="o">.</span><span class="n">SPANISH</span><span class="p">]</span>
+<span class="n">DEFAULT_LANGUAGES</span> <span class="o">=</span> <span class="p">[</span><span class="n">Language</span><span class="o">.</span><span class="n">ENGLISH</span><span class="p">,</span> <span class="n">Language</span><span class="o">.</span><span class="n">GERMAN</span><span class="p">,</span> <span class="n">Language</span><span class="o">.</span><span class="n">FRENCH</span><span class="p">,</span>
+                     <span class="n">Language</span><span class="o">.</span><span class="n">SPANISH</span><span class="p">,</span> <span class="n">Language</span><span class="o">.</span><span class="n">ITALIAN</span><span class="p">,</span> <span class="n">Language</span><span class="o">.</span><span class="n">DUTCH</span><span class="p">,</span>
+                     <span class="n">Language</span><span class="o">.</span><span class="n">PORTUGUESE</span><span class="p">,</span> <span class="n">Language</span><span class="o">.</span><span class="n">POLISH</span><span class="p">,</span> <span class="n">Language</span><span class="o">.</span><span class="n">SWEDISH</span><span class="p">]</span>
 
 <div class="viewcode-block" id="LanguageDetector">
 <a class="viewcode-back" href="../../generated/bp_text.language.html#bp_text.language.LanguageDetector">[docs]</a>
@@ -98,13 +99,13 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A language detector.</span>
 
 <span class="sd">    :param languages: A list containing all languages (cf. `lingua.Language`)</span>
-<span class="sd">        to consider. Default = :any:`default_languages`</span>
+<span class="sd">        to consider. Default = :any:`DEFAULT_LANGUAGES`</span>
 <span class="sd">    :type languages: list of `lingua.Language` objects. </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="LanguageDetector.__init__">
 <a class="viewcode-back" href="../../generated/bp_text.language.html#bp_text.language.LanguageDetector.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">languages</span> <span class="o">=</span> <span class="n">default_languages</span><span class="p">):</span>
+                 <span class="n">languages</span> <span class="o">=</span> <span class="n">DEFAULT_LANGUAGES</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_languages</span> <span class="o">=</span> <span class="n">languages</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_detector</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1">## init</span>

@@ -78,7 +78,7 @@
 <span class="sd">Created: 2025-03-28</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  14:33:01 Fri Apr 25 2025 CEST</span>
+<span class="sd">$$ Last modified:  19:00:29 Fri Apr 25 2025 CEST</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
@@ -117,16 +117,6 @@
 <span class="sd">    :param lang: The language code of the primary language in the alpha3/ISO</span>
 <span class="sd">        639-1 form.</span>
 <span class="sd">    :type lang: string</span>
-<span class="sd">    :param tagger_pos: A Flair POS tagger object. `None` uses the default</span>
-<span class="sd">       tagger, `False` skips POS tagging. </span>
-<span class="sd">       Default = None</span>
-<span class="sd">    :type tagger_pos: None or a Flair POS tagger object of type</span>
-<span class="sd">       &lt;class &#39;flair.models.sequence_tagger_model.SequenceTagger&#39;&gt;.</span>
-<span class="sd">    :param tagger_ner: A Flair NER tagger object. `None` uses the default</span>
-<span class="sd">       tagger, `False` skips NER tagging.</span>
-<span class="sd">       Default = text_tagger_ner</span>
-<span class="sd">    :type tagger_ner: None or a Flair NER tagger object of type</span>
-<span class="sd">       &lt;class &#39;flair.models.sequence_tagger_model.SequenceTagger&#39;&gt;.</span>
 <span class="sd">    :param verbose: Print additional information during performance when True.</span>
 <span class="sd">       Default = False</span>
 <span class="sd">    :type verbose: boolean</span>
@@ -140,8 +130,6 @@
                  <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">raw_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
                  <span class="n">lang</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-                 <span class="n">tagger_pos</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">tagger_ner</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="c1">## the page number / index</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_page_num</span> <span class="o">=</span> <span class="n">page_num</span>
@@ -154,8 +142,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">data</span>
         <span class="c1">## the slot for the Text object (empty for now)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span> <span class="o">=</span> <span class="n">tagger_pos</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span> <span class="o">=</span> <span class="n">tagger_ner</span>
         <span class="c1">## the raw text</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_raw_text</span> <span class="o">=</span> <span class="n">raw_text</span>
         <span class="c1">## the primary language of the page&#39;s content</span>
@@ -243,9 +229,7 @@
         <span class="c1"># create the text object</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Page.update(): Initializing text object. &quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_raw_text</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="p">,</span>
-                               <span class="n">tagger_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_pos</span><span class="p">,</span>
-                               <span class="n">tagger_ner</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tagger_ner</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_raw_text</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Page.detect_lang">

@@ -49,9 +49,9 @@
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#modules">Modules</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="bp_text.utilities.html">bp_text.utilities</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">bp_text.language</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bp_text.language.DEFAULT_LANGUAGES"><code class="docutils literal notranslate"><span class="pre">DEFAULT_LANGUAGES</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#bp_text.language.LanguageDetector"><code class="docutils literal notranslate"><span class="pre">LanguageDetector</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#bp_text.language.convert_langcode"><code class="docutils literal notranslate"><span class="pre">convert_langcode()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#bp_text.language.default_languages"><code class="docutils literal notranslate"><span class="pre">default_languages</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#bp_text.language.iso_639_1_to_langid"><code class="docutils literal notranslate"><span class="pre">iso_639_1_to_langid()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#bp_text.language.langid_to_iso_639_1"><code class="docutils literal notranslate"><span class="pre">langid_to_iso_639_1()</span></code></a></li>
 </ul>
@@ -99,11 +99,11 @@
 <p>This module contains functionality dealing with languages (e.g. detection).</p>
 <p>Created: 2025-03-27
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  20:45:39 Thu Apr 24 2025 CEST</p>
+<p>$$ Last modified:  18:46:16 Fri Apr 25 2025 CEST</p>
 <p class="rubric">Module Attributes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.language.default_languages" title="bp_text.language.default_languages"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_languages</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.language.DEFAULT_LANGUAGES" title="bp_text.language.DEFAULT_LANGUAGES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEFAULT_LANGUAGES</span></code></a></p></td>
 <td><p>The default languages used by the detection algorithm.</p></td>
 </tr>
 </tbody>
@@ -130,20 +130,26 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 </tr>
 </tbody>
 </table>
+<dl class="py data">
+<dt class="sig sig-object py" id="bp_text.language.DEFAULT_LANGUAGES">
+<span class="sig-prename descclassname"><span class="pre">bp_text.language.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_LANGUAGES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[Language.ENGLISH,</span> <span class="pre">Language.GERMAN,</span> <span class="pre">Language.FRENCH,</span> <span class="pre">Language.SPANISH,</span> <span class="pre">Language.ITALIAN,</span> <span class="pre">Language.DUTCH,</span> <span class="pre">Language.PORTUGUESE,</span> <span class="pre">Language.POLISH,</span> <span class="pre">Language.SWEDISH]</span></em><a class="headerlink" href="#bp_text.language.DEFAULT_LANGUAGES" title="Link to this definition"></a></dt>
+<dd><p>The default languages used by the detection algorithm.</p>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="bp_text.language.LanguageDetector">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.language.</span></span><span class="sig-name descname"><span class="pre">LanguageDetector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">languages</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[Language.ENGLISH,</span> <span class="pre">Language.FRENCH,</span> <span class="pre">Language.GERMAN,</span> <span class="pre">Language.SPANISH]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/language.html#LanguageDetector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.language.LanguageDetector" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.language.</span></span><span class="sig-name descname"><span class="pre">LanguageDetector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">languages</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[Language.ENGLISH,</span> <span class="pre">Language.GERMAN,</span> <span class="pre">Language.FRENCH,</span> <span class="pre">Language.SPANISH,</span> <span class="pre">Language.ITALIAN,</span> <span class="pre">Language.DUTCH,</span> <span class="pre">Language.PORTUGUESE,</span> <span class="pre">Language.POLISH,</span> <span class="pre">Language.SWEDISH]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/language.html#LanguageDetector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.language.LanguageDetector" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A language detector.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>languages</strong> (list of <cite>lingua.Language</cite> objects.) – A list containing all languages (cf. <cite>lingua.Language</cite>)
-to consider. Default = <a class="reference internal" href="#bp_text.language.default_languages" title="bp_text.language.default_languages"><code class="xref any py py-data docutils literal notranslate"><span class="pre">default_languages</span></code></a></p>
+to consider. Default = <a class="reference internal" href="#bp_text.language.DEFAULT_LANGUAGES" title="bp_text.language.DEFAULT_LANGUAGES"><code class="xref any py py-data docutils literal notranslate"><span class="pre">DEFAULT_LANGUAGES</span></code></a></p>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.language.LanguageDetector.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">languages</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[Language.ENGLISH,</span> <span class="pre">Language.FRENCH,</span> <span class="pre">Language.GERMAN,</span> <span class="pre">Language.SPANISH]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/language.html#LanguageDetector.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.language.LanguageDetector.__init__" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">languages</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[Language.ENGLISH,</span> <span class="pre">Language.GERMAN,</span> <span class="pre">Language.FRENCH,</span> <span class="pre">Language.SPANISH,</span> <span class="pre">Language.ITALIAN,</span> <span class="pre">Language.DUTCH,</span> <span class="pre">Language.PORTUGUESE,</span> <span class="pre">Language.POLISH,</span> <span class="pre">Language.SWEDISH]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/language.html#LanguageDetector.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.language.LanguageDetector.__init__" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -210,12 +216,6 @@ of the possible in/out formats (see above).  Default = “iso_code_639_3”</p><
 <dd class="field-odd"><p>string</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="bp_text.language.default_languages">
-<span class="sig-prename descclassname"><span class="pre">bp_text.language.</span></span><span class="sig-name descname"><span class="pre">default_languages</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[Language.ENGLISH,</span> <span class="pre">Language.FRENCH,</span> <span class="pre">Language.GERMAN,</span> <span class="pre">Language.SPANISH]</span></em><a class="headerlink" href="#bp_text.language.default_languages" title="Link to this definition"></a></dt>
-<dd><p>The default languages used by the detection algorithm.</p>
 </dd></dl>
 
 <dl class="py function">
