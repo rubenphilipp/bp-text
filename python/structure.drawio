@@ -121,9 +121,6 @@
         <mxCell id="4gpWj8qREAOXJgRmP2jV-4" value="dict" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="430" y="560" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="4gpWj8qREAOXJgRmP2jV-6" value="&lt;div&gt;&amp;lt;dict&amp;gt;:&lt;/div&gt;{&#39;data&#39;: &amp;lt;bp_text.pdf.PdfFile object at 0x1045d88f0&amp;gt;,&lt;div&gt;&#39;type&#39;: &amp;lt;class &#39;bp_text.pdf.PdfFile&#39;&amp;gt;,&amp;nbsp;&lt;/div&gt;&lt;div&gt;&#39;entry&#39;: entry from BibTexDatabase}&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="827" y="720" width="270" height="120" as="geometry" />
-        </mxCell>
         <mxCell id="4gpWj8qREAOXJgRmP2jV-9" value="PoolItem" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="650" y="570" width="120" height="60" as="geometry" />
         </mxCell>

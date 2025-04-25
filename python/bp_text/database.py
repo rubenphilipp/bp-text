@@ -5,7 +5,7 @@ from a BibTeX file (as database).
 Created: 2025-03-23
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  21:02:51 Wed Apr 23 2025 CEST
+$$ Last modified:  01:24:35 Sat Apr 26 2025 CEST
 """
 
 import abc
@@ -13,6 +13,13 @@ import os
 import re
 from pathlib import Path
 import bibtexparser
+
+from . import utilities
+from . import __version__
+from . import txt
+from . import pdf
+
+################################################################################
 
 
 class Database(abc.ABC):
@@ -27,6 +34,9 @@ class Database(abc.ABC):
         :type file_path: string
         """
         pass
+
+
+################################################################################
 
 
 class BibTexDatabase(Database):
@@ -66,6 +76,7 @@ class BibTexDatabase(Database):
         self.load(file_path,
                   split_files = split_files,
                   split_keywords = split_keywords)
+        self._base_path = Path(file_path).parent
 
     @property
     def data(self):
@@ -185,9 +196,6 @@ class BibTexDatabase(Database):
 
         return matches
         
-    
-    
-
     def get_nth_entry(self, n):
         """Get the nth entry in the database.
 
@@ -199,6 +207,147 @@ class BibTexDatabase(Database):
             return entries[n]
         else:
             print(f"Entry '{n}' does is not within the list range.")
+
+    def make_pool(self,
+                  cache = False,
+                  default_get_data_func = None,
+                  pdf_auto_extract = True,
+                  pdf_use_ocr = False,
+                  pdf_fallback_to_ocr = True,
+                  pdf_ocr_dpi = 300,
+                  pdf_ocr_default_lang = 'eng',
+                  verbose = True):
+        """Create a :py:class:`Pool` with :py:class:`PoolItem` objects derived
+        from the `BibTexDatabase` entries and the documents linked in the `file`
+        fields.
+
+        While creating the `Pool`, this methods also instantiates text holding
+        objects for the data linked in `file`.  This could be
+        :py:class:`PdfFile` (for PDFs) or :py:class:`TxtFile` (for TXTs)
+        objects.  When a cache directory is given, this method will try to
+        search for pickled objects in the respective directory and tries to load
+        them in order to avoid recomputing expensive NLP analyses
+        (cf. :py:class:`Text`).  The search pattern for cache files is
+        `[citekey]-[file_checksum]-[bp_text.__version__].pickle`.  Besides
+        searching for existing cached files, new cache files will automatically
+        be created items not found in the cache directory.
+
+        The paths in `file` are either relative or absolute.  When relative,
+        they are converted to absolute paths relative to the location of the
+        database file (cf. `self._base_path). 
+
+        :param cache: When `False` caching is disabled. If a directory string
+           is given, use this for caching (see above).
+        :type cache: False or string
+        :param default_get_data_func: This sets the default function to get data
+           from a :py:class:`PoolItem` object (cf. respective doc in this
+           class).
+        :type default_get_data_func: A function which must be a function taking
+           the `PoolItem` as its argument and must return an index to the
+           element of `data` which should be retrieved. Set to `None` to use the
+           default.
+        :param pdf_auto_extract: Automatically extract the text from all pages
+           in the file when instantiating the object? This also automatically
+           creates :py:class:`PdfPage` objects for each page. Default = True
+        :type pdf_auto_extract: boolean
+        
+        :param pdf_use_ocr: Use OCR by default for text extraction? Default =
+           False
+        :type pdf_ose_ocr: boolean
+        :param pdf_fallback_to_ocr: If text extraction without OCR yields little
+           text, fallback to OCR? Default = True
+        :type pdf_fallback_to_ocr: boolean
+        :param pdf_ocr_dpi: The DPI amount for OCR. Default = 300
+        :type pdf_ocr_dpi: integer
+        :param pdf_ocr_default_lang: The default language for OCR. Default =
+           "eng"
+        :type pdf_ocr_default_lang: string
+        :param verbose: Print additional information during performance when
+           True.  Default = True
+        :type verbose: boolean
+
+        """
+        ## test if cache is given and directory exists
+        if cache and not os.path.isdir(cache):
+            # create cache directory
+            Path(cache).mkdir(parents=True, exist_ok=True)
+
+        if cache:
+            ## trailing slash
+            cache = Path(cache)
+        
+        for key, val in self.entries.items():
+            files = val.get("file")
+            ## skip when no files are given
+            if not files:
+                continue
+
+            ## since there are files, get the actual paths
+            files = files.value
+
+            ## process file by file
+            files_ob = []
+            for fl in files:
+                fl_path = Path(convert_latex_umlauts(fl))
+
+                ## if path is relative, convert it to an absolute path
+                ## relative to the base dir of the database
+                if not fl_path.is_absolute():
+                    fl_path = self._base_path / fl_path
+                
+                ## test if file exists
+                if not (fl_path.exists() and fl_path.is_file()):
+                    if verbose:
+                        print(f"make_pool: File '{fl_path}' does not exist. "
+                              + "Skipping.")
+                    continue
+
+                ## get file type
+                fl_suffix = fl_path.suffix.lower()
+                if not (fl_suffix == ".pdf" or fl_suffix == ".txt"):
+                    if verbose:
+                        print(f"make_pool: File '{fl_path}' is neither a PDF "
+                              + "nor a TXT. Skipping. ")
+                    continue
+                
+                ## get cache-path
+                if cache:
+                    fl_checksum = utilities.file_checksum(fl_path,
+                                                          algorithm="sha256")
+                    cachefile = cache / (key + "-" + fl_checksum + "-"
+                                         + __version__ + ".pickle")
+                    
+                ## load from cache if exists
+                if cache and (cachefile.exists() and cachefile.is_file()):
+                    if verbose:
+                        print(f"make_pool: Found cache for '{fl_path}'. "
+                              + "Loading...")
+                    files_ob.append(utilities.read_pickle(cachefile))
+                else:
+                    if fl_suffix == ".txt":
+                        fl_ob = txt.TxtFile(file=fl_path)
+                    elif fl_suffix == ".pdf":
+                        fl_ob = pdf.PdfFile(
+                            file=fl_path,
+                            auto_extract = pdf_auto_extract,
+                            use_ocr = pdf_use_ocr,
+                            fallback_to_ocr = pdf_fallback_to_ocr,
+                            ocr_dpi = pdf_ocr_dpi,
+                            ocr_default_lang = pdf_ocr_default_lang)
+                    else:
+                        if verbose:
+                            print("make_pool: File obj could not be created "
+                                  + f" for '{fl_path}'. Skipping.")
+                        continue
+                    ## append to files
+                    files_ob.append(fl_ob)
+                    ## cache when desired
+                    if cache:
+                        if verbose:
+                            print(f"make_pool: Caching '{cachefile}'...")
+                        utilities.write_pickle(fl_ob, cachefile)
+                    
+
         
 
 ################################################################################

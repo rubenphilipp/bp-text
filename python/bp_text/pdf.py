@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:36:57 Fri Apr 25 2025 CEST
+$$ Last modified:  23:44:55 Fri Apr 25 2025 CEST
 """
 
 import os
@@ -59,7 +59,7 @@ class PdfPage(Page):
     :param file: An optional (back-)reference to a PdfFile object.
     :type file: A :py:class:`PdfFile` object.
     :param verbose: Print additional information during performance when True.
-       Default = False
+       Default = True
     :type verbose: boolean
 
     """
@@ -72,7 +72,7 @@ class PdfPage(Page):
                  lang = "",
                  ## can include a reference to a PdfFile object
                  file = None,
-                 verbose = False):
+                 verbose = True):
         """Constructor method.
         """
         super(PdfPage, self).__init__(page_num,
@@ -190,7 +190,7 @@ class PdfFile:
     :param ocr_default_lang: The default language for OCR. Default = "eng"
     :type ocr_default_lang: string
     :param verbose: Print additional information during performance when True.
-       Default = False
+       Default = True
     :type verbose: boolean
     
     """
@@ -201,7 +201,7 @@ class PdfFile:
                  fallback_to_ocr = True,
                  ocr_dpi = 300,
                  ocr_default_lang = 'eng',
-                 verbose=False):
+                 verbose=True):
         ## The filepath
         self._file = file
         ## a sha256 checksum for the file

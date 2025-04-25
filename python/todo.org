@@ -1,4 +1,2 @@
-- switch to spacy
-  - reason: objects can be serialized
-- implement pool (?) class
-  - also include a caching mechanism via pickle
+- handle relative and absolute paths to files
+  - relative to database dir
