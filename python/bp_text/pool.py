@@ -8,7 +8,7 @@ provided by the BibTex entries.
 Created: 2025-04-25
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  22:54:52 Fri Apr 25 2025 CEST
+$$ Last modified:  23:00:56 Fri Apr 25 2025 CEST
 
 """
 
@@ -57,17 +57,26 @@ class PoolItem:
     :param data: A list holding one or more text holding objects (e.g. a
     :py:class:`PdfFile`).
     :type data: list
+    :param default_get_data_func: The default function to retrieve a data object
+       via :py:func:`get_data` (cf. :py:func:`get_data`).
+       Default = (lambda ignore: 0), which causes `get_data` to always return
+       the first element of the `data`.
+    :type default_get_data_func: A function which must be a function taking the
+            `PoolItem` as its argument and must return an index to the element
+            of `data` which should be retrieved. 
 
     """
     def __init__(self,
                  key,
                  meta = {},
-                 data = []):
+                 data = [],
+                 default_get_data_func = (lambda ignore: 0)):
         self.key = key
         self.meta = meta
         self.data = data
         ## the index of the next data object
         self._next_data = 0
+        self._default_get_data_func = default_get_data_func
 
     ########################################
 
@@ -128,7 +137,7 @@ class PoolItem:
             raise ValueError("PoolItem.data must be a list of PdfFile or "
                              + "TxtFile objects. ")
 
-    def get_data(self, func = (lambda ignore: 0)):
+    def get_data(self, func = None):
         """This function returns a single data object from the data list instead
         of the data list itself.  The `func` argument -- which must be a
         function taking the `PoolItem` as its argument and must return an index
@@ -144,10 +153,14 @@ class PoolItem:
 
         :param func: A function which must be a function taking the `PoolItem`
             as its argument and must return an index to the element of `data`
-            which should be retrieved.  Default = lambda ignore : 0
+            which should be retrieved.  Default = None which falls back to the
+            `self._default_get_data_func`. 
         :type func: function
 
         """
+        if func is None:
+            func = self._default_get_data_func
+            
         next_index = func(self) % len(self.data)
         return self.data[next_index]
             
