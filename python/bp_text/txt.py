@@ -4,7 +4,7 @@ This module implements functionality for TXT files.
 Created: 2025-03-29
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  17:39:37 Wed Apr 23 2025 CEST
+$$ Last modified:  12:29:11 Fri Apr 25 2025 CEST
 """
 
 import os
@@ -14,6 +14,7 @@ import langcodes
 
 from . import language
 from . import utilities
+from . import text
 
 ################################################################################
 
@@ -43,6 +44,8 @@ class TxtFile:
         self._file = file
         self._lang = lang
         self._data = data
+        # this will be a Text object. empty for now
+        self._text = None
         ## a sha256 checksum for the file
         self._file_checksum = None
         self.update()
@@ -72,19 +75,30 @@ class TxtFile:
 
     @property
     def data(self):
-        """Getter/setter for the data (i.e. the txtfile content). 
+        """Getter/setter for the data (i.e. the txtfile content).
+
+        Setting the data (i.e. the raw text) will also update the instace and
+        re-initializes the text attribute by re-instantiating a Text-object. 
         """
         return self._data
 
     @data.setter
     def data(self, val):
         self._data = val
+        self.update()
 
     @property
     def file_checksum(self):
         return self._file_checksum
 
+    @property
+    def text(self):
+        """Getter for the Text (read-only).
+        """
+        return self._text
+    
 
+    
 
     ########################################
 
@@ -97,7 +111,7 @@ class TxtFile:
 
         ## set data
         with open(self.file, "r") as f:
-            self.data = f.read()
+            self._data = f.read()
 
         ## calculate file checksum
         self._file_checksum = utilities.file_checksum(self._file,
@@ -105,6 +119,9 @@ class TxtFile:
 
         ## set language
         self.lang = self.get_primary_lang()
+
+        ## create text object
+        self._text = text.Text(self._data, lang=self.lang)
         
         return self
 
