@@ -5,7 +5,7 @@ from a BibTeX file (as database).
 Created: 2025-03-23
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  01:24:35 Sat Apr 26 2025 CEST
+$$ Last modified:  01:28:30 Sat Apr 26 2025 CEST
 """
 
 import abc
@@ -325,15 +325,20 @@ class BibTexDatabase(Database):
                     files_ob.append(utilities.read_pickle(cachefile))
                 else:
                     if fl_suffix == ".txt":
+                        if verbose:
+                            print(f"make_pool: Processing '{fl_path}'...")
                         fl_ob = txt.TxtFile(file=fl_path)
                     elif fl_suffix == ".pdf":
+                        if verbose:
+                            print(f"make_pool: Processing '{fl_path}'...")
                         fl_ob = pdf.PdfFile(
                             file=fl_path,
                             auto_extract = pdf_auto_extract,
                             use_ocr = pdf_use_ocr,
                             fallback_to_ocr = pdf_fallback_to_ocr,
                             ocr_dpi = pdf_ocr_dpi,
-                            ocr_default_lang = pdf_ocr_default_lang)
+                            ocr_default_lang = pdf_ocr_default_lang,
+                            verbose = verbose)
                     else:
                         if verbose:
                             print("make_pool: File obj could not be created "
