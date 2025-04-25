@@ -16,10 +16,8 @@ tokenizing the PDF-text) and generating new material from the source text(s).
 This project has been initially created for the project *the prospect of its own
 undoing* (working title) by Fabian Bentrup and Ruben Philipp.
 
-This project uses Flair (https://flairnlp.github.io) to analyze text.  By
-default, it uses some rather large (i.e. ~3G) models which will be loaded when
-first installed in an environment.  For more information see esp. the doc for
-the `text` module.
+This project uses spaCy (http://spacy.io) to analyze text.  For more information
+see esp. the doc for the `text` module.
 
 
 .. note::
