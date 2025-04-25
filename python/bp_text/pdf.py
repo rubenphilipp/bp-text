@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  21:12:47 Thu Apr 24 2025 CEST
+$$ Last modified:  14:31:06 Fri Apr 25 2025 CEST
 """
 
 import os
@@ -25,6 +25,7 @@ import langcodes
 from .page import Page
 from . import language
 from . import utilities
+from . import text
 
 
 ################################################################################
@@ -49,13 +50,27 @@ class PdfPage(Page):
     :type page_label: string
     :param data: A `PyPDF2.PageObject`. Default = None
     :type data: A `PyPDF2.PageObject`
-    :param text: The text contained in the page (when retrieved).
-    :type text: string
+    :param raw_text: Holds the actual raw text of the page, extracted from the
+       data. 
+    :type raw_text: string
     :param lang: The language code of the primary language in the ISO-639-1 form
        (e.g. "de" or "en"). 
     :type lang: string
     :param file: An optional (back-)reference to a PdfFile object.
-    :type file: A :py:class:`PdfFile` object. 
+    :type file: A :py:class:`PdfFile` object.
+    :param tagger_pos: A Flair POS tagger object. `None` uses the default
+       tagger, `False` skips POS tagging. 
+       Default = None
+    :type tagger_pos: None or a Flair POS tagger object of type
+       <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
+    :param tagger_ner: A Flair NER tagger object. `None` uses the default
+       tagger, `False` skips NER tagging.
+       Default = text_tagger_ner
+    :type tagger_ner: None or a Flair NER tagger object of type
+       <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
+    :param verbose: Print additional information during performance when True.
+       Default = False
+    :type verbose: boolean
 
     """
     def __init__(self,
@@ -63,17 +78,23 @@ class PdfPage(Page):
                  page_label = None,
                  ## here, data holds a PyPDF2.PageObject (or None)
                  data = None,
-                 text = "",
+                 raw_text = "",
                  lang = "",
                  ## can include a reference to a PdfFile object
-                 file = None):
+                 file = None,
+                 tagger_pos = None,
+                 tagger_ner = None,
+                 verbose = False):
         """Constructor method.
         """
         super(PdfPage, self).__init__(page_num,
                                       page_label,
                                       data,
-                                      text,
-                                      lang)
+                                      raw_text,
+                                      lang,
+                                      tagger_pos,
+                                      tagger_ner,
+                                      verbose)
         ## call this again to perform tests
         self._file = file
         self.data = data
@@ -134,7 +155,7 @@ class PdfPage(Page):
         text = self.data.extract_text()
 
         if update_text:
-            self.text = text
+            self._raw_text = text
         
         return text
 
@@ -185,6 +206,16 @@ class PdfFile:
     :param verbose: Print additional information during performance when True.
        Default = False
     :type verbose: boolean
+    :param tagger_pos: A Flair POS tagger object. `None` uses the default
+       tagger, `False` skips POS tagging. 
+       Default = None
+    :type tagger_pos: None or a Flair POS tagger object of type
+       <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
+    :param tagger_ner: A Flair NER tagger object. `None` uses the default
+       tagger, `False` skips NER tagging.
+       Default = text_tagger_ner
+    :type tagger_ner: None or a Flair NER tagger object of type
+       <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
     """
     def __init__(self,
                  file: str,
@@ -193,7 +224,9 @@ class PdfFile:
                  fallback_to_ocr = True,
                  ocr_dpi = 300,
                  ocr_default_lang = 'eng',
-                 verbose=False):
+                 verbose=False,
+                 tagger_pos = None,
+                 tagger_ner = None):
         ## The filepath
         self._file = file
         ## a sha256 checksum for the file
@@ -215,6 +248,9 @@ class PdfFile:
         ## The PDF text contents
         self._data = None
         self._verbose = verbose
+        ## Taggers
+        self._tagger_pos = tagger_pos
+        self._tagger_ner = tagger_ner
         ########################################
         self.update()
 
@@ -320,7 +356,7 @@ class PdfFile:
                                                       algorithm = "sha256")
         ## auto-extract
         if self._auto_extract:
-            self.data = self.extract_text()
+            self._data = self.extract_text()
         ## set (primary) language if not given
         if (self.lang == "" or not self.lang) and self.data:
             self.lang = self.get_primary_lang()
@@ -337,11 +373,13 @@ class PdfFile:
             page_text = page.extract_text()
             
             page_ob = PdfPage(lang = self.lang,
-                              text = page_text,
+                              raw_text = page_text,
                               data = page,
                               file = self,
                               page_num = i,
-                              page_label = self.get_page_label(i))
+                              page_label = self.get_page_label(i),
+                              tagger_pos = self._tagger_pos,
+                              tagger_ner = self._tagger_ner)
             text.append(page_ob)
 
         return text
@@ -370,9 +408,11 @@ class PdfFile:
                     lang = self._ocr_default_lang)
                 page_ob = PdfPage(page_num = i,
                                   page_label = self.get_page_label(i),
-                                  text = page_text,
+                                  raw_text = page_text,
                                   file = self,
-                                  lang = self.lang)
+                                  lang = self.lang,
+                                  tagger_pos = self._tagger_pos,
+                                  tagger_ner = self._tagger_ner)
                 text.append(page_ob)
                 
             return text

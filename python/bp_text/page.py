@@ -4,7 +4,7 @@ This module implements the page class.
 Created: 2025-03-28
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  14:00:11 Fri Apr 25 2025 CEST
+$$ Last modified:  14:33:01 Fri Apr 25 2025 CEST
 """
 
 from abc import ABC, abstractmethod
@@ -15,11 +15,15 @@ import langcodes
 
 from . import language
 from . import utilities
+from . import text
 
 ################################################################################
 
 class Page(ABC):
     """Abstract base class for a page.
+
+    Note: The `text` attribute holds a :py:class:`Text` object containing
+    tokenized text derived from the `raw_text`.  
 
     :param page_num: The page number (zero-based) of the page in the related
         file.
@@ -31,18 +35,36 @@ class Page(ABC):
     :type page_label: string
     :param data: Holds page data.
     :type data: undefined
-    :param text: Holds the actual text of the page.
-    :type text: string
+    :param raw_text: Holds the actual raw text of the page, extracted from the
+       data. 
+    :type raw_text: string
     :param lang: The language code of the primary language in the alpha3/ISO
         639-1 form.
     :type lang: string
+    :param tagger_pos: A Flair POS tagger object. `None` uses the default
+       tagger, `False` skips POS tagging. 
+       Default = None
+    :type tagger_pos: None or a Flair POS tagger object of type
+       <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
+    :param tagger_ner: A Flair NER tagger object. `None` uses the default
+       tagger, `False` skips NER tagging.
+       Default = text_tagger_ner
+    :type tagger_ner: None or a Flair NER tagger object of type
+       <class 'flair.models.sequence_tagger_model.SequenceTagger'>.
+    :param verbose: Print additional information during performance when True.
+       Default = False
+    :type verbose: boolean
+    
     """
     def __init__(self,
                  page_num = None,
                  page_label = None,
                  data = None,
-                 text = "",
-                 lang = ""):
+                 raw_text = "",
+                 lang = "",
+                 tagger_pos = None,
+                 tagger_ner = None,
+                 verbose = False):
         ## the page number / index
         self._page_num = page_num
         ## the page number (number) label
@@ -52,10 +74,16 @@ class Page(ABC):
         self._page_label = page_label
         ## additional data
         self._data = data
-        ## the text contents of the page
-        self._text = text
+        ## the slot for the Text object (empty for now)
+        self._text = None
+        self._tagger_pos = tagger_pos
+        self._tagger_ner = tagger_ner
+        ## the raw text
+        self._raw_text = raw_text
         ## the primary language of the page's content
         self._lang = lang
+        ## verbose
+        self._verbose = verbose
         self.update()
 
     ########################################
@@ -85,16 +113,22 @@ class Page(ABC):
         self._data = val
 
     @property
-    def text(self):
-        return self._text
+    def raw_text(self):
+        return self._raw_text
 
-    @text.setter
-    def text(self, val):
+    @raw_text.setter
+    def raw_text(self, val):
         if isinstance(val, str):
-            self._text = val
+            self._raw_text = val
         else:
-            print("Error: value for text is not a String.")
+            print("Error: value for raw_text is not a String.")
         self.update()
+
+    @property
+    def text(self):
+        """Getter for the Text (read-only).
+        """
+        return self._text
 
     @property
     def lang(self):
@@ -107,6 +141,17 @@ class Page(ABC):
         else:
             self._lang = ""
 
+
+    @property
+    def verbose(self):
+        """Verbose setter/getter (bool)
+        """
+        return self._verbose
+
+    @verbose.setter
+    def verbose(self, val):
+        self._verbose = val
+
     ########################################
 
     def update(self):
@@ -114,6 +159,12 @@ class Page(ABC):
         """
         ## detect and update language
         self.detect_lang(set_lang = True)
+        # create the text object
+        if self._verbose:
+            print("Page.update(): Initializing text object. ")
+        self._text = text.Text(self._raw_text, lang=self.lang,
+                               tagger_pos = self._tagger_pos,
+                               tagger_ner = self._tagger_ner)
 
     def detect_lang(self, set_lang = True):
         """Detect the primary language of text in the page.
@@ -124,8 +175,8 @@ class Page(ABC):
         """
         lang = None
         detector = language.LanguageDetector().detector
-        if self.text != "":
-            lang = detector.detect_language_of(self.text)
+        if self._raw_text != "":
+            lang = detector.detect_language_of(self._raw_text)
         else:
             return False
         langcode = lang.iso_code_639_1.name
@@ -139,7 +190,7 @@ class Page(ABC):
         :return: The number of words in the text.
         :rtype: integer
         """
-        return len(self._text.split())
+        return len(self._raw_text.split())
 
 
 
