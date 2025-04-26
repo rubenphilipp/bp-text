@@ -8,7 +8,7 @@ provided by the BibTex entries.
 Created: 2025-04-25
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  01:56:37 Sat Apr 26 2025 CEST
+$$ Last modified:  03:06:28 Sat Apr 26 2025 CEST
 
 """
 
@@ -18,6 +18,10 @@ from .pdf import PdfFile
 from .txt import TxtFile
 
 ################################################################################
+
+########################################
+## get_data_func functions
+## 2025-04-26
 
 def random_data(ob):
     """This data getter function returns a random data item index.  See
@@ -38,6 +42,8 @@ def cycle_data(ob):
     ob.next_data = (this_next + 1) % len(ob.data)
     # return index
     return this_next
+
+########################################
     
 
 class PoolItem:
