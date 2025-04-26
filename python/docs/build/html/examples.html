@@ -116,6 +116,18 @@ in the BibTeX file (cf. <cite>notes</cite>).  The paths can either be absolute o
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">bp_text</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">bp_text</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">BibTexDatabase</span><span class="p">(</span><span class="s2">&quot;/users/bp/sources.bib&quot;</span><span class="p">)</span>
 <span class="n">pool</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">make_pool</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="s2">&quot;/tmp/pool_cache&quot;</span><span class="p">)</span>
+
+<span class="c1"># this returns the data according to the given default_get_data_func</span>
+<span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;chion2018&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+<span class="c1"># =&gt; &lt;bp_text.pdf.PdfFile object at 0x453d80ef0&gt;</span>
+
+<span class="c1"># you can also use a different method to get the data</span>
+<span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;chion2018&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">bp_text</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">random_data</span><span class="p">)</span>
+<span class="c1"># =&gt; &lt;bp_text.pdf.PdfFile object at 0x453d80ef0&gt;</span>
+
+<span class="c1"># this entry (&quot;chion2018&quot;) is a PDF, so it contains multiple pages</span>
+<span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;chion2018&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">get_page</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+<span class="c1"># =&gt; &#39;XX FOREWORD\n(the disembodied voice seems to come from (...)</span>
 </pre></div>
 </div>
 <p>Using a cache (via <cite>cache</cite>, which is a directory where to store cache files)
