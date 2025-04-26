@@ -48,6 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="notes.html">Notes</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#database">Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pool">Pool</a></li>
 </ul>
 </li>
 </ul>
@@ -98,6 +99,27 @@ entry by a given citation key:</p>
 <span class="c1">#     pictures&#39;]</span>
 </pre></div>
 </div>
+</section>
+<section id="pool">
+<h2>Pool<a class="headerlink" href="#pool" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="generated/bp_text.pool.html#bp_text.pool.Pool" title="bp_text.pool.Pool"><code class="xref py py-class docutils literal notranslate"><span class="pre">bp_text.pool.Pool</span></code></a> class is the heart of <cite>bp_text</cite>.  This class
+is a collection of annotated/tokenized, text-holding objects (e.g.  PdfFiles,
+TxtFiles) and can be generated from a BibTexDatabase object.  Its main purpose
+is to facilitate interacting with a corpus of texts and the metadata provided by
+the BibTex entries.</p>
+<p>The most straightforward way to create a pool is to first load a BibTeX database
+and then derive a <cite>Pool</cite> from the <cite>BibTexDatabase</cite> object.</p>
+<p><strong>Note:</strong> It is crucial to include paths to the source files (either PDF or TXT)
+in the BibTeX file (cf. <cite>notes</cite>).  The paths can either be absolute or relative
+(to the BibTeX file).</p>
+<p>Here is an example for creating a database and a derived <cite>Pool</cite>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">bp_text</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">bp_text</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">BibTexDatabase</span><span class="p">(</span><span class="s2">&quot;/users/bp/sources.bib&quot;</span><span class="p">)</span>
+<span class="n">pool</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">make_pool</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="s2">&quot;/tmp/pool_cache&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using a cache (via <cite>cache</cite>, which is a directory where to store cache files)
+improves the performance of <cite>bp_text</cite>.</p>
 </section>
 </section>
 
