@@ -82,7 +82,7 @@
 <span class="sd">Created: 2025-04-25</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  23:10:56 Fri Apr 25 2025 CEST</span>
+<span class="sd">$$ Last modified:  01:56:37 Sat Apr 26 2025 CEST</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -141,11 +141,11 @@
 <span class="sd">    :type data: list</span>
 <span class="sd">    :param default_get_data_func: The default function to retrieve a data object</span>
 <span class="sd">       via :py:func:`get_data` (cf. :py:func:`get_data`).</span>
-<span class="sd">       Default = (lambda ignore: 0), which causes `get_data` to always return</span>
-<span class="sd">       the first element of the `data`.</span>
+<span class="sd">       Default = None, which falls back to the default which causes `get_data`</span>
+<span class="sd">       to always return the first element of the `data`.</span>
 <span class="sd">    :type default_get_data_func: A function which must be a function taking the</span>
 <span class="sd">       `PoolItem` as its argument and must return an index to the element of</span>
-<span class="sd">       `data` which should be retrieved.</span>
+<span class="sd">       `data` which should be retrieved. Set to `None` to use the default. </span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="PoolItem.__init__">
@@ -154,13 +154,13 @@
                  <span class="n">key</span><span class="p">,</span>
                  <span class="n">meta</span> <span class="o">=</span> <span class="p">{},</span>
                  <span class="n">data</span> <span class="o">=</span> <span class="p">[],</span>
-                 <span class="n">default_get_data_func</span> <span class="o">=</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">ignore</span><span class="p">:</span> <span class="mi">0</span><span class="p">)):</span>
+                 <span class="n">default_get_data_func</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="n">meta</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
         <span class="c1">## the index of the next data object</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_next_data</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_default_get_data_func</span> <span class="o">=</span> <span class="n">default_get_data_func</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_get_data_func</span> <span class="o">=</span> <span class="n">default_get_data_func</span></div>
 
 
     <span class="c1">########################################</span>
@@ -170,7 +170,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter/setter for the key. </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span>
-
+    
     <span class="nd">@key</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -178,7 +178,7 @@
                   <span class="o">+</span> <span class="s2">&quot;a string.&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">val</span>
-
+    
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">next_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter/setter for the next_data id.  This is an index (zero-based)</span>
@@ -221,6 +221,21 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;PoolItem.data must be a list of PdfFile or &quot;</span>
                              <span class="o">+</span> <span class="s2">&quot;TxtFile objects. &quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">default_get_data_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_get_data_func</span>
+
+    <span class="nd">@default_get_data_func</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">default_get_data_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_default_get_data_func</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">elif</span> <span class="n">val</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_default_get_data_func</span> <span class="o">=</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">ignore</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;PoolItem.default_get_data_func must be None or &quot;</span>
+                             <span class="o">+</span> <span class="s2">&quot;a function. &quot;</span><span class="p">)</span>
+        
 
 <div class="viewcode-block" id="PoolItem.get_data">
 <a class="viewcode-back" href="../../generated/bp_text.pool.html#bp_text.pool.PoolItem.get_data">[docs]</a>
@@ -270,16 +285,54 @@
 <span class="sd">    object.  Its main purpose is to facilitate interacting with a corpus of</span>
 <span class="sd">    texts and the metadata provided by the BibTex entries.</span>
 
-<span class="sd">    </span>
+<span class="sd">    The `data` of the pool is a `dict` of :py:class:`PoolItem` objects.  The</span>
+<span class="sd">    keys of the `dict` are typically (e.g. when the `Pool` is created from a</span>
+<span class="sd">    :py:class:`BibTexDatabase`) citation keys.</span>
+
+<span class="sd">    :param data: A `dict` with an initial set of :py:class:`PoolItem` objects.</span>
+<span class="sd">    :type data: dict</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="Pool.__init__">
 <a class="viewcode-back" href="../../generated/bp_text.pool.html#bp_text.pool.Pool.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">pool_items</span><span class="p">):</span>
-        <span class="k">pass</span></div>
+                 <span class="n">data</span> <span class="o">=</span> <span class="p">{}):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span></div>
+
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter/setter for the data of the `Pool`.</span>
+
+<span class="sd">        This is a `dict` with :py:class:`PoolItem` objects.  Keys are usually</span>
+<span class="sd">        citekeys. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+
+    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">PoolItem</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pool: data must be a dict. all values need &quot;</span>
+                             <span class="o">+</span> <span class="s2">&quot;to be PoolItem instances.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">val</span>
+
+
+<div class="viewcode-block" id="Pool.get">
+<a class="viewcode-back" href="../../generated/bp_text.pool.html#bp_text.pool.Pool.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a py:class:`PoolItem` from the pool by its key. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
 </div>
 
+
+    
+            
 
 <span class="c1">################################################################################</span>
 <span class="c1">### EOF pool.py</span>

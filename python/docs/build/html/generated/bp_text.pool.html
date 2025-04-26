@@ -103,7 +103,7 @@ purpose is to facilitate interacting with a corpus of texts and the metadata
 provided by the BibTex entries.</p>
 <p>Created: 2025-04-25
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  23:10:56 Fri Apr 25 2025 CEST</p>
+<p>$$ Last modified:  01:56:37 Sat Apr 26 2025 CEST</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -118,7 +118,7 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.pool.Pool" title="bp_text.pool.Pool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Pool</span></code></a>(pool_items)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.pool.Pool" title="bp_text.pool.Pool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Pool</span></code></a>([data])</p></td>
 <td><p>Implementation of the Pool class.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#bp_text.pool.PoolItem" title="bp_text.pool.PoolItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PoolItem</span></code></a>(key[, meta, data, ...])</p></td>
@@ -128,23 +128,45 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="bp_text.pool.Pool">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.pool.</span></span><span class="sig-name descname"><span class="pre">Pool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pool_items</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#Pool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.Pool" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.pool.</span></span><span class="sig-name descname"><span class="pre">Pool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#Pool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.Pool" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Implementation of the Pool class.</p>
 <p>A (text) Pool is a collection of annotated/tokenized, text-holding objects
 (e.g.  PdfFiles, TxtFiles) and can be generated from a BibTexDatabase
 object.  Its main purpose is to facilitate interacting with a corpus of
 texts and the metadata provided by the BibTex entries.</p>
+<p>The <cite>data</cite> of the pool is a <cite>dict</cite> of <a class="reference internal" href="#bp_text.pool.PoolItem" title="bp_text.pool.PoolItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">PoolItem</span></code></a> objects.  The
+keys of the <cite>dict</cite> are typically (e.g. when the <cite>Pool</cite> is created from a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">BibTexDatabase</span></code>) citation keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – A <cite>dict</cite> with an initial set of <a class="reference internal" href="#bp_text.pool.PoolItem" title="bp_text.pool.PoolItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">PoolItem</span></code></a> objects.</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.pool.Pool.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pool_items</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#Pool.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.Pool.__init__" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#Pool.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.Pool.__init__" title="Link to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bp_text.pool.Pool.data">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#bp_text.pool.Pool.data" title="Link to this definition"></a></dt>
+<dd><p>Getter/setter for the data of the <cite>Pool</cite>.</p>
+<p>This is a <cite>dict</cite> with <a class="reference internal" href="#bp_text.pool.PoolItem" title="bp_text.pool.PoolItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">PoolItem</span></code></a> objects.  Keys are usually
+citekeys.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bp_text.pool.Pool.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#Pool.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.Pool.get" title="Link to this definition"></a></dt>
+<dd><p>Get a py:class:<cite>PoolItem</cite> from the pool by its key.</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="bp_text.pool.PoolItem">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.pool.</span></span><span class="sig-name descname"><span class="pre">PoolItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta={}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data=[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_get_data_func=&lt;function</span> <span class="pre">PoolItem.&lt;lambda&gt;&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#PoolItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.PoolItem" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.pool.</span></span><span class="sig-name descname"><span class="pre">PoolItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_get_data_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#PoolItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.PoolItem" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This class implements a PoolItem.</p>
 <p>PoolItems are containers for metadata (e.g. retrieved from a BibTeX entry in
@@ -161,16 +183,16 @@ entry.</p></li>
 <code class="xref py py-class docutils literal notranslate"><span class="pre">PdfFile</span></code>).</p></li>
 <li><p><strong>default_get_data_func</strong> (A function which must be a function taking the
 <cite>PoolItem</cite> as its argument and must return an index to the element of
-<cite>data</cite> which should be retrieved.) – The default function to retrieve a data object
+<cite>data</cite> which should be retrieved. Set to <cite>None</cite> to use the default.) – The default function to retrieve a data object
 via <a class="reference internal" href="#bp_text.pool.PoolItem.get_data" title="bp_text.pool.PoolItem.get_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_data()</span></code></a> (cf. <a class="reference internal" href="#bp_text.pool.PoolItem.get_data" title="bp_text.pool.PoolItem.get_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_data()</span></code></a>).
-Default = (lambda ignore: 0), which causes <cite>get_data</cite> to always return
-the first element of the <cite>data</cite>.</p></li>
+Default = None, which falls back to the default which causes <cite>get_data</cite>
+to always return the first element of the <cite>data</cite>.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.pool.PoolItem.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta={}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data=[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_get_data_func=&lt;function</span> <span class="pre">PoolItem.&lt;lambda&gt;&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#PoolItem.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.PoolItem.__init__" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_get_data_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#PoolItem.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.PoolItem.__init__" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -178,6 +200,11 @@ the first element of the <cite>data</cite>.</p></li>
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#bp_text.pool.PoolItem.data" title="Link to this definition"></a></dt>
 <dd><p>Getter/setter for the data list.</p>
 </dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bp_text.pool.PoolItem.default_get_data_func">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">default_get_data_func</span></span><a class="headerlink" href="#bp_text.pool.PoolItem.default_get_data_func" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.pool.PoolItem.get_data">

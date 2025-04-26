@@ -5,7 +5,7 @@ from a BibTeX file (as database).
 Created: 2025-03-23
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  01:58:39 Sat Apr 26 2025 CEST
+$$ Last modified:  02:29:46 Sat Apr 26 2025 CEST
 """
 
 import abc
@@ -14,8 +14,10 @@ import re
 from pathlib import Path
 import bibtexparser
 
+from importlib.metadata import version
+__version__ = version("bp_text")
+
 from . import utilities
-from . import __version__
 from . import txt
 from . import pdf
 from . import pool
@@ -235,7 +237,7 @@ class BibTexDatabase(Database):
 
         The paths in `file` are either relative or absolute.  When relative,
         they are converted to absolute paths relative to the location of the
-        database file (cf. `self._base_path). 
+        database file (cf. `self._base_path`).
 
         :param cache: When `False` caching is disabled. If a directory string
            is given, use this for caching (see above).

@@ -99,7 +99,7 @@
 from a BibTeX file (as database).</p>
 <p>Created: 2025-03-23
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  21:02:51 Wed Apr 23 2025 CEST</p>
+<p>$$ Last modified:  02:29:46 Sat Apr 26 2025 CEST</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -230,6 +230,53 @@ Default = True</p></li>
 <li><p><strong>split_files</strong> (<em>boolean</em>) – When true, split all files in the <cite>file</cite> field into
 a list, assuming they are separated by a semicolon (“;”).
 Default = True</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.make_pool">
+<span class="sig-name descname"><span class="pre">make_pool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_get_data_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdf_auto_extract</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdf_use_ocr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdf_fallback_to_ocr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdf_ocr_dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdf_ocr_default_lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'eng'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#BibTexDatabase.make_pool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.BibTexDatabase.make_pool" title="Link to this definition"></a></dt>
+<dd><p>Create a <code class="xref py py-class docutils literal notranslate"><span class="pre">Pool</span></code> with <code class="xref py py-class docutils literal notranslate"><span class="pre">PoolItem</span></code> objects derived
+from the <cite>BibTexDatabase</cite> entries and the documents linked in the <cite>file</cite>
+fields.</p>
+<p>While creating the <cite>Pool</cite>, this methods also instantiates text holding
+objects for the data linked in <cite>file</cite>.  This could be
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PdfFile</span></code> (for PDFs) or <code class="xref py py-class docutils literal notranslate"><span class="pre">TxtFile</span></code> (for TXTs)
+objects.  When a cache directory is given, this method will try to
+search for pickled objects in the respective directory and tries to load
+them in order to avoid recomputing expensive NLP analyses
+(cf. <code class="xref py py-class docutils literal notranslate"><span class="pre">Text</span></code>).  The search pattern for cache files is
+<cite>[citekey]-[file_checksum]-[bp_text.__version__].pickle</cite>.  Besides
+searching for existing cached files, new cache files will automatically
+be created items not found in the cache directory.</p>
+<p>The paths in <cite>file</cite> are either relative or absolute.  When relative,
+they are converted to absolute paths relative to the location of the
+database file (cf. <cite>self._base_path</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cache</strong> (<em>False</em><em> or </em><em>string</em>) – When <cite>False</cite> caching is disabled. If a directory string
+is given, use this for caching (see above).</p></li>
+<li><p><strong>default_get_data_func</strong> (A function which must be a function taking
+the <cite>PoolItem</cite> as its argument and must return an index to the
+element of <cite>data</cite> which should be retrieved. Set to <cite>None</cite> to use the
+default.) – This sets the default function to get data
+from a <code class="xref py py-class docutils literal notranslate"><span class="pre">PoolItem</span></code> object (cf. respective doc in this
+class).</p></li>
+<li><p><strong>pdf_auto_extract</strong> (<em>boolean</em>) – Automatically extract the text from all pages
+in the file when instantiating the object? This also automatically
+creates <code class="xref py py-class docutils literal notranslate"><span class="pre">PdfPage</span></code> objects for each page. Default = True</p></li>
+<li><p><strong>pdf_use_ocr</strong> – Use OCR by default for text extraction? Default =
+False</p></li>
+<li><p><strong>pdf_fallback_to_ocr</strong> (<em>boolean</em>) – If text extraction without OCR yields little
+text, fallback to OCR? Default = True</p></li>
+<li><p><strong>pdf_ocr_dpi</strong> (<em>integer</em>) – The DPI amount for OCR. Default = 300</p></li>
+<li><p><strong>pdf_ocr_default_lang</strong> (<em>string</em>) – The default language for OCR. Default =
+“eng”</p></li>
+<li><p><strong>verbose</strong> (<em>boolean</em>) – Print additional information during performance when
+True.  Default = True</p></li>
 </ul>
 </dd>
 </dl>

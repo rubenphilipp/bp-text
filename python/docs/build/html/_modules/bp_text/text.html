@@ -82,7 +82,7 @@
 <span class="sd">Created: 2025-04-24</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  19:42:30 Fri Apr 25 2025 CEST</span>
+<span class="sd">$$ Last modified:  23:40:51 Fri Apr 25 2025 CEST</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -168,6 +168,12 @@
         
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calling the object returns the raw text instead of the annotated</span>
+<span class="sd">        `doc`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
