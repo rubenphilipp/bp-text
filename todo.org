@@ -1,3 +1,6 @@
 - accessor utility functions in Pool to handle both PdfFile TxtFile objects with
   a unified interface (this is esp. helpful to handle files with and without
   pages)
+- maybe add a TxtPage class (even though there will just be one page per file)
+  in order to unify file handling
+  - also add ABC

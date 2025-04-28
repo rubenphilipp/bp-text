@@ -73,3 +73,88 @@ Here is an example for creating a database and a derived `Pool`:
 
 Using a cache (via `cache`, which is a directory where to store cache files)
 improves the performance of `bp_text`. 
+
+
+Trivial Noun Search
+^^^^^^^^^^^^^^^^^^^
+
+The following lines show how to search a pool for a `search_word` which should
+be used as a noun in the context of the respective text:
+
+.. code-block:: python
+
+   # these need to be imported in order to make the typecasting work (via
+   # isinstance())...
+   from bp_text.pdf import PdfFile
+   from bp_text.txt import TxtFile
+
+   # this is the word to find in the pool...
+   search_word = "sound"
+   # as we, in this example (see below), use normalized words, let's apply
+   # lowercase...
+   search_word = search_word.lower()
+
+   # this is an empty list for the results (which will be a dict)...
+   results = {}
+
+   # now, loop through all available pool items...
+   for key, pitm in pool.data.items():
+       # get a data object (either a TxtFile or a PdfFile)...
+       data = pitm.get_data()
+
+       # these will be the matches...
+       matches = []
+       
+       # just proceed if the PoolItem contains either a PdfFile or a TxtFile
+       # object)...
+       if isinstance(data, PdfFile):
+           # if the object is a PDF, loop through all available PdfPage objects
+           # while preserving the pagenum (which is the page index)...
+           for pagenum, page in enumerate(data.data):
+               # this is the spacy.doc
+               doc = page.text.doc
+               # this is the page_label (cf. :py:module:`bp_text.pdf`)
+               page_label = page.page_label
+               # if the page does not contain any text, the doc might be empty.
+               # this handles this case...
+               if doc == None:
+                   continue
+               # now, search the spacy.doc for nouns matching the pattern
+               for token in doc:
+                   if token.text.lower() == search_word and token.pos_ == "NOUN":
+                   # add a dict to the matches list.
+                   # here, we also include additional data, esp. the
+                   # page_label, retrieved from the PdfPage object
+                   matches.append({"pagenumnum": pagenum, "token": token,
+                       "pitm": pitm, "type": "pdf",
+                       "page_label": page_label})
+       elif isinstance(data, TxtFile):
+           # this is the spacy.doc
+           doc = data.text.doc
+           # again, perform the search here (see above)
+           for token in doc:
+               if token.text.lower() == search_word and token.pos_ == "NOUN":
+                   # add a dict to the matches list.
+                   # NB: this does not include e.g. a page_label as this is not
+                   # relevant in TXT files. 
+                   matches.append({"pitm": pitm, "token": token,
+                       "type": "txt"})
+       else:
+           continue
+
+       # add the matches to the results...
+       if matches:
+           results[key] = matches
+
+   # this loop goes through the items in the results variable and prints the token
+   # and the page_label (if applicable)...
+   for key, val in results.items():
+       print("-------")
+       for itm in val:
+           if itm["type"] == "txt":
+               print(itm["token"])
+               print("Page Label: none (txt)")
+           elif itm["type"] == "pdf":
+               print(f"'{itm["token"]}'")
+               print(f"Page Label: {itm["page_label"]}")
+
