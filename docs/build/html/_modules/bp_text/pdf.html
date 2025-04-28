@@ -1,0 +1,652 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bp_text.pdf &mdash; bp_text 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            bp_text
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notes.html">Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">bp_text</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">bp_text.pdf</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for bp_text.pdf</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module implements functionality for PDF files. </span>
+
+<span class="sd">Created: 2025-03-27</span>
+<span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
+
+<span class="sd">$$ Last modified:  23:44:55 Fri Apr 25 2025 CEST</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lingua</span><span class="w"> </span><span class="kn">import</span> <span class="n">Language</span><span class="p">,</span> <span class="n">LanguageDetectorBuilder</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">PyPDF2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyPDF2</span><span class="w"> </span><span class="kn">import</span> <span class="n">PdfReader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyPDF2.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">PdfReadError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pdf2image</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_from_path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytesseract</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">roman</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">langcodes</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.page</span><span class="w"> </span><span class="kn">import</span> <span class="n">Page</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">language</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">utilities</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">text</span>
+
+
+<span class="c1">################################################################################</span>
+
+<div class="viewcode-block" id="PdfPage">
+<a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfPage">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PdfPage</span><span class="p">(</span><span class="n">Page</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a class implementation for a PDF page.  A PDF page holds is a</span>
+<span class="sd">    reference to a page in a PDF document, usually related to a</span>
+<span class="sd">    :py:class:`bp_text.pdf.PdfFile` object.</span>
+
+<span class="sd">    The data attribute is also capable of holding a PyPDF2.PageObject</span>
+<span class="sd">    (optional), while the text attribute can contain text retrieved from the</span>
+<span class="sd">    file (e.g. via OCR or direct extraction --</span>
+<span class="sd">    cf. :py:func:`PdfPage.extract_text` or :py:func:`PdfFile.extract_text`).</span>
+
+<span class="sd">    :param page_num: The page number (zero-based) of the page in the related</span>
+<span class="sd">        file.</span>
+<span class="sd">    :type page_num: int</span>
+<span class="sd">    :param page_label: The actual page label of the page in the PDF file.</span>
+<span class="sd">        The actual PDF page number/label is defined in the PDF header and could</span>
+<span class="sd">        differ from the `page_num` (e.g. by varying the start index being a</span>
+<span class="sd">        roman instead of an arabic numeral.</span>
+<span class="sd">    :type page_label: string</span>
+<span class="sd">    :param data: A `PyPDF2.PageObject`. Default = None</span>
+<span class="sd">    :type data: A `PyPDF2.PageObject`</span>
+<span class="sd">    :param raw_text: Holds the actual raw text of the page, extracted from the</span>
+<span class="sd">       data. </span>
+<span class="sd">    :type raw_text: string</span>
+<span class="sd">    :param lang: The language code of the primary language in the ISO-639-1 form</span>
+<span class="sd">       (e.g. &quot;de&quot; or &quot;en&quot;). </span>
+<span class="sd">    :type lang: string</span>
+<span class="sd">    :param file: An optional (back-)reference to a PdfFile object.</span>
+<span class="sd">    :type file: A :py:class:`PdfFile` object.</span>
+<span class="sd">    :param verbose: Print additional information during performance when True.</span>
+<span class="sd">       Default = True</span>
+<span class="sd">    :type verbose: boolean</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="PdfPage.__init__">
+<a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfPage.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">page_num</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">page_label</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="c1">## here, data holds a PyPDF2.PageObject (or None)</span>
+                 <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">raw_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                 <span class="n">lang</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                 <span class="c1">## can include a reference to a PdfFile object</span>
+                 <span class="n">file</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PdfPage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">page_num</span><span class="p">,</span>
+                                      <span class="n">page_label</span><span class="p">,</span>
+                                      <span class="n">data</span><span class="p">,</span>
+                                      <span class="n">raw_text</span><span class="p">,</span>
+                                      <span class="n">lang</span><span class="p">,</span>
+                                      <span class="n">verbose</span><span class="p">)</span>
+        <span class="c1">## call this again to perform tests</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="n">file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span></div>
+
+
+    <span class="c1">########################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read/write property for the data of the object. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+
+    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the `data` value of the object. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">## test if data is a PyPDF2 PageObject</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">PyPDF2</span><span class="o">.</span><span class="n">PageObject</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: The value for data is not a PyPDF2.PageObject, but &quot;</span>
+                  <span class="o">+</span> <span class="s2">&quot;a {type(val)}&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read/write property. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span>
+
+    <span class="nd">@file</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">PdfFile</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: val is not of type PdfFile. &quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1">########################################</span>
+
+<div class="viewcode-block" id="PdfPage.extract_text">
+<a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfPage.extract_text">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">update_text</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract text from a PDF page using direct extraction.</span>
+<span class="sd">        Returns the text as a string.</span>
+
+<span class="sd">        :param update_text: Update the text attribute with the extracted text?</span>
+<span class="sd">        :type update_text: boolean</span>
+<span class="sd">        :return: The retrieved text.</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: No data.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">extract_text</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">update_text</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_raw_text</span> <span class="o">=</span> <span class="n">text</span>
+        
+        <span class="k">return</span> <span class="n">text</span></div>
+</div>
+
+
+
+
+<span class="c1">################################################################################</span>
+
+<div class="viewcode-block" id="PdfFile">
+<a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfFile">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PdfFile</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a class implementation of a PDF file.  A PDF file object is related</span>
+<span class="sd">    to an actual PDF file (e.g. retrieved from a database entry).  Its methods</span>
+<span class="sd">    facilitate e.g. the retrieval of data/text from the pages.</span>
+
+<span class="sd">    The `data` attribute holds the :py:class:`PdfPage` objects. </span>
+
+<span class="sd">    Examples::</span>
+
+<span class="sd">        ## load a PDF file and extract the content from its pages</span>
+<span class="sd">        pdfFile = pdf.PdfFile(&quot;bajohr2024a.pdf&quot;, auto_extract=True)</span>
+<span class="sd">        </span>
+<span class="sd">        ## get the primary language</span>
+<span class="sd">        print(pdfFile.lang)</span>
+<span class="sd">        ## =&gt; &quot;de&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        ## get the label from the second page (in this case a roman numeral)</span>
+<span class="sd">        pdfFile.data[1].page_label</span>
+<span class="sd">        ## =&gt; &quot;II&quot;</span>
+
+<span class="sd">        ## get the text from the third page</span>
+<span class="sd">        pdfFile.data[2].text</span>
+<span class="sd">        </span>
+
+<span class="sd">    :param file: The filepath.</span>
+<span class="sd">    :type file: string</span>
+<span class="sd">    :param auto_extract: Automatically extract the text from all pages in the</span>
+<span class="sd">        file when instantiating the object? This also automatically creates</span>
+<span class="sd">        :py:class:`PdfPage` objects for each page. Default = True</span>
+<span class="sd">    :type auto_extract: boolean</span>
+<span class="sd">    :param use_ocr: Use OCR by default for text extraction? Default = False</span>
+<span class="sd">    :type ose_ocr: boolean</span>
+<span class="sd">    :param fallback_to_ocr: If text extraction without OCR yields little text,</span>
+<span class="sd">        fallback to OCR? Default = True</span>
+<span class="sd">    :type fallback_to_ocr: boolean</span>
+<span class="sd">    :param ocr_dpi: The DPI amount for OCR. Default = 300</span>
+<span class="sd">    :type ocr_dpi: integer</span>
+<span class="sd">    :param ocr_default_lang: The default language for OCR. Default = &quot;eng&quot;</span>
+<span class="sd">    :type ocr_default_lang: string</span>
+<span class="sd">    :param verbose: Print additional information during performance when True.</span>
+<span class="sd">       Default = True</span>
+<span class="sd">    :type verbose: boolean</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="PdfFile.__init__">
+<a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfFile.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">auto_extract</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                 <span class="n">use_ocr</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="n">fallback_to_ocr</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                 <span class="n">ocr_dpi</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
+                 <span class="n">ocr_default_lang</span> <span class="o">=</span> <span class="s1">&#39;eng&#39;</span><span class="p">,</span>
+                 <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="c1">## The filepath</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="n">file</span>
+        <span class="c1">## a sha256 checksum for the file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_checksum</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1">## The PyPDF2.PdfReader object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1">## The number tree of the PDF</span>
+        <span class="c1">## cf. https://www.w3.org/WAI/GL/WCAG20-TECHS/PDF17.html</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_number_tree</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1">## The PDF primary language</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lang</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="c1">## Automatically extract data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auto_extract</span> <span class="o">=</span> <span class="n">auto_extract</span>
+        <span class="c1">## Extraction args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_use_ocr</span> <span class="o">=</span> <span class="n">use_ocr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fallback_to_ocr</span> <span class="o">=</span> <span class="n">fallback_to_ocr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ocr_dpi</span> <span class="o">=</span> <span class="n">ocr_dpi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ocr_default_lang</span> <span class="o">=</span> <span class="n">ocr_default_lang</span>
+        <span class="c1">## The PDF text contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="c1">########################################</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+
+    <span class="c1">########################################</span>
+        
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The filepath to the PDF. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span>
+
+    <span class="nd">@file</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">file_checksum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checksum (SHA256) of the PDF file (read-only). </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_checksum</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">lang</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The language. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lang</span>
+
+    <span class="nd">@lang</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">lang</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lang</span> <span class="o">=</span> <span class="n">langcodes</span><span class="o">.</span><span class="n">standardize_tag</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="c1">## also set OCR default lang (alpha3)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ocr_default_lang</span> <span class="o">=</span> <span class="n">langcodes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lang</span><span class="p">)</span> \
+                                          <span class="o">.</span><span class="n">to_alpha3</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lang</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The data.</span>
+<span class="sd">        This is a list of :py:class:`PdfPage` objects, provided the data has</span>
+<span class="sd">        been extracted (cf. `auto_extract`). </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+
+    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The `PyPDF2.PdfReader` object (read-only). </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">auto_extract</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Do auto-extraction?</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_extract</span>
+
+    <span class="nd">@auto_extract</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">auto_extract</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_auto_extract</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: &#39;</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&#39; is not of type Boolean&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verbose setter/getter (bool)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span>
+
+    <span class="nd">@verbose</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="c1">########################################</span>
+
+<div class="viewcode-block" id="PdfFile.update">
+<a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfFile.update">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates the instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">## (re-)initialize the reader object</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span> <span class="o">=</span> <span class="n">PdfReader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">PdfReadError</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: Invalid PDF file </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: The file &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="si">}</span><span class="s2">&#39; does not exist.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="c1">## Initialize the number tree</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_number_tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span><span class="o">.</span><span class="n">trailer</span><span class="p">[</span><span class="s1">&#39;/Root&#39;</span><span class="p">]</span> \
+                                        <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/PageLabels&#39;</span><span class="p">)</span>
+        <span class="c1">## calculate file checksum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_checksum</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">file_checksum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">,</span>
+                                                      <span class="n">algorithm</span> <span class="o">=</span> <span class="s2">&quot;sha256&quot;</span><span class="p">)</span>
+        <span class="c1">## auto-extract</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_extract</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_text</span><span class="p">()</span>
+        <span class="c1">## set (primary) language if not given</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lang</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lang</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_primary_lang</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="PdfFile.extract_text_without_ocr">
+<a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfFile.extract_text_without_ocr">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract_text_without_ocr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract text from a PDF using PyPDF2.</span>
+<span class="sd">        Returns a list of PdfPage objects. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NO OCR: Processing </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">pages</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NO OCR: Processing page </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/&quot;</span>
+                      <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">pages</span><span class="p">)</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+            <span class="n">page_text</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">extract_text</span><span class="p">()</span>
+            
+            <span class="n">page_ob</span> <span class="o">=</span> <span class="n">PdfPage</span><span class="p">(</span><span class="n">lang</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="p">,</span>
+                              <span class="n">raw_text</span> <span class="o">=</span> <span class="n">page_text</span><span class="p">,</span>
+                              <span class="n">data</span> <span class="o">=</span> <span class="n">page</span><span class="p">,</span>
+                              <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="p">,</span>
+                              <span class="n">page_num</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span>
+                              <span class="n">page_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_page_label</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">page_ob</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">text</span></div>
+
+
+<div class="viewcode-block" id="PdfFile.extract_text_with_ocr">
+<a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfFile.extract_text_with_ocr">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract_text_with_ocr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract text from a PDF using Tesseract OCR.</span>
+<span class="sd">        Returns a list of PdfPage objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># convert pdf to images</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OCR: Processing </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;OCR: Converting pages to images...&quot;</span><span class="p">)</span>
+                
+            <span class="n">images</span> <span class="o">=</span> <span class="n">convert_from_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">,</span>
+                                       <span class="n">dpi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ocr_dpi</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">image</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">images</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OCR: Processing page </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+                    
+                <span class="n">page_text</span> <span class="o">=</span> <span class="n">pytesseract</span><span class="o">.</span><span class="n">image_to_string</span><span class="p">(</span>
+                    <span class="n">image</span><span class="p">,</span>
+                    <span class="n">lang</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ocr_default_lang</span><span class="p">)</span>
+                <span class="n">page_ob</span> <span class="o">=</span> <span class="n">PdfPage</span><span class="p">(</span><span class="n">page_num</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span>
+                                  <span class="n">page_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_page_label</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
+                                  <span class="n">raw_text</span> <span class="o">=</span> <span class="n">page_text</span><span class="p">,</span>
+                                  <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="p">,</span>
+                                  <span class="n">lang</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="p">)</span>
+                <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">page_ob</span><span class="p">)</span>
+                
+            <span class="k">return</span> <span class="n">text</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error extracting text with OCR: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span></div>
+
+
+
+<div class="viewcode-block" id="PdfFile.extract_text">
+<a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfFile.extract_text">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract text from a PDF using direct extraction or OCR.</span>
+<span class="sd">        Returns a list of PdfPage objects. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PDF file not found: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="n">use_ocr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_ocr</span>
+        <span class="c1"># Try direct extraction first</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">use_ocr</span><span class="p">:</span>
+            
+            <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_text_without_ocr</span><span class="p">()</span>
+            
+            <span class="c1">## get the sum of words in result</span>
+            <span class="n">text_words</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">count_words</span><span class="p">(),</span> <span class="n">text</span><span class="p">))</span>
+            <span class="c1"># Fall back to OCR if needed</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fallback_to_ocr</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">text</span> <span class="ow">or</span> <span class="n">text_words</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Direct extraction yielded little text, &quot;</span>
+                      <span class="o">+</span><span class="s2">&quot;falling back to OCR&quot;</span><span class="p">)</span>
+                <span class="n">use_ocr</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">use_ocr</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_text_with_ocr</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">text</span></div>
+
+
+<div class="viewcode-block" id="PdfFile.get_page_label">
+<a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfFile.get_page_label">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_page_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_num</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the label (i.e. the page number according to the PDF number</span>
+<span class="sd">        tree) of a pdf page by index (page_num, zero-based).</span>
+
+<span class="sd">        :param page_num: The page number (zero-based) the label should be</span>
+<span class="sd">            retrieved from.</span>
+<span class="sd">        :type page_num: integer</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_tree</span><span class="p">:</span>
+            <span class="c1"># no number tree, use page numstring instead</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">page_num</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        
+        <span class="n">label_tuples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_tree</span><span class="o">.</span><span class="n">get_object</span><span class="p">()[</span><span class="s1">&#39;/Nums&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">label_tuples</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: Label number tree is malformed.&quot;</span><span class="p">);</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">page_num</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">page_labels</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">label_tuples</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">start_index</span> <span class="o">=</span> <span class="n">label_tuples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">label_dict</span> <span class="o">=</span> <span class="n">label_tuples</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
+            
+            <span class="n">prefix</span> <span class="o">=</span> <span class="n">label_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">start_number</span> <span class="o">=</span> <span class="n">label_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/St&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">style</span> <span class="o">=</span> <span class="n">label_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/S&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">style</span> <span class="o">==</span> <span class="s1">&#39;/D&#39;</span><span class="p">:</span> <span class="c1"># Decimal</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">ret_label</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">start_number</span> <span class="o">+</span> <span class="n">index</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">style</span> <span class="o">==</span> <span class="s1">&#39;/R&#39;</span><span class="p">:</span> <span class="c1"># Uppercase Roman</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">ret_label</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">roman</span><span class="o">.</span><span class="n">toRoman</span><span class="p">(</span><span class="n">start_number</span> <span class="o">+</span> <span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">style</span> <span class="o">==</span> <span class="s1">&#39;/r&#39;</span><span class="p">:</span> <span class="c1"># Lowercase Roman</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">ret_label</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">roman</span><span class="o">.</span><span class="n">toRoman</span><span class="p">(</span><span class="n">start_number</span> <span class="o">+</span> <span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">ret_label</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+            
+            <span class="n">page_labels</span><span class="p">[</span><span class="n">start_index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">ret_label</span><span class="p">,</span> <span class="n">start_number</span><span class="p">)</span>
+
+        <span class="c1">## determine page label</span>
+        <span class="n">page_label</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">page_num</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">start_index</span><span class="p">,</span> <span class="p">(</span><span class="n">prefix</span><span class="p">,</span>
+                          <span class="n">label_func</span><span class="p">,</span>
+                          <span class="n">start_number</span><span class="p">)</span> <span class="ow">in</span> <span class="n">page_labels</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">page_num</span> <span class="o">&gt;=</span> <span class="n">start_index</span><span class="p">:</span>
+                <span class="n">page_label</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">label_func</span><span class="p">(</span><span class="n">page_num</span> <span class="o">-</span> <span class="n">start_index</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">page_label</span></div>
+
+    
+
+<div class="viewcode-block" id="PdfFile.get_primary_lang">
+<a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfFile.get_primary_lang">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_primary_lang</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the primary language of a PDF.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: Cannot detect language. No data!&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">pages_langs</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">lang</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">pages_langs_lst</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pages_langs</span><span class="p">)</span>
+        <span class="n">langs</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">pages_langs_lst</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">langs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">langs</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1">## get most used lang</span>
+            <span class="k">for</span> <span class="n">lang</span> <span class="ow">in</span> <span class="n">langs</span><span class="p">:</span>
+                <span class="n">langs</span><span class="p">[</span><span class="n">lang</span><span class="p">]</span> <span class="o">=</span> <span class="n">pages_langs_lst</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">lang</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">langs</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span>
+                          <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                          <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="PdfFile.get_page">
+<a class="viewcode-back" href="../../generated/bp_text.pdf.html#bp_text.pdf.PdfFile.get_page">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_index</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the `PdfPage` object for the page at index (zero-based).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">page_index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">page_index</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+</div>
+
+
+    
+
+        
+<span class="c1">################################################################################</span>
+<span class="c1">## EOF pdf.py</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ruben Philipp.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
