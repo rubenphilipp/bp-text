@@ -1,37 +1,73 @@
-#+title: bp-text
-#+date: 2025-03-01
+# bp_text
 
 This repository contains a set of tools for algorithmic text generation, being
 written by Fabian Bentrup and Ruben Philipp for one of their current projects.
 
-The project is split into two parts, one written in Python, the other in Common
-Lisp.
+At its core, *bp_text* is capable of processing various text files contained
+in a database (as of now in form of a BibTeX file), analyzing them (e.g. by
+tokenizing the PDF-text) and generating new material from the source text(s).
 
-** Architecture
-
-*** Python
-
-The python ([[file:python/]]) part is mainly responsible for the fundamental text
-and (BibTeX-)database processing.  It should be considered the main part of the
-software.
-
-*** Common Lisp
-
-The Common Lisp ([[file:lisp/]]) part of the software is conceived as an interface
-to thy python part (thus requiring it) and is aimed at providing tools to
-"compositionally" and creatively work with the data provided by the python
-module(s).
+This project has been initially created for the project *the prospect of its own
+undoing* (working title) by Fabian Bentrup and Ruben Philipp.
 
 
-** Details
+## Installation Notes
 
-more to come...
+The easiest way to install this package is by calling:
 
-*NB:* This is still work in progress at a very early stage of development. 
+```shell
+pip install bp_text
+# or with an absolute path
+pip install /path/to/bp-text/python/
+```
 
-* Apropos
+### Models
 
-/BP/ could mean...
+This project uses [spaCy](http://spacy.io) to analyze text.  For more
+information refer to the documentation (`docs/build/html/`).  
+
+
+### Dependencies
+
+All dependencies are listed in the `pyproject.toml` file. 
+
+For OCR you might additionaly want to install *tesseract*
+(https://github.com/tesseract-ocr/tesseract).  
+
+
+## Build Documentation
+
+The documentation of this module is built using [Sphinx](http://sphinx-doc.org).
+In order to rebuild the doc, it is necessary to install the related dependencies
+via:
+
+```shell
+pip install "bp_text[docs]"
+```
+
+Then, in the `docs/` directory, run...
+
+```shell
+build html
+```
+
+...in order to build the HTML documentation. 
+
+It might be necessary to re-build the complete documentation before
+(re-)generating it:
+
+```shell
+make clean
+make html
+```
+
+**NB:** This Sphinx documentation uses `sphinx.ext.autodoc` for the
+documentation of inline commentary.
+
+
+# Apropos
+
+*BP* could mean...
 
 - Bentrup Philipp
 - Binary Poem
@@ -125,5 +161,8 @@ more to come...
 - Bifurcating Puppetry
 - Boundless Passage
 
-
 ...amongst others.
+
+
+[^1]: On MacOS, it's recommended to use pyenv in conjunction with pyenv-venv to
+    manage python versions and virtual environments.

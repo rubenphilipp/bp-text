@@ -184,18 +184,17 @@ Temporary Items
 *.egg-info
 __pycache__/
 
-python/experiments/
+experiments/
 
 ## doc
 
-python/docs/build/*
-!python/docs/build/html/
+docs/build/*
+!docs/build/html/
 
 ################################################################################
 ### BUILD
 
-./build/
-python/build/
+build/
 
 ################################################################################
 ### DRAWIO

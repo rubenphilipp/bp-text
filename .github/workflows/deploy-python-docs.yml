@@ -29,16 +29,22 @@ jobs:
       #     cd python/docs
       #     make clean && make html
 
-      - name: Copy additional docs from main/docs
-        run: |
-          mkdir -p temp/docs
-          cp -r docs/* temp/docs/
+      # - name: Copy additional docs from main/docs
+      #   run: |
+      #     mkdir -p temp/docs
+      #     cp -r docs/* temp/docs/
+
+      # - name: Prepare deployment directory
+      #   run: |
+      #     mkdir -p final-deploy/docs/python
+      #     cp -r temp/docs final-deploy/
+      #     cp -r python/docs/build/html/* final-deploy/docs/python/
+      #     touch final-deploy/docs/.nojekyll
 
       - name: Prepare deployment directory
         run: |
-          mkdir -p final-deploy/docs/python
-          cp -r temp/docs final-deploy/
-          cp -r python/docs/build/html/* final-deploy/docs/python/
+          mkdir -p final-deploy/docs
+          cp -r docs/build/html/* final-deploy/docs/
           touch final-deploy/docs/.nojekyll
 
       - name: Deploy to GitHub Pages

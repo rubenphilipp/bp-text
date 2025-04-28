@@ -1,3 +1,5 @@
 - accessor utility functions in Pool to handle both PdfFile TxtFile objects with
   a unified interface (this is esp. helpful to handle files with and without
   pages)
+- does pool.get().get_data() has an option to just give an int as index instead
+  of a function? that would also be cool
