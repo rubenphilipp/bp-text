@@ -10,6 +10,9 @@ tokenizing the PDF-text) and generating new material from the source text(s).
 This project has been initially created for the project *the prospect of its own
 undoing* (working title) by Fabian Bentrup and Ruben Philipp.
 
+For more information read the docs (at `docs/build/html/` or
+https://rubenphilipp.github.io/bp-text/). 
+
 
 ## Installation Notes
 
@@ -64,6 +67,29 @@ make html
 **NB:** This Sphinx documentation uses `sphinx.ext.autodoc` for the
 documentation of inline commentary.
 
+## Simple example
+
+Here is a simple example for loading a database and creating a *Pool*:
+
+```python
+
+import bp_text
+db = bp_text.database.BibTexDatabase("/users/bp/sources.bib")
+pool = db.make_pool(cache="/tmp/pool_cache")
+    
+# this returns the data according to the given default_get_data_func
+pool.get("chion2018").get_data()
+# => <bp_text.pdf.PdfFile object at 0x453d80ef0>
+
+# you can also use a different method to get the data
+pool.get("chion2018").get_data(bp_text.pool.random_data)
+# => <bp_text.pdf.PdfFile object at 0x453d80ef0>
+
+# this entry ("chion2018") is a PDF, so it contains multiple pages
+pool.get("chion2018").get_data().get_page(20).text()
+# => 'XX FOREWORD\n(the disembodied voice seems to come from (...)
+
+```
 
 # Apropos
 
