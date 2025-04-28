@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bp_text.database &mdash; bp_text 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="bp_text.text" href="bp_text.text.html" />
+    <link rel="prev" title="bp_text.language" href="bp_text.language.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            bp_text
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#modules">Modules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="bp_text.utilities.html">bp_text.utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bp_text.language.html">bp_text.language</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">bp_text.database</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bp_text.database.BibTexDatabase"><code class="docutils literal notranslate"><span class="pre">BibTexDatabase</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bp_text.database.Database"><code class="docutils literal notranslate"><span class="pre">Database</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bp_text.database.convert_latex_umlauts"><code class="docutils literal notranslate"><span class="pre">convert_latex_umlauts()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bp_text.text.html">bp_text.text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bp_text.page.html">bp_text.page</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bp_text.pdf.html">bp_text.pdf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bp_text.txt.html">bp_text.txt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bp_text.pool.html">bp_text.pool</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../notes.html">Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">bp_text</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API</a></li>
+      <li class="breadcrumb-item active">bp_text.database</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/generated/bp_text.database.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-bp_text.database">
+<span id="bp-text-database"></span><h1>bp_text.database<a class="headerlink" href="#module-bp_text.database" title="Link to this heading"></a></h1>
+<p>This module implements database functionality.  Its main purpose is to read
+from a BibTeX file (as database).</p>
+<p>Created: 2025-03-23
+Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
+<p>$$ Last modified:  02:29:46 Sat Apr 26 2025 CEST</p>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.database.convert_latex_umlauts" title="bp_text.database.convert_latex_umlauts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_latex_umlauts</span></code></a>(text)</p></td>
+<td><p>Convert LaTeX umlauts to ASCII umlauts.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.database.BibTexDatabase" title="bp_text.database.BibTexDatabase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BibTexDatabase</span></code></a>(file_path[, split_keywords, ...])</p></td>
+<td><p>Implementation of a BibTeX database.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bp_text.database.Database" title="bp_text.database.Database"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Database</span></code></a>()</p></td>
+<td><p>An abstract superclass for a database.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="bp_text.database.BibTexDatabase">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.database.</span></span><span class="sig-name descname"><span class="pre">BibTexDatabase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_keywords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#BibTexDatabase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.BibTexDatabase" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#bp_text.database.Database" title="bp_text.database.Database"><code class="xref py py-class docutils literal notranslate"><span class="pre">Database</span></code></a></p>
+<p>Implementation of a BibTeX database.  This class provides the user with
+various methods to interact with the stored data.</p>
+<p>NB: This class is limited to read-only use.  In order to modify the contents
+of the actual database it is recommended to use a specialized software (e.g.
+BibDesk).</p>
+<p>The <cite>data</cite> attribute contains the parsed data.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">database</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">BibTexDatabase</span><span class="p">(</span><span class="s2">&quot;db.bib&quot;</span><span class="p">)</span>
+<span class="n">database</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="s2">&quot;adorno1960&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;file&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>string</em>) – The path to the .bib file.</p></li>
+<li><p><strong>split_keywords</strong> (<em>boolean</em>) – When true, split all keywords in the <cite>keywords</cite>
+field into a list, assuming they are separated by a comma (“,”).
+Default = True</p></li>
+<li><p><strong>split_files</strong> (<em>boolean</em>) – When true, split all files in the <cite>file</cite> field into a
+list, assuming they are separated by a semicolon (“;”).  Default = True</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_keywords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#BibTexDatabase.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.BibTexDatabase.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.data">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#bp_text.database.BibTexDatabase.data" title="Link to this definition"></a></dt>
+<dd><p>The parsed data.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.entries">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">entries</span></span><a class="headerlink" href="#bp_text.database.BibTexDatabase.entries" title="Link to this definition"></a></dt>
+<dd><p>The database entries as a <cite>dict</cite>.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the value of the file field of the entry with the citation</span>
+<span class="c1"># key &quot;heinlein2020&quot;</span>
+<span class="n">db</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="s2">&quot;heinlein2020&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields_dict</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<span class="c1"># =&gt; [&#39;heinlein2020 - katastrophen.pdf&#39;]</span>
+
+<span class="c1"># ...which can also be expressed in a shorter form</span>
+<span class="n">db</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="s2">&quot;heinlein2020&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;file&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.find_entries">
+<span class="sig-name descname"><span class="pre">find_entries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#BibTexDatabase.find_entries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.BibTexDatabase.find_entries" title="Link to this definition"></a></dt>
+<dd><p>Find entries matching the search string in the given field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field</strong> (<em>string</em>) – The field name (e.g. “keywords”).</p></li>
+<li><p><strong>search</strong> (<em>string</em>) – The search string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list with items of <cite>&lt;class ‘bibtexparser.model.Entry’&gt;</cite></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.get_entry_by_key">
+<span class="sig-name descname"><span class="pre">get_entry_by_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#BibTexDatabase.get_entry_by_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.BibTexDatabase.get_entry_by_key" title="Link to this definition"></a></dt>
+<dd><p>Get a specific entry by citation-key in the db.</p>
+<p>This is an alias to <cite>self.entries.get(key)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>string</em>) – The citation key (e.g. “&#64;adorno1960”) to look for.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.get_nth_entry">
+<span class="sig-name descname"><span class="pre">get_nth_entry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#BibTexDatabase.get_nth_entry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.BibTexDatabase.get_nth_entry" title="Link to this definition"></a></dt>
+<dd><p>Get the nth entry in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>integer</em>) – Index (zero-based) of the entry in the database.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_keywords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#BibTexDatabase.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.BibTexDatabase.load" title="Link to this definition"></a></dt>
+<dd><p>Load and parse a BibTeX file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>string</em>) – The path to the BibTeX file.</p></li>
+<li><p><strong>split_keywords</strong> (<em>boolean</em>) – When true, split all keywords in the <cite>keywords</cite>
+field into a list, assuming they are separated by a comma (“,”).
+Default = True</p></li>
+<li><p><strong>split_files</strong> (<em>boolean</em>) – When true, split all files in the <cite>file</cite> field into
+a list, assuming they are separated by a semicolon (“;”).
+Default = True</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.make_pool">
+<span class="sig-name descname"><span class="pre">make_pool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_get_data_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdf_auto_extract</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdf_use_ocr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdf_fallback_to_ocr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdf_ocr_dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdf_ocr_default_lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'eng'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#BibTexDatabase.make_pool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.BibTexDatabase.make_pool" title="Link to this definition"></a></dt>
+<dd><p>Create a <code class="xref py py-class docutils literal notranslate"><span class="pre">Pool</span></code> with <code class="xref py py-class docutils literal notranslate"><span class="pre">PoolItem</span></code> objects derived
+from the <cite>BibTexDatabase</cite> entries and the documents linked in the <cite>file</cite>
+fields.</p>
+<p>While creating the <cite>Pool</cite>, this methods also instantiates text holding
+objects for the data linked in <cite>file</cite>.  This could be
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PdfFile</span></code> (for PDFs) or <code class="xref py py-class docutils literal notranslate"><span class="pre">TxtFile</span></code> (for TXTs)
+objects.  When a cache directory is given, this method will try to
+search for pickled objects in the respective directory and tries to load
+them in order to avoid recomputing expensive NLP analyses
+(cf. <code class="xref py py-class docutils literal notranslate"><span class="pre">Text</span></code>).  The search pattern for cache files is
+<cite>[citekey]-[file_checksum]-[bp_text.__version__].pickle</cite>.  Besides
+searching for existing cached files, new cache files will automatically
+be created items not found in the cache directory.</p>
+<p>The paths in <cite>file</cite> are either relative or absolute.  When relative,
+they are converted to absolute paths relative to the location of the
+database file (cf. <cite>self._base_path</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cache</strong> (<em>False</em><em> or </em><em>string</em>) – When <cite>False</cite> caching is disabled. If a directory string
+is given, use this for caching (see above).</p></li>
+<li><p><strong>default_get_data_func</strong> (A function which must be a function taking
+the <cite>PoolItem</cite> as its argument and must return an index to the
+element of <cite>data</cite> which should be retrieved. Set to <cite>None</cite> to use the
+default.) – This sets the default function to get data
+from a <code class="xref py py-class docutils literal notranslate"><span class="pre">PoolItem</span></code> object (cf. respective doc in this
+class).</p></li>
+<li><p><strong>pdf_auto_extract</strong> (<em>boolean</em>) – Automatically extract the text from all pages
+in the file when instantiating the object? This also automatically
+creates <code class="xref py py-class docutils literal notranslate"><span class="pre">PdfPage</span></code> objects for each page. Default = True</p></li>
+<li><p><strong>pdf_use_ocr</strong> – Use OCR by default for text extraction? Default =
+False</p></li>
+<li><p><strong>pdf_fallback_to_ocr</strong> (<em>boolean</em>) – If text extraction without OCR yields little
+text, fallback to OCR? Default = True</p></li>
+<li><p><strong>pdf_ocr_dpi</strong> (<em>integer</em>) – The DPI amount for OCR. Default = 300</p></li>
+<li><p><strong>pdf_ocr_default_lang</strong> (<em>string</em>) – The default language for OCR. Default =
+“eng”</p></li>
+<li><p><strong>verbose</strong> (<em>boolean</em>) – Print additional information during performance when
+True.  Default = True</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bp_text.database.BibTexDatabase.split_fields_by">
+<span class="sig-name descname"><span class="pre">split_fields_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">';'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#BibTexDatabase.split_fields_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.BibTexDatabase.split_fields_by" title="Link to this definition"></a></dt>
+<dd><p>Splits the data/value of all entries in the database (destructively)
+of the given field (e.g. “keywords”) by a given separator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field</strong> (<em>string</em>) – The field name (e.g. “keywords”).</p></li>
+<li><p><strong>separator</strong> (<em>string</em>) – The separating character. Default = “;”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bp_text.database.Database">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.database.</span></span><span class="sig-name descname"><span class="pre">Database</span></span><a class="reference internal" href="../_modules/bp_text/database.html#Database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.Database" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>An abstract superclass for a database.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bp_text.database.Database.load">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#Database.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.Database.load" title="Link to this definition"></a></dt>
+<dd><p>Load a database from a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>string</em>) – The path to the database file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bp_text.database.convert_latex_umlauts">
+<span class="sig-prename descclassname"><span class="pre">bp_text.database.</span></span><span class="sig-name descname"><span class="pre">convert_latex_umlauts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/database.html#convert_latex_umlauts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.database.convert_latex_umlauts" title="Link to this definition"></a></dt>
+<dd><p>Convert LaTeX umlauts to ASCII umlauts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>string</em>) – Text to convert.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="bp_text.language.html" class="btn btn-neutral float-left" title="bp_text.language" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bp_text.text.html" class="btn btn-neutral float-right" title="bp_text.text" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ruben Philipp.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
