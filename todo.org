@@ -5,3 +5,4 @@
   in order to unify file handling
   - also add ABC
   - use page_label = None to signify that no page_label is to be used
+- use pypdf instead of pypdf2

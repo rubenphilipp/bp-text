@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:44:55 Fri Apr 25 2025 CEST
+$$ Last modified:  01:19:53 Tue Apr 29 2025 CEST
 """
 
 import os
@@ -254,6 +254,11 @@ class PdfFile:
 
     @lang.setter
     def lang(self, val):
+        # fallback to "en" if no lang is set
+        # TODO: is there a better solution?
+        # RP  Tue Apr 29 00:55:31 2025
+        if not val:
+            val = "en"
         self._lang = langcodes.standardize_tag(val)
         ## also set OCR default lang (alpha3)
         self._ocr_default_lang = langcodes.get(self._lang) \
@@ -344,7 +349,15 @@ class PdfFile:
         if self._verbose:
             print(f"NO OCR: Processing {self._file}:")
 
-        for i, page in enumerate(self.reader.pages):
+        # workaround for now (using try/catch)
+        # TODO: need to update to pypdf
+        # RP  Tue Apr 29 01:13:42 2025
+        try:
+            pages = self.reader.pages
+        except KeyError as e:
+            print("Error with PDF...")
+            return ""
+        for i, page in enumerate(pages):
             if self._verbose:
                 print(f"NO OCR: Processing page {i+1}/"
                       + f"{len(self.reader.pages)}...")
@@ -437,43 +450,51 @@ class PdfFile:
             # no number tree, use page numstring instead
             return str(page_num + 1)
         
-        label_tuples = self._number_tree.get_object()['/Nums']
-        if len(label_tuples) % 2 != 0:
-            print("Error: Label number tree is malformed.");
-            return str(page_num + 1)
+        label_tuples = self._number_tree.get_object().get('/Nums')
 
-        page_labels = {}
-        for i in range(0, len(label_tuples), 2):
-            start_index = label_tuples[i]
-            label_dict = label_tuples[i + 1].get_object()
+        if label_tuples:
+        
+            if len(label_tuples) % 2 != 0:
+                print("Error: Label number tree is malformed.");
+                return str(page_num + 1)
+
+            page_labels = {}
+            for i in range(0, len(label_tuples), 2):
+                start_index = label_tuples[i]
+                label_dict = label_tuples[i + 1].get_object()
+                
+                prefix = label_dict.get('P', '')
+                start_number = label_dict.get('/St', 1)
+                style = label_dict.get('/S')
+                
+                if style == '/D': # Decimal
+                    def ret_label(index):
+                        return str(start_number + index)
+                elif style == '/R': # Uppercase Roman
+                    def ret_label(index):
+                        return roman.toRoman(start_number + index).upper()
+                elif style == '/r': # Lowercase Roman
+                    def ret_label(index):
+                        return roman.toRoman(start_number + index).lower()
+                else:
+                    def ret_label(index):
+                        return ""
+                    
+                page_labels[start_index] = (prefix, ret_label, start_number)
+                    
+                ## determine page label
+                page_label = str(page_num + 1)
+                for start_index, (prefix,
+                                  label_func,
+                                  start_number) in page_labels.items():
+                    if page_num >= start_index:
+                        page_label = prefix + label_func(page_num
+                                                             - start_index)
+        # edge case: non label mapping defined
+        # RP  Tue Apr 29 00:52:36 2025
+        else:
+            page_label = str(1 + page_num)
             
-            prefix = label_dict.get('P', '')
-            start_number = label_dict.get('/St', 1)
-            style = label_dict.get('/S')
-
-            if style == '/D': # Decimal
-                def ret_label(index):
-                    return str(start_number + index)
-            elif style == '/R': # Uppercase Roman
-                def ret_label(index):
-                    return roman.toRoman(start_number + index).upper()
-            elif style == '/r': # Lowercase Roman
-                def ret_label(index):
-                    return roman.toRoman(start_number + index).lower()
-            else:
-                def ret_label(index):
-                    return ""
-            
-            page_labels[start_index] = (prefix, ret_label, start_number)
-
-        ## determine page label
-        page_label = str(page_num + 1)
-        for start_index, (prefix,
-                          label_func,
-                          start_number) in page_labels.items():
-            if page_num >= start_index:
-                page_label = prefix + label_func(page_num - start_index)
-
         return page_label
     
 
