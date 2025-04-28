@@ -4,7 +4,7 @@ This module implements the page class.
 Created: 2025-03-28
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  19:00:29 Fri Apr 25 2025 CEST
+$$ Last modified:  00:31:24 Tue Apr 29 2025 CEST
 """
 
 from abc import ABC, abstractmethod
@@ -163,7 +163,11 @@ class Page(ABC):
             lang = detector.detect_language_of(self._raw_text)
         else:
             return False
-        langcode = lang.iso_code_639_1.name
+        if lang == None:
+            # fallback to en
+            langcode = "en"
+        else:
+            langcode = lang.iso_code_639_1.name
         if set_lang:
             self.lang = langcode
         return langcode

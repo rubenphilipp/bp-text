@@ -4,3 +4,4 @@
 - maybe add a TxtPage class (even though there will just be one page per file)
   in order to unify file handling
   - also add ABC
+  - use page_label = None to signify that no page_label is to be used
