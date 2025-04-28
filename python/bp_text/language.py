@@ -4,7 +4,7 @@ This module contains functionality dealing with languages (e.g. detection).
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  18:46:16 Fri Apr 25 2025 CEST
+$$ Last modified:  15:36:10 Mon Apr 28 2025 CEST
 """
 
 from lingua import Language, LanguageDetectorBuilder
