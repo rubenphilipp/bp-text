@@ -103,7 +103,7 @@ purpose is to facilitate interacting with a corpus of texts and the metadata
 provided by the BibTex entries.</p>
 <p>Created: 2025-04-25
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  01:56:37 Sat Apr 26 2025 CEST</p>
+<p>$$ Last modified:  22:31:58 Mon Apr 28 2025 CEST</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -208,25 +208,28 @@ to always return the first element of the <cite>data</cite>.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bp_text.pool.PoolItem.get_data">
-<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#PoolItem.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.PoolItem.get_data" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pool.html#PoolItem.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pool.PoolItem.get_data" title="Link to this definition"></a></dt>
 <dd><p>This function returns a single data object from the data list instead
-of the data list itself.  The <cite>func</cite> argument – which must be a
+of the data list itself.  The <cite>index</cite> argument – which must be a
 function taking the <cite>PoolItem</cite> as its argument and must return an index
 to the element of <cite>data</cite> which should be retrieved – specifies which
 element should be returned.  By default, it always returns the first
 item of the <cite>data</cite> list.  There are two more functions specified, which
 could also be used: <a class="reference internal" href="#bp_text.pool.random_data" title="bp_text.pool.random_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">random_data()</span></code></a> and <a class="reference internal" href="#bp_text.pool.cycle_data" title="bp_text.pool.cycle_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">cycle_data()</span></code></a>.</p>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># this cycles through the data by using the `cycle_data` function</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># this is an example using a function instead of an integer.  the</span>
+<span class="c1"># function cycles through the data by using the pre-defined</span>
+<span class="c1"># `cycle_data` function.</span>
+<span class="c1"># NB: `pitm` here is a `PoolItem` object</span>
 <span class="n">pitm</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">cycle_data</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>func</strong> (<em>function</em>) – A function which must be a function taking the <cite>PoolItem</cite>
-as its argument and must return an index to the element of <cite>data</cite>
-which should be retrieved.  Default = None which falls back to the
-<cite>self._default_get_data_func</cite>.</p>
+<dd class="field-odd"><p><strong>index</strong> (<em>function</em>) – Either an integer which is a (zero-based) index to an
+element in <cite>data</cite>, or a function which must be a function taking the
+<cite>PoolItem</cite> as its argument and must return an index to the element
+of <cite>data</cite> which should be retrieved.  Default = 0.</p>
 </dd>
 </dl>
 </dd></dl>

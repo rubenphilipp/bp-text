@@ -8,7 +8,7 @@ provided by the BibTex entries.
 Created: 2025-04-25
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  03:06:28 Sat Apr 26 2025 CEST
+$$ Last modified:  22:36:31 Mon Apr 28 2025 CEST
 
 """
 
@@ -64,12 +64,15 @@ class PoolItem:
        :py:class:`PdfFile`).
     :type data: list
     :param default_get_data_func: The default function to retrieve a data object
-       via :py:func:`get_data` (cf. :py:func:`get_data`).
+       via :py:func:`get_data` (cf. :py:func:`get_data`).  This could also be
+       an integer which is an index to an element in the `data` attribute of
+       the `PoolItem`. 
        Default = None, which falls back to the default which causes `get_data`
        to always return the first element of the `data`.
-    :type default_get_data_func: A function which must be a function taking the
-       `PoolItem` as its argument and must return an index to the element of
-       `data` which should be retrieved. Set to `None` to use the default. 
+    :type default_get_data_func: Either an integer or a function which must be a
+       function taking the `PoolItem` as its argument and must return an index
+       to the element of `data` which should be retrieved. Set to `None` to use
+       the default.
 
     """
     def __init__(self,
@@ -153,14 +156,16 @@ class PoolItem:
             self._default_get_data_func = val
         elif val == None:
             self._default_get_data_func = (lambda ignore: 0)
+        elif isinstance(val, int):
+            self._default_get_data_func = val
         else:
             raise ValueError("PoolItem.default_get_data_func must be None or "
                              + "a function. ")
         
 
-    def get_data(self, func = None):
+    def get_data(self, index = 0):
         """This function returns a single data object from the data list instead
-        of the data list itself.  The `func` argument -- which must be a
+        of the data list itself.  The `index` argument -- which must be a
         function taking the `PoolItem` as its argument and must return an index
         to the element of `data` which should be retrieved -- specifies which
         element should be returned.  By default, it always returns the first
@@ -169,21 +174,34 @@ class PoolItem:
 
         Example::
 
-           # this cycles through the data by using the `cycle_data` function
+           # this is an example using a function instead of an integer.  the
+           # function cycles through the data by using the pre-defined
+           # `cycle_data` function.
+           # NB: `pitm` here is a `PoolItem` object
            pitm.get_data(cycle_data)
         
 
-        :param func: A function which must be a function taking the `PoolItem`
-            as its argument and must return an index to the element of `data`
-            which should be retrieved.  Default = None which falls back to the
-            `self._default_get_data_func`. 
-        :type func: function
+        :param index: Either an integer which is a (zero-based) index to an
+            element in `data`, or a function which must be a function taking the
+            `PoolItem` as its argument and must return an index to the element
+            of `data` which should be retrieved.  Default = 0.
+        :type index: int or function
 
         """
-        if func is None:
-            func = self._default_get_data_func
+        if (not isinstance(index, int)) and callable(index):
+            # get value from function
+            next_index = index(self)
+        elif isinstance(index, int):
+            next_index = index
+        elif val == None:
+            # fallback to index 0
+            next_index = 0
+        else:
+            raise ValueError("PoolItem.get_data(): index is neither of type "
+                             + "int nor a function.")
+
             
-        next_index = func(self) % len(self.data)
+        next_index = next_index % len(self.data)
         return self.data[next_index]
             
         

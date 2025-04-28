@@ -8,4 +8,4 @@ import bp_text.txt
 import bp_text.pool
 
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
