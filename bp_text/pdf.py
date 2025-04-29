@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  01:19:53 Tue Apr 29 2025 CEST
+$$ Last modified:  12:30:36 Tue Apr 29 2025 CEST
 """
 
 import os
@@ -14,9 +14,10 @@ from pathlib import Path
 from abc import ABC, abstractmethod
 
 from lingua import Language, LanguageDetectorBuilder
-import PyPDF2
-from PyPDF2 import PdfReader
-from PyPDF2.errors import PdfReadError
+
+from pypdf import PageObject
+from pypdf import PdfReader
+from pypdf.errors import PdfReadError
 from pdf2image import convert_from_path
 import pytesseract
 import roman
@@ -35,10 +36,12 @@ class PdfPage(Page):
     reference to a page in a PDF document, usually related to a
     :py:class:`bp_text.pdf.PdfFile` object.
 
-    The data attribute is also capable of holding a PyPDF2.PageObject
+    The data attribute is also capable of holding a pypdf.PageObject
     (optional), while the text attribute can contain text retrieved from the
     file (e.g. via OCR or direct extraction --
     cf. :py:func:`PdfPage.extract_text` or :py:func:`PdfFile.extract_text`).
+    Please note that the pypdf.PageObject instances in the `data` attribute will
+    **not** be (re-)stored when (un-)pickling the PdfPage. 
 
     :param page_num: The page number (zero-based) of the page in the related
         file.
@@ -48,8 +51,8 @@ class PdfPage(Page):
         differ from the `page_num` (e.g. by varying the start index being a
         roman instead of an arabic numeral.
     :type page_label: string
-    :param data: A `PyPDF2.PageObject`. Default = None
-    :type data: A `PyPDF2.PageObject`
+    :param data: A `pypdf.PageObject`. Default = None
+    :type data: A `pypdf.PageObject`
     :param raw_text: Holds the actual raw text of the page, extracted from the
        data. 
     :type raw_text: string
@@ -66,7 +69,7 @@ class PdfPage(Page):
     def __init__(self,
                  page_num = None,
                  page_label = None,
-                 ## here, data holds a PyPDF2.PageObject (or None)
+                 ## here, data holds a pypdf.PageObject (or None)
                  data = None,
                  raw_text = "",
                  lang = "",
@@ -86,6 +89,17 @@ class PdfPage(Page):
         self.data = data
 
     ########################################
+    # remove data when pickling
+    # RP  Tue Apr 29 12:30:09 2025
+
+    def __getstate__(self):
+        """Remove unpicklable PageObject before pickling."""
+        state = self.__dict__.copy()
+        state['_data'] = None  # Remove pypdf.PageObject
+        return state
+
+
+    ########################################
 
     @property
     def data(self):
@@ -99,9 +113,9 @@ class PdfPage(Page):
         """
         Set the `data` value of the object. 
         """
-        ## test if data is a PyPDF2 PageObject
-        if val != None and not isinstance(val, PyPDF2.PageObject):
-            print(f"Error: The value for data is not a PyPDF2.PageObject, but "
+        ## test if data is a pypdf PageObject
+        if val != None and not isinstance(val, PageObject):
+            print(f"Error: The value for data is not a pypdf.PageObject, but "
                   + "a {type(val)}")
             return False
         self._data = val
@@ -206,7 +220,7 @@ class PdfFile:
         self._file = file
         ## a sha256 checksum for the file
         self._file_checksum = None
-        ## The PyPDF2.PdfReader object
+        ## The pypdf.PdfReader object
         self._reader = None
         ## The number tree of the PDF
         ## cf. https://www.w3.org/WAI/GL/WCAG20-TECHS/PDF17.html
@@ -225,6 +239,29 @@ class PdfFile:
         self._verbose = verbose
         ########################################
         self.update()
+
+    ########################################
+    # remove pypdf objects before pickling
+    # RP  Tue Apr 29 11:54:22 2025
+
+    def __getstate__(self):
+        """Customize pickling: remove unpicklable attributes."""
+        state = self.__dict__.copy()
+        state['_reader'] = None  # Exclude reader
+        state['_number_tree'] = None
+        # Remove unpicklable PageObject references from each PdfPage
+        if state['_data']:
+            for page in state['_data']:
+                page.data = None
+                
+        return state
+
+    def __setstate__(self, state):
+        """Customize unpickling: restore state and update reader."""
+        self.__dict__.update(state)
+        if self._file:
+            self.set_reader()  # Recreate PdfReader TODO
+    
 
     ########################################
         
@@ -279,7 +316,7 @@ class PdfFile:
 
     @property
     def reader(self):
-        """The `PyPDF2.PdfReader` object (read-only). 
+        """The `pypdf.PdfReader` object (read-only). 
         """
         return self._reader
 
@@ -310,21 +347,37 @@ class PdfFile:
 
     ########################################
 
-    def update(self):
-        """Updates the instance.
+    def set_reader(self):
+        """This method sets the reader slot to the file.
+
+        This was previously done in the update method, but since pypdf objects
+        (just as the reader) cannot be pickled, we seperate this process here
+        in order to be at least able to reconstruct the reader when unpickling
+        a PdfFile object. 
         """
-        ## (re-)initialize the reader object
-        if os.path.isfile(self._file):
+        if self._file and os.path.isfile(self._file):
             try:
                 self._reader = PdfReader(self._file)
             except PdfReadError:
                 print(f"Error: Invalid PDF file {self._file}")
+                return False
                 
             else:
-                pass
+                return True
         else:
-            print(f"Error: The file '{self._file}' does not exist.")
+            # the file does not exist
             return False
+            
+
+    def update(self):
+        """Updates the instance.
+        """
+        ## (re-)initialize the reader object
+        if not self.set_reader():
+            print(f"PdfFile.update(): Error: The file '{self._file}' does not "
+                  + "exist or could not be read.")
+            return False
+        
         ## Initialize the number tree
         self._number_tree = self._reader.trailer['/Root'] \
                                         .get('/PageLabels')
@@ -341,7 +394,7 @@ class PdfFile:
 
     def extract_text_without_ocr(self):
         """
-        Extract text from a PDF using PyPDF2.
+        Extract text from a PDF using pypdf.
         Returns a list of PdfPage objects. 
         """
         text = []
