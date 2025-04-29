@@ -82,7 +82,7 @@
 <span class="sd">Created: 2025-04-25</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  22:31:58 Mon Apr 28 2025 CEST</span>
+<span class="sd">$$ Last modified:  22:36:31 Mon Apr 28 2025 CEST</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -146,12 +146,15 @@
 <span class="sd">       :py:class:`PdfFile`).</span>
 <span class="sd">    :type data: list</span>
 <span class="sd">    :param default_get_data_func: The default function to retrieve a data object</span>
-<span class="sd">       via :py:func:`get_data` (cf. :py:func:`get_data`).</span>
+<span class="sd">       via :py:func:`get_data` (cf. :py:func:`get_data`).  This could also be</span>
+<span class="sd">       an integer which is an index to an element in the `data` attribute of</span>
+<span class="sd">       the `PoolItem`. </span>
 <span class="sd">       Default = None, which falls back to the default which causes `get_data`</span>
 <span class="sd">       to always return the first element of the `data`.</span>
-<span class="sd">    :type default_get_data_func: A function which must be a function taking the</span>
-<span class="sd">       `PoolItem` as its argument and must return an index to the element of</span>
-<span class="sd">       `data` which should be retrieved. Set to `None` to use the default. </span>
+<span class="sd">    :type default_get_data_func: Either an integer or a function which must be a</span>
+<span class="sd">       function taking the `PoolItem` as its argument and must return an index</span>
+<span class="sd">       to the element of `data` which should be retrieved. Set to `None` to use</span>
+<span class="sd">       the default.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="PoolItem.__init__">
@@ -269,7 +272,7 @@
 <span class="sd">            element in `data`, or a function which must be a function taking the</span>
 <span class="sd">            `PoolItem` as its argument and must return an index to the element</span>
 <span class="sd">            of `data` which should be retrieved.  Default = 0.</span>
-<span class="sd">        :type index: function</span>
+<span class="sd">        :type index: int or function</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">int</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>

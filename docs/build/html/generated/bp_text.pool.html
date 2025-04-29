@@ -103,7 +103,7 @@ purpose is to facilitate interacting with a corpus of texts and the metadata
 provided by the BibTex entries.</p>
 <p>Created: 2025-04-25
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  22:31:58 Mon Apr 28 2025 CEST</p>
+<p>$$ Last modified:  22:36:31 Mon Apr 28 2025 CEST</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -181,10 +181,13 @@ e.g. <code class="xref py py-class docutils literal notranslate"><span class="pr
 entry.</p></li>
 <li><p><strong>data</strong> (<em>list</em>) – A list holding one or more text holding objects (e.g. a
 <code class="xref py py-class docutils literal notranslate"><span class="pre">PdfFile</span></code>).</p></li>
-<li><p><strong>default_get_data_func</strong> (A function which must be a function taking the
-<cite>PoolItem</cite> as its argument and must return an index to the element of
-<cite>data</cite> which should be retrieved. Set to <cite>None</cite> to use the default.) – The default function to retrieve a data object
-via <a class="reference internal" href="#bp_text.pool.PoolItem.get_data" title="bp_text.pool.PoolItem.get_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_data()</span></code></a> (cf. <a class="reference internal" href="#bp_text.pool.PoolItem.get_data" title="bp_text.pool.PoolItem.get_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_data()</span></code></a>).
+<li><p><strong>default_get_data_func</strong> (Either an integer or a function which must be a
+function taking the <cite>PoolItem</cite> as its argument and must return an index
+to the element of <cite>data</cite> which should be retrieved. Set to <cite>None</cite> to use
+the default.) – The default function to retrieve a data object
+via <a class="reference internal" href="#bp_text.pool.PoolItem.get_data" title="bp_text.pool.PoolItem.get_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_data()</span></code></a> (cf. <a class="reference internal" href="#bp_text.pool.PoolItem.get_data" title="bp_text.pool.PoolItem.get_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_data()</span></code></a>).  This could also be
+an integer which is an index to an element in the <cite>data</cite> attribute of
+the <cite>PoolItem</cite>. 
 Default = None, which falls back to the default which causes <cite>get_data</cite>
 to always return the first element of the <cite>data</cite>.</p></li>
 </ul>
@@ -226,7 +229,7 @@ could also be used: <a class="reference internal" href="#bp_text.pool.random_dat
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>index</strong> (<em>function</em>) – Either an integer which is a (zero-based) index to an
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em><em> or </em><em>function</em>) – Either an integer which is a (zero-based) index to an
 element in <cite>data</cite>, or a function which must be a function taking the
 <cite>PoolItem</cite> as its argument and must return an index to the element
 of <cite>data</cite> which should be retrieved.  Default = 0.</p>
