@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  12:30:36 Tue Apr 29 2025 CEST
+$$ Last modified:  14:01:02 Tue Apr 29 2025 CEST
 """
 
 import os
@@ -414,7 +414,15 @@ class PdfFile:
             if self._verbose:
                 print(f"NO OCR: Processing page {i+1}/"
                       + f"{len(self.reader.pages)}...")
-            page_text = page.extract_text()
+
+            # since some pdf files might contain corrupted or encrypted data,
+            # we need to use this fallback
+            # RP  Tue Apr 29 14:01:01 2025
+            try:
+                page_text = page.extract_text()
+            except Exception as e:
+                print(f"Failed to extract text from page {i}: {e}. ")
+                page_text = ""
             
             page_ob = PdfPage(lang = self.lang,
                               raw_text = page_text,
