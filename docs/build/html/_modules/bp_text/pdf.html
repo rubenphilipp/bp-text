@@ -78,7 +78,7 @@
 <span class="sd">Created: 2025-03-27</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  12:30:36 Tue Apr 29 2025 CEST</span>
+<span class="sd">$$ Last modified:  14:01:02 Tue Apr 29 2025 CEST</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -510,7 +510,15 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NO OCR: Processing page </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/&quot;</span>
                       <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">pages</span><span class="p">)</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
-            <span class="n">page_text</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">extract_text</span><span class="p">()</span>
+
+            <span class="c1"># since some pdf files might contain corrupted or encrypted data,</span>
+            <span class="c1"># we need to use this fallback</span>
+            <span class="c1"># RP  Tue Apr 29 14:01:01 2025</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">page_text</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">extract_text</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to extract text from page </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">. &quot;</span><span class="p">)</span>
+                <span class="n">page_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
             
             <span class="n">page_ob</span> <span class="o">=</span> <span class="n">PdfPage</span><span class="p">(</span><span class="n">lang</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="p">,</span>
                               <span class="n">raw_text</span> <span class="o">=</span> <span class="n">page_text</span><span class="p">,</span>
