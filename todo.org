@@ -6,10 +6,10 @@
   - also add ABC
   - use page_label = None to signify that no page_label is to be used
 - use pypdf instead of pypdf2
-- return data index as second value in PoolItem.get_data()
 - maybe create a Fragment or TextFragment class
   - reference to PoolItem
   - PoolItem data index
   - source page_label
   - text (could be anything; word/token, sentence)
-  - include doc/spaCy annotation??
+    - should be a spaCy token or similar (this facilitates further extraction
+      of data from e.g. the token)
