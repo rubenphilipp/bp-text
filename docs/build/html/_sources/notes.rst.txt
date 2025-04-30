@@ -61,6 +61,26 @@ should be added.  Make sure to tick the "Is Default" checkbox.
 |Langid  |Textual       |Y      |
 +--------+--------------+-------+
 
+Zotero and BibDesk
+^^^^^^^^^^^^^^^^^^
+
+It is quite simple to copy Zotero (https://www.zotero.org) bibliography data to
+BibDesk.  In order to export Zotero data to Bib(La)TeX, first install the
+`Better BibTeX` (https://retorque.re/zotero-better-bibtex/) extension in Zotero.
+Then, for example, select a few entries in your Zotero database and select "copy
+BibLaTeX to clipboard" in the "Better BibTeX" context menu (via right-click).
+Then, you can simply paste your clipboard to your BibDesk library.
+
+Better BibTeX automatically includes the paths to the PDFs attached to a Zotero
+item in the `file` field.  Multiple files are separated by a semicolon.  As this
+is also the standard way `bp_text` handles files, nothing more needs to be done.
+If you want to share your BibDesk database you might want to copy the
+attachments from the Zotero storage location to a directory relative to the path
+of the BibDesk (.bib) file.  Then you need to adjust the `file` field in the
+respective entries accordingly.  A relative path is completely sufficient here
+as `bp_text` searches for files relative to the database file when no absolute
+path is given (e.g. when calling `BibtexDatabase.make_pool()`).  
+
 
 
 Languages
