@@ -222,6 +222,9 @@ be used as a noun in the context of the respective text:</p>
              <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">selected_token</span><span class="o">.</span><span class="n">doc</span><span class="p">[</span><span class="n">selected_token</span><span class="o">.</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This is the prev token: &quot;</span>
              <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">selected_token</span><span class="o">.</span><span class="n">doc</span><span class="p">[</span><span class="n">selected_token</span><span class="o">.</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+<span class="c1"># you can also extract the whole sentence the token is part of</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This is the sentence:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">selected_token</span><span class="o">.</span><span class="n">sent</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>

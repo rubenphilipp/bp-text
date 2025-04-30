@@ -166,4 +166,7 @@ be used as a noun in the context of the respective text:
                 + f"'{selected_token.doc[selected_token.i + 1]}'")
    print("This is the prev token: "
                 + f"'{selected_token.doc[selected_token.i - 1]}'")
+   # you can also extract the whole sentence the token is part of
+   print("This is the sentence:")
+   print(f"'{selected_token.sent.text}'")
 
