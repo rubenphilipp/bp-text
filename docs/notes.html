@@ -49,6 +49,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Notes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#working-with-bibtex-files">Working with BibTeX files</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#some-notes-on-bibdesk">Some notes on BibDesk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#zotero-and-bibdesk">Zotero and BibDesk</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#languages">Languages</a></li>
@@ -141,6 +142,24 @@ Default</p></th>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="zotero-and-bibdesk">
+<h3>Zotero and BibDesk<a class="headerlink" href="#zotero-and-bibdesk" title="Link to this heading"></a></h3>
+<p>It is quite simple to copy Zotero (<a class="reference external" href="https://www.zotero.org">https://www.zotero.org</a>) bibliography data to
+BibDesk.  In order to export Zotero data to Bib(La)TeX, first install the
+<cite>Better BibTeX</cite> (<a class="reference external" href="https://retorque.re/zotero-better-bibtex/">https://retorque.re/zotero-better-bibtex/</a>) extension in Zotero.
+Then, for example, select a few entries in your Zotero database and select “copy
+BibLaTeX to clipboard” in the “Better BibTeX” context menu (via right-click).
+Then, you can simply paste your clipboard to your BibDesk library.</p>
+<p>Better BibTeX automatically includes the paths to the PDFs attached to a Zotero
+item in the <cite>file</cite> field.  Multiple files are separated by a semicolon.  As this
+is also the standard way <cite>bp_text</cite> handles files, nothing more needs to be done.
+If you want to share your BibDesk database you might want to copy the
+attachments from the Zotero storage location to a directory relative to the path
+of the BibDesk (.bib) file.  Then you need to adjust the <cite>file</cite> field in the
+respective entries accordingly.  A relative path is completely sufficient here
+as <cite>bp_text</cite> searches for files relative to the database file when no absolute
+path is given (e.g. when calling <cite>BibtexDatabase.make_pool()</cite>).</p>
 </section>
 </section>
 <section id="languages">
