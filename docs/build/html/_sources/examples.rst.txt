@@ -158,3 +158,12 @@ be used as a noun in the context of the respective text:
                print(f"'{itm["token"]}'")
                print(f"Page Label: {itm["page_label"]}")
 
+   # get tokens around the selected token.
+   # "Austin1992" is a citekey in the results dict
+   selected_token = results["Austin1992"][2]["token"]
+   print(f"This is the token: '{selected_token}'")
+   print("This is the next token: " +
+                f"'{selected_token.doc[selected_token.i + 1]}'")
+   print("This is the prev token: '"
+                + f"{selected_token.doc[selected_token.i - 1]}'")
+
