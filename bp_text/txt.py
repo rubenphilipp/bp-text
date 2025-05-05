@@ -4,7 +4,7 @@ This module implements functionality for TXT files.
 Created: 2025-03-29
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  22:37:52 Mon May  5 2025 CEST
+$$ Last modified:  23:32:00 Mon May  5 2025 CEST
 """
 
 import os
@@ -18,6 +18,59 @@ from . import text
 
 from .file import File
 from .page import Page
+
+################################################################################
+
+class TxtPage(Page):
+    """This is a class implementation of a TXT page.  Usually TXT file (.txt) only
+    contain a single page.  Anyway, esp. in order to comply with the structure
+    of `PdfFile` objects, `TxtFile` objects also use (usually) one `TxtPage`
+    to store the (analyzed/tokenized) contents).
+
+    The `data` attribute (read-only) is an alias to the `raw_text` attribute of
+    the respective page while the `text` attribute contains the
+    analyzed/tokenized text.
+
+    :param page_num: The page number (zero-based) of the page in the related
+        file.
+    :type page_num: int
+    :param page_label: The actual page label of the page in the PDF file.
+        This will be used e.g. for citations in generated text. 
+    :type page_label: string
+    :param raw_text: Holds the actual raw text of the page, extracted from the
+       data. 
+    :type raw_text: string
+    :param lang: The language code of the primary language in the ISO-639-1 form
+       (e.g. "de" or "en"). 
+    :type lang: string
+    :param verbose: Print additional information during performance when True.
+       Default = True
+    :type verbose: boolean
+
+    """
+    def __init(self,
+               page_num = None,
+               page_label = None,
+               raw_text = "",
+               lang = "",
+               verbose = True):
+        super(TxtPage, self).__init__(page_num = page_num,
+                                      page_label = page_label,
+                                      data = None,
+                                      raw_text = raw_text,
+                                      lang = lang,
+                                      verbose = verbose)
+
+    ########################################
+
+    @property
+    def data(self):
+        """Getter (alias) for the `raw_text` (read-only). 
+        """
+        return self._raw_text
+
+    
+        
 
 
 ################################################################################
