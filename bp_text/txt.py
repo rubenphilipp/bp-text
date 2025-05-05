@@ -4,7 +4,7 @@ This module implements functionality for TXT files.
 Created: 2025-03-29
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  22:23:58 Mon May  5 2025 CEST
+$$ Last modified:  22:37:52 Mon May  5 2025 CEST
 """
 
 import os
@@ -50,11 +50,13 @@ class TxtFile(File):
                  file: str,
                  lang = "",
                  data = None):
-        super(TxtFile, self).__init__(file,
-                                      data)
         self._lang = lang
         # this will be a Text object. empty for now
         self._text = None
+        ########################################
+        super(TxtFile, self).__init__(file,
+                                      data)
+        ########################################
         self.update()
 
     @File.file.setter

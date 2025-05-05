@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  14:01:02 Tue Apr 29 2025 CEST
+$$ Last modified:  22:37:26 Mon May  5 2025 CEST
 """
 
 import os
@@ -23,6 +23,7 @@ import pytesseract
 import roman
 import langcodes
 
+from .file import File
 from .page import Page
 from . import language
 from . import utilities
@@ -163,7 +164,7 @@ class PdfPage(Page):
 
 ################################################################################
 
-class PdfFile:
+class PdfFile(File):
     """
     This is a class implementation of a PDF file.  A PDF file object is related
     to an actual PDF file (e.g. retrieved from a database entry).  Its methods
@@ -216,10 +217,6 @@ class PdfFile:
                  ocr_dpi = 300,
                  ocr_default_lang = 'eng',
                  verbose=True):
-        ## The filepath
-        self._file = file
-        ## a sha256 checksum for the file
-        self._file_checksum = None
         ## The pypdf.PdfReader object
         self._reader = None
         ## The number tree of the PDF
@@ -234,9 +231,10 @@ class PdfFile:
         self._fallback_to_ocr = fallback_to_ocr
         self._ocr_dpi = ocr_dpi
         self._ocr_default_lang = ocr_default_lang
-        ## The PDF text contents
-        self._data = None
-        self._verbose = verbose
+        ########################################
+        super(PdfFile, self).__init__(file = file,
+                                      data = None,
+                                      verbose = verbose)
         ########################################
         self.update()
 
@@ -265,22 +263,10 @@ class PdfFile:
 
     ########################################
         
-    @property
-    def file(self):
-        """The filepath to the PDF. 
-        """
-        return self._file
-
-    @file.setter
+    @File.file.setter
     def file(self, val):
-        self._file = val
+        super(PdfFile, self.__class__).file.fset(self, val)
         self.update()
-
-    @property
-    def file_checksum(self):
-        """Checksum (SHA256) of the PDF file (read-only). 
-        """
-        return self._file_checksum
 
 
     @property
@@ -310,7 +296,7 @@ class PdfFile:
         """
         return self._data
 
-    @data.setter
+    @File.data.setter
     def data(self, val):
         self._data = val
 
@@ -333,17 +319,6 @@ class PdfFile:
         else:
             print(f"Error: '{val}' is not of type Boolean")
             return False
-
-
-    @property
-    def verbose(self):
-        """Verbose setter/getter (bool)
-        """
-        return self._verbose
-
-    @verbose.setter
-    def verbose(self, val):
-        self._verbose = val
 
     ########################################
 
@@ -381,9 +356,7 @@ class PdfFile:
         ## Initialize the number tree
         self._number_tree = self._reader.trailer['/Root'] \
                                         .get('/PageLabels')
-        ## calculate file checksum
-        self._file_checksum = utilities.file_checksum(self._file,
-                                                      algorithm = "sha256")
+        
         ## auto-extract
         if self._auto_extract:
             self._data = self.extract_text()
