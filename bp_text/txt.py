@@ -4,7 +4,7 @@ This module implements functionality for TXT files.
 Created: 2025-03-29
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:32:00 Mon May  5 2025 CEST
+$$ Last modified:  23:48:32 Mon May  5 2025 CEST
 """
 
 import os
@@ -78,9 +78,8 @@ class TxtPage(Page):
 class TxtFile(File):
     """Implementation of the text-file (txt) class.
 
-    Note: While the `data` attribute holds the raw text read from the file, the
-    `text` attribute holds a :py:class:`Text` object generated from the contents
-    of the source file.  This object is already segmented and tokenized.
+    Note: The `data` attribute holds a list of (usually one) `TxtPage`
+    object(s).  This is intentionally analogous to :py:class:`PdfPage`.
 
     Example::
 
@@ -94,21 +93,19 @@ class TxtFile(File):
     :type file: string
     :param lang: The language of the text file (e.g. "en", "de" etc.).
     :type lang: string
-    :param data: The content of the text file. This will be automatically set
-        by reading the data from the file(-path).
-    :type data: string
-
+    
     """
     def __init__(self,
                  file: str,
-                 lang = "",
-                 data = None):
+                 lang = ""):
+        # the primary language
         self._lang = lang
-        # this will be a Text object. empty for now
-        self._text = None
+        ## the raw text (empty for now)
+        self._raw_text = None
+        self._data = None
         ########################################
         super(TxtFile, self).__init__(file,
-                                      data)
+                                      self._data)
         ########################################
         self.update()
 
@@ -143,12 +140,6 @@ class TxtFile(File):
         # call superclass's setter
         super(TxtFile, self.__class__).data.fset(self, val)
         self.update()
-
-    @property
-    def text(self):
-        """Getter for the Text (read-only).
-        """
-        return self._text
     
 
     ########################################
@@ -162,13 +153,21 @@ class TxtFile(File):
 
         ## set data
         with open(self.file, "r") as f:
-            self._data = f.read()
+            self._raw_text = f.read()
 
         ## set language
         self.lang = self.get_primary_lang()
 
-        ## create text object
-        self._text = text.Text(self._data, lang=self.lang)
+        ## now, we create a list with one TxtPage object
+        ##
+        ## maybe, there will be an option to further split a TXT file into
+        ## multiple pages, but not now
+        ## RP  Mon May  5 23:41:43 2025
+        self._data = [TxtPage(page_num = None,
+                              page_label = None,
+                              raw_text = self._raw_text,
+                              lang = self._lang,
+                              verbose = self._verbose)]
         
         return self
 
@@ -176,12 +175,12 @@ class TxtFile(File):
         """Detect the primary language of the text in `data` and set the
         `lang` attribute accordingly. 
         """
-        if self._data == "" or self._data == None:
+        if self._raw_text == "" or self._raw_text == None:
             print("Error: Cannot detect language. No data!")
             return False
 
         detector = language.LanguageDetector().detector
-        lang = detector.detect_language_of(self._data)
+        lang = detector.detect_language_of(self._raw_text)
 
         return lang.iso_code_639_1.name
 
