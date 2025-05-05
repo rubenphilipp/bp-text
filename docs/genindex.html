@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; bp_text 0.1.4 documentation</title>
+  <title>Index &mdash; bp_text 0.1.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=fd825880"></script>
+      <script src="_static/documentation_options.js?v=59fadc99"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -102,6 +102,8 @@
       <li><a href="generated/bp_text.database.html#bp_text.database.BibTexDatabase.__init__">__init__() (bp_text.database.BibTexDatabase method)</a>
 
       <ul>
+        <li><a href="generated/bp_text.file.html#bp_text.file.File.__init__">(bp_text.file.File method)</a>
+</li>
         <li><a href="generated/bp_text.language.html#bp_text.language.LanguageDetector.__init__">(bp_text.language.LanguageDetector method)</a>
 </li>
         <li><a href="generated/bp_text.page.html#bp_text.page.Page.__init__">(bp_text.page.Page method)</a>
@@ -117,6 +119,8 @@
         <li><a href="generated/bp_text.text.html#bp_text.text.Text.__init__">(bp_text.text.Text method)</a>
 </li>
         <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtFile.__init__">(bp_text.txt.TxtFile method)</a>
+</li>
+        <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtPage.__init__">(bp_text.txt.TxtPage method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -143,6 +147,13 @@
 </li>
       </ul></li>
       <li>
+    bp_text.file
+
+      <ul>
+        <li><a href="generated/bp_text.file.html#module-bp_text.file">module</a>
+</li>
+      </ul></li>
+      <li>
     bp_text.language
 
       <ul>
@@ -156,6 +167,8 @@
         <li><a href="generated/bp_text.page.html#module-bp_text.page">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     bp_text.pdf
 
@@ -163,8 +176,6 @@
         <li><a href="generated/bp_text.pdf.html#module-bp_text.pdf">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     bp_text.pool
 
@@ -203,14 +214,16 @@
 </li>
       <li><a href="generated/bp_text.database.html#bp_text.database.convert_latex_umlauts">convert_latex_umlauts() (in module bp_text.database)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/bp_text.page.html#bp_text.page.Page.count_words">count_words() (bp_text.page.Page method)</a>
 
       <ul>
         <li><a href="generated/bp_text.pdf.html#bp_text.pdf.PdfPage.count_words">(bp_text.pdf.PdfPage method)</a>
 </li>
+        <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtPage.count_words">(bp_text.txt.TxtPage method)</a>
+</li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/bp_text.pool.html#bp_text.pool.cycle_data">cycle_data() (in module bp_text.pool)</a>
 </li>
   </ul></td>
@@ -222,6 +235,8 @@
       <li><a href="generated/bp_text.database.html#bp_text.database.BibTexDatabase.data">data (bp_text.database.BibTexDatabase property)</a>
 
       <ul>
+        <li><a href="generated/bp_text.file.html#bp_text.file.File.data">(bp_text.file.File property)</a>
+</li>
         <li><a href="generated/bp_text.page.html#bp_text.page.Page.data">(bp_text.page.Page property)</a>
 </li>
         <li><a href="generated/bp_text.pdf.html#bp_text.pdf.PdfFile.data">(bp_text.pdf.PdfFile property)</a>
@@ -233,6 +248,8 @@
         <li><a href="generated/bp_text.pool.html#bp_text.pool.PoolItem.data">(bp_text.pool.PoolItem property)</a>
 </li>
         <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtFile.data">(bp_text.txt.TxtFile property)</a>
+</li>
+        <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtPage.data">(bp_text.txt.TxtPage property)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -247,6 +264,8 @@
 
       <ul>
         <li><a href="generated/bp_text.pdf.html#bp_text.pdf.PdfPage.detect_lang">(bp_text.pdf.PdfPage method)</a>
+</li>
+        <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtPage.detect_lang">(bp_text.txt.TxtPage method)</a>
 </li>
       </ul></li>
       <li><a href="generated/bp_text.language.html#bp_text.language.LanguageDetector.detector">detector (bp_text.language.LanguageDetector property)</a>
@@ -279,19 +298,25 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="generated/bp_text.pdf.html#bp_text.pdf.PdfFile.file">file (bp_text.pdf.PdfFile property)</a>
+      <li><a href="generated/bp_text.file.html#bp_text.file.File.file">file (bp_text.file.File property)</a>
 
       <ul>
+        <li><a href="generated/bp_text.pdf.html#bp_text.pdf.PdfFile.file">(bp_text.pdf.PdfFile property)</a>
+</li>
         <li><a href="generated/bp_text.pdf.html#bp_text.pdf.PdfPage.file">(bp_text.pdf.PdfPage property)</a>
 </li>
         <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtFile.file">(bp_text.txt.TxtFile property)</a>
 </li>
       </ul></li>
+      <li><a href="generated/bp_text.file.html#bp_text.file.File">File (class in bp_text.file)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="generated/bp_text.pdf.html#bp_text.pdf.PdfFile.file_checksum">file_checksum (bp_text.pdf.PdfFile property)</a>
+      <li><a href="generated/bp_text.file.html#bp_text.file.File.file_checksum">file_checksum (bp_text.file.File property)</a>
 
       <ul>
+        <li><a href="generated/bp_text.pdf.html#bp_text.pdf.PdfFile.file_checksum">(bp_text.pdf.PdfFile property)</a>
+</li>
         <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtFile.file_checksum">(bp_text.txt.TxtFile property)</a>
 </li>
       </ul></li>
@@ -358,11 +383,13 @@
 </li>
         <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtFile.lang">(bp_text.txt.TxtFile property)</a>
 </li>
-      </ul></li>
-      <li><a href="generated/bp_text.text.html#bp_text.text.LANG_SPACY_MODELS">LANG_SPACY_MODELS (in module bp_text.text)</a>
+        <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtPage.lang">(bp_text.txt.TxtPage property)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/bp_text.text.html#bp_text.text.LANG_SPACY_MODELS">LANG_SPACY_MODELS (in module bp_text.text)</a>
+</li>
       <li><a href="generated/bp_text.language.html#bp_text.language.langid_to_iso_639_1">langid_to_iso_639_1() (in module bp_text.language)</a>
 </li>
       <li><a href="generated/bp_text.language.html#bp_text.language.LanguageDetector">LanguageDetector (class in bp_text.language)</a>
@@ -390,6 +417,8 @@
 
       <ul>
         <li><a href="generated/bp_text.database.html#module-bp_text.database">bp_text.database</a>
+</li>
+        <li><a href="generated/bp_text.file.html#module-bp_text.file">bp_text.file</a>
 </li>
         <li><a href="generated/bp_text.language.html#module-bp_text.language">bp_text.language</a>
 </li>
@@ -427,11 +456,15 @@
       <ul>
         <li><a href="generated/bp_text.pdf.html#bp_text.pdf.PdfPage.page_label">(bp_text.pdf.PdfPage property)</a>
 </li>
+        <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtPage.page_label">(bp_text.txt.TxtPage property)</a>
+</li>
       </ul></li>
       <li><a href="generated/bp_text.page.html#bp_text.page.Page.page_num">page_num (bp_text.page.Page property)</a>
 
       <ul>
         <li><a href="generated/bp_text.pdf.html#bp_text.pdf.PdfPage.page_num">(bp_text.pdf.PdfPage property)</a>
+</li>
+        <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtPage.page_num">(bp_text.txt.TxtPage property)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -456,6 +489,8 @@
 
       <ul>
         <li><a href="generated/bp_text.pdf.html#bp_text.pdf.PdfPage.raw_text">(bp_text.pdf.PdfPage property)</a>
+</li>
+        <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtPage.raw_text">(bp_text.txt.TxtPage property)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -489,7 +524,7 @@
 </li>
         <li><a href="generated/bp_text.text.html#bp_text.text.Text.text">(bp_text.text.Text property)</a>
 </li>
-        <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtFile.text">(bp_text.txt.TxtFile property)</a>
+        <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtPage.text">(bp_text.txt.TxtPage property)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -498,15 +533,19 @@
 </li>
       <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtFile">TxtFile (class in bp_text.txt)</a>
 </li>
+      <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtPage">TxtPage (class in bp_text.txt)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="generated/bp_text.language.html#bp_text.language.LanguageDetector.update">update() (bp_text.language.LanguageDetector method)</a>
+      <li><a href="generated/bp_text.file.html#bp_text.file.File.update">update() (bp_text.file.File method)</a>
 
       <ul>
+        <li><a href="generated/bp_text.language.html#bp_text.language.LanguageDetector.update">(bp_text.language.LanguageDetector method)</a>
+</li>
         <li><a href="generated/bp_text.page.html#bp_text.page.Page.update">(bp_text.page.Page method)</a>
 </li>
         <li><a href="generated/bp_text.pdf.html#bp_text.pdf.PdfFile.update">(bp_text.pdf.PdfFile method)</a>
@@ -517,6 +556,8 @@
 </li>
         <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtFile.update">(bp_text.txt.TxtFile method)</a>
 </li>
+        <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtPage.update">(bp_text.txt.TxtPage method)</a>
+</li>
       </ul></li>
   </ul></td>
 </tr></table>
@@ -524,12 +565,18 @@
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="generated/bp_text.page.html#bp_text.page.Page.verbose">verbose (bp_text.page.Page property)</a>
+      <li><a href="generated/bp_text.file.html#bp_text.file.File.verbose">verbose (bp_text.file.File property)</a>
 
       <ul>
+        <li><a href="generated/bp_text.page.html#bp_text.page.Page.verbose">(bp_text.page.Page property)</a>
+</li>
         <li><a href="generated/bp_text.pdf.html#bp_text.pdf.PdfFile.verbose">(bp_text.pdf.PdfFile property)</a>
 </li>
         <li><a href="generated/bp_text.pdf.html#bp_text.pdf.PdfPage.verbose">(bp_text.pdf.PdfPage property)</a>
+</li>
+        <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtFile.verbose">(bp_text.txt.TxtFile property)</a>
+</li>
+        <li><a href="generated/bp_text.txt.html#bp_text.txt.TxtPage.verbose">(bp_text.txt.TxtPage property)</a>
 </li>
       </ul></li>
   </ul></td>

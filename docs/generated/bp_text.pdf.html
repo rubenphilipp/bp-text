@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>bp_text.pdf &mdash; bp_text 0.1.4 documentation</title>
+  <title>bp_text.pdf &mdash; bp_text 0.1.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=fd825880"></script>
+      <script src="../_static/documentation_options.js?v=59fadc99"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -51,6 +51,7 @@
 <li class="toctree-l3"><a class="reference internal" href="bp_text.language.html">bp_text.language</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bp_text.database.html">bp_text.database</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bp_text.text.html">bp_text.text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bp_text.file.html">bp_text.file</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bp_text.page.html">bp_text.page</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">bp_text.pdf</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#bp_text.pdf.PdfFile"><code class="docutils literal notranslate"><span class="pre">PdfFile</span></code></a></li>
@@ -97,7 +98,7 @@
 <p>This module implements functionality for PDF files.</p>
 <p>Created: 2025-03-27
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  14:01:02 Tue Apr 29 2025 CEST</p>
+<p>$$ Last modified:  23:16:40 Mon May  5 2025 CEST</p>
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -112,11 +113,11 @@ Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52
 <dl class="py class">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfFile">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bp_text.pdf.</span></span><span class="sig-name descname"><span class="pre">PdfFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_extract</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ocr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback_to_ocr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ocr_dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ocr_default_lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'eng'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/pdf.html#PdfFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.pdf.PdfFile" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="bp_text.file.html#bp_text.file.File" title="bp_text.file.File"><code class="xref py py-class docutils literal notranslate"><span class="pre">File</span></code></a></p>
 <p>This is a class implementation of a PDF file.  A PDF file object is related
 to an actual PDF file (e.g. retrieved from a database entry).  Its methods
 facilitate e.g. the retrieval of data/text from the pages.</p>
-<p>The <cite>data</cite> attribute holds the <a class="reference internal" href="#bp_text.pdf.PdfPage" title="bp_text.pdf.PdfPage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PdfPage</span></code></a> objects.</p>
+<p>The <cite>data</cite> attribute holds the <a class="reference internal" href="#bp_text.pdf.PdfPage" title="bp_text.pdf.PdfPage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PdfPage</span></code></a> objects as a <cite>list</cite>.</p>
 <p>Examples:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">## load a PDF file and extract the content from its pages</span>
 <span class="n">pdfFile</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">PdfFile</span><span class="p">(</span><span class="s2">&quot;bajohr2024a.pdf&quot;</span><span class="p">,</span> <span class="n">auto_extract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -164,9 +165,7 @@ Default = True</p></li>
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfFile.data">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#bp_text.pdf.PdfFile.data" title="Link to this definition"></a></dt>
-<dd><p>The data.
-This is a list of <a class="reference internal" href="#bp_text.pdf.PdfPage" title="bp_text.pdf.PdfPage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PdfPage</span></code></a> objects, provided the data has
-been extracted (cf. <cite>auto_extract</cite>).</p>
+<dd><p>Getter/setter for the data.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -193,13 +192,13 @@ Returns a list of PdfPage objects.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfFile.file">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">file</span></span><a class="headerlink" href="#bp_text.pdf.PdfFile.file" title="Link to this definition"></a></dt>
-<dd><p>The filepath to the PDF.</p>
+<dd><p>Getter/setter for the file attribute.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfFile.file_checksum">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">file_checksum</span></span><a class="headerlink" href="#bp_text.pdf.PdfFile.file_checksum" title="Link to this definition"></a></dt>
-<dd><p>Checksum (SHA256) of the PDF file (read-only).</p>
+<dd><p>Get the file checksum (sha256). Read-only.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -258,7 +257,7 @@ a PdfFile object.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.pdf.PdfFile.verbose">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">verbose</span></span><a class="headerlink" href="#bp_text.pdf.PdfFile.verbose" title="Link to this definition"></a></dt>
-<dd><p>Verbose setter/getter (bool)</p>
+<dd><p>Getter/setter for verbose (bool).</p>
 </dd></dl>
 
 </dd></dl>
@@ -270,11 +269,9 @@ a PdfFile object.</p>
 <p>This is a class implementation for a PDF page.  A PDF page holds is a
 reference to a page in a PDF document, usually related to a
 <a class="reference internal" href="#bp_text.pdf.PdfFile" title="bp_text.pdf.PdfFile"><code class="xref py py-class docutils literal notranslate"><span class="pre">bp_text.pdf.PdfFile</span></code></a> object.</p>
-<p>The data attribute is also capable of holding a pypdf.PageObject
-(optional), while the text attribute can contain text retrieved from the
-file (e.g. via OCR or direct extraction –
-cf. <a class="reference internal" href="#bp_text.pdf.PdfPage.extract_text" title="bp_text.pdf.PdfPage.extract_text"><code class="xref py py-func docutils literal notranslate"><span class="pre">PdfPage.extract_text()</span></code></a> or <a class="reference internal" href="#bp_text.pdf.PdfFile.extract_text" title="bp_text.pdf.PdfFile.extract_text"><code class="xref py py-func docutils literal notranslate"><span class="pre">PdfFile.extract_text()</span></code></a>).
-Please note that the pypdf.PageObject instances in the <cite>data</cite> attribute will
+<p>The <cite>data</cite> attribute is also capable of holding a pypdf.PageObject
+(optional), while the <cite>text</cite> attribute contains the analyzed/tokenized text.</p>
+<p>Please note that the pypdf.PageObject instances in the <cite>data</cite> attribute will
 <strong>not</strong> be (re-)stored when (un-)pickling the PdfPage.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
