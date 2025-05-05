@@ -87,16 +87,16 @@ be used as a noun in the context of the respective text:
    # isinstance())...
    from bp_text.pdf import PdfFile
    from bp_text.txt import TxtFile
-
-   # this is the word to find in the pool...
-   search_word = "sound"
+   
+   # this word is the word to find in the pool...
+   search_word = "sprache"
    # as we, in this example (see below), use normalized words, let's apply
    # lowercase...
    search_word = search_word.lower()
-
+   
    # this is an empty list for the results (which will be a dict)...
    results = {}
-
+   
    # now, loop through all available pool items...
    for key, pitm in pool.data.items():
        # get a data object (either a TxtFile or a PdfFile)...
@@ -104,12 +104,13 @@ be used as a noun in the context of the respective text:
 
        # these will be the matches...
        matches = []
-       
+
        # just proceed if the PoolItem contains either a PdfFile or a TxtFile
        # object)...
-       if isinstance(data, PdfFile):
-           # if the object is a PDF, loop through all available PdfPage objects
-           # while preserving the pagenum (which is the page index)...
+       if isinstance(data, PdfFile) or isinstance(data, TxtFile):
+           # loop throuth all pages while preserving the pagenum (which is the
+           # page
+           # index here)...
            for pagenum, page in enumerate(data.data):
                # this is the spacy.doc
                doc = page.text.doc
@@ -122,23 +123,12 @@ be used as a noun in the context of the respective text:
                # now, search the spacy.doc for nouns matching the pattern
                for token in doc:
                    if token.text.lower() == search_word and token.pos_ == "NOUN":
-                   # add a dict to the matches list.
-                   # here, we also include additional data, esp. the
-                   # page_label, retrieved from the PdfPage object
-                   matches.append({"pagenumnum": pagenum, "token": token,
-                       "pitm": pitm, "type": "pdf",
-                       "page_label": page_label})
-       elif isinstance(data, TxtFile):
-           # this is the spacy.doc
-           doc = data.text.doc
-           # again, perform the search here (see above)
-           for token in doc:
-               if token.text.lower() == search_word and token.pos_ == "NOUN":
-                   # add a dict to the matches list.
-                   # NB: this does not include e.g. a page_label as this is not
-                   # relevant in TXT files. 
-                   matches.append({"pitm": pitm, "token": token,
-                       "type": "txt"})
+                       # add a dict to the matches list.
+                       # here, we also include additional data, esp. the
+                       # page_label, retrieved from the PdfPage object
+                       matches.append({"pagenumnum": pagenum, "token": token,
+                                       "pitm": pitm, "type": "pdf",
+                                        "page_label": page_label})
        else:
            continue
 
@@ -146,27 +136,24 @@ be used as a noun in the context of the respective text:
        if matches:
            results[key] = matches
 
-   # this loop goes through the items in the results variable and prints the token
-   # and the page_label (if applicable)...
+   # this loop goes through the items in the results variable and prints the
+   # token and the page_label (if applicable)...
    for key, val in results.items():
        print("-------")
        for itm in val:
            if itm["type"] == "txt":
-               print(itm["token"])
-               print("Page Label: none (txt)")
+                print(itm["token"])
+                print("Page Label: none (txt)")
            elif itm["type"] == "pdf":
-               print(f"'{itm["token"]}'")
-               print(f"Page Label: {itm["page_label"]}")
+                print(f"@{key}: '{itm["token"]}'")
+                print(f"Page Label: {itm["page_label"]}")
 
-   # get tokens around the selected token.
-   # "Austin1992" is a citekey in the results dict
-   selected_token = results["Austin1992"][2]["token"]
+   # get tokens around the tokens
+   selected_token = results["nietzsche2"][1]["token"]
    print(f"This is the token: '{selected_token}'")
-   print("This is the next token: " 
-                + f"'{selected_token.doc[selected_token.i + 1]}'")
-   print("This is the prev token: "
-                + f"'{selected_token.doc[selected_token.i - 1]}'")
-   # you can also extract the whole sentence the token is part of
+   print("This is the next token: " +
+         f"'{selected_token.doc[selected_token.i + 1]}'")
+   print("This is the prev token: '"
+         + f"{selected_token.doc[selected_token.i - 1]}'")
    print("This is the sentence:")
    print(f"'{selected_token.sent.text}'")
-
