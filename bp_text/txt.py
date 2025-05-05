@@ -4,7 +4,7 @@ This module implements functionality for TXT files.
 Created: 2025-03-29
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  18:56:16 Fri Apr 25 2025 CEST
+$$ Last modified:  22:23:58 Mon May  5 2025 CEST
 """
 
 import os
@@ -16,9 +16,13 @@ from . import language
 from . import utilities
 from . import text
 
+from .file import File
+from .page import Page
+
+
 ################################################################################
 
-class TxtFile:
+class TxtFile(File):
     """Implementation of the text-file (txt) class.
 
     Note: While the `data` attribute holds the raw text read from the file, the
@@ -46,25 +50,17 @@ class TxtFile:
                  file: str,
                  lang = "",
                  data = None):
-        self._file = file
+        super(TxtFile, self).__init__(file,
+                                      data)
         self._lang = lang
-        self._data = data
         # this will be a Text object. empty for now
         self._text = None
-        ## a sha256 checksum for the file
-        self._file_checksum = None
         self.update()
 
-
-    @property
-    def file(self):
-        """Getter/setter for the file-path. 
-        """
-        return self._file
-
-    @file.setter
+    @File.file.setter
     def file(self, val):
-        self._file = val
+        # call superclass's setter
+        super(TxtFile, self.__class__).file.fset(self, val)
         self.update()
 
     @property
@@ -87,22 +83,17 @@ class TxtFile:
         """
         return self._data
 
-    @data.setter
+    @File.data.setter
     def data(self, val):
-        self._data = val
+        # call superclass's setter
+        super(TxtFile, self.__class__).data.fset(self, val)
         self.update()
-
-    @property
-    def file_checksum(self):
-        return self._file_checksum
 
     @property
     def text(self):
         """Getter for the Text (read-only).
         """
         return self._text
-    
-
     
 
     ########################################
@@ -117,10 +108,6 @@ class TxtFile:
         ## set data
         with open(self.file, "r") as f:
             self._data = f.read()
-
-        ## calculate file checksum
-        self._file_checksum = utilities.file_checksum(self._file,
-                                                      algorithm = "sha256")
 
         ## set language
         self.lang = self.get_primary_lang()

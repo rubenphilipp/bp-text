@@ -15,6 +15,7 @@ Modules
    bp_text.language
    bp_text.database
    bp_text.text
+   bp_text.file
    bp_text.page
    bp_text.pdf
    bp_text.txt
