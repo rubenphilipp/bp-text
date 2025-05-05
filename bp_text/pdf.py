@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  22:37:26 Mon May  5 2025 CEST
+$$ Last modified:  23:16:40 Mon May  5 2025 CEST
 """
 
 import os
@@ -37,10 +37,9 @@ class PdfPage(Page):
     reference to a page in a PDF document, usually related to a
     :py:class:`bp_text.pdf.PdfFile` object.
 
-    The data attribute is also capable of holding a pypdf.PageObject
-    (optional), while the text attribute can contain text retrieved from the
-    file (e.g. via OCR or direct extraction --
-    cf. :py:func:`PdfPage.extract_text` or :py:func:`PdfFile.extract_text`).
+    The `data` attribute is also capable of holding a pypdf.PageObject
+    (optional), while the `text` attribute contains the analyzed/tokenized text.
+    
     Please note that the pypdf.PageObject instances in the `data` attribute will
     **not** be (re-)stored when (un-)pickling the PdfPage. 
 
@@ -170,7 +169,7 @@ class PdfFile(File):
     to an actual PDF file (e.g. retrieved from a database entry).  Its methods
     facilitate e.g. the retrieval of data/text from the pages.
 
-    The `data` attribute holds the :py:class:`PdfPage` objects. 
+    The `data` attribute holds the :py:class:`PdfPage` objects as a `list`. 
 
     Examples::
 
