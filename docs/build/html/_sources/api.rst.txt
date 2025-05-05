@@ -20,4 +20,5 @@ Modules
    bp_text.pdf
    bp_text.txt
    bp_text.pool
+   bp_text.textfragment
    

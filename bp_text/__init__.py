@@ -7,6 +7,7 @@ import bp_text.page
 import bp_text.pdf
 import bp_text.txt
 import bp_text.pool
+import bp_text.textfragment
 
 
 __version__ = "0.1.5"

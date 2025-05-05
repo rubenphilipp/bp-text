@@ -122,13 +122,15 @@ be used as a noun in the context of the respective text:
                    continue
                # now, search the spacy.doc for nouns matching the pattern
                for token in doc:
-                   if token.text.lower() == search_word and token.pos_ == "NOUN":
-                       # add a dict to the matches list.
-                       # here, we also include additional data, esp. the
-                       # page_label, retrieved from the PdfPage object
-                       matches.append({"pagenumnum": pagenum, "token": token,
-                                       "pitm": pitm, "type": "pdf",
-                                        "page_label": page_label})
+                   if (token.text.lower() == search_word
+                       and token.pos_ == "NOUN"):
+                       # make a TextFragment object for this search result
+                       frag = bp_text.textfragment.TextFragment(key,
+                                                                page_label,
+                                                                pitm.meta,
+                                                                token)
+                       matches.append(frag)
+                       
        else:
            continue
 
@@ -141,15 +143,11 @@ be used as a noun in the context of the respective text:
    for key, val in results.items():
        print("-------")
        for itm in val:
-           if itm["type"] == "txt":
-                print(itm["token"])
-                print("Page Label: none (txt)")
-           elif itm["type"] == "pdf":
-                print(f"@{key}: '{itm["token"]}'")
-                print(f"Page Label: {itm["page_label"]}")
+           print(f"data: '{itm.data}'")
+           print(f"page_label: '{itm.page_label}'")
 
    # get tokens around the tokens
-   selected_token = results["nietzsche2"][1]["token"]
+   selected_token = results["nietzsche2"][7].data
    print(f"This is the token: '{selected_token}'")
    print("This is the next token: " +
          f"'{selected_token.doc[selected_token.i + 1]}'")
