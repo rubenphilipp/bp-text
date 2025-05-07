@@ -1,11 +1,1 @@
-- maybe create a Fragment or TextFragment class
-  - reference to PoolItem
-  - PoolItem data index
-  - source page_label
-  - text (could be anything; word/token, sentence)
-    - should be a spaCy token or similar (this facilitates further extraction
-      of data from e.g. the token)
-  - BETTER:
-    - key (citekey)
-    - meta (e.g. from PoolItem)
-    - data (i.e. the text/spacy.doc, retreived from the resp. poolitem)
+- write method to create an org file from TextFragments

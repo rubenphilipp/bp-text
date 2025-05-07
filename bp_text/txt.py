@@ -4,7 +4,7 @@ This module implements functionality for TXT files.
 Created: 2025-03-29
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:48:32 Mon May  5 2025 CEST
+$$ Last modified:  11:04:38 Wed May  7 2025 CEST
 """
 
 import os
@@ -22,10 +22,10 @@ from .page import Page
 ################################################################################
 
 class TxtPage(Page):
-    """This is a class implementation of a TXT page.  Usually TXT file (.txt) only
-    contain a single page.  Anyway, esp. in order to comply with the structure
-    of `PdfFile` objects, `TxtFile` objects also use (usually) one `TxtPage`
-    to store the (analyzed/tokenized) contents).
+    """This is a class implementation of a TXT page.  Usually TXT files (.txt)
+    only contain a single page.  Anyway, esp. in order to comply with the
+    structure of `PdfFile` objects, `TxtFile` objects also use (usually) one
+    `TxtPage` to store the (analyzed/tokenized) contents).
 
     The `data` attribute (read-only) is an alias to the `raw_text` attribute of
     the respective page while the `text` attribute contains the

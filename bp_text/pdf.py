@@ -4,7 +4,7 @@ This module implements functionality for PDF files.
 Created: 2025-03-27
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:16:40 Mon May  5 2025 CEST
+$$ Last modified:  11:05:21 Wed May  7 2025 CEST
 """
 
 import os
@@ -78,6 +78,7 @@ class PdfPage(Page):
                  verbose = True):
         """Constructor method.
         """
+        self._file = file
         super(PdfPage, self).__init__(page_num,
                                       page_label,
                                       data,
@@ -85,7 +86,6 @@ class PdfPage(Page):
                                       lang,
                                       verbose)
         ## call this again to perform tests
-        self._file = file
         self.data = data
 
     ########################################
