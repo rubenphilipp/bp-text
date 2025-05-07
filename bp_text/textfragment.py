@@ -8,11 +8,11 @@ from the `meta` slot of a :py:class:`Pool` instance.
 Created: 2025-05-06
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  15:11:10 Wed May  7 2025 CEST
+$$ Last modified:  16:34:18 Wed May  7 2025 CEST
 
 """
 
-from spacy import tokens
+from spacy.tokens import Token, Span, Doc
 
 ################################################################################
 
@@ -123,9 +123,11 @@ class TextFragment:
 
         if isinstance(self.data, str):
             res = self.data
-        elif isinstance(self.data, tokens.Token):
+        elif isinstance(self.data, Token):
             res = self.data.text
             res_pos = self.data.pos_
+        elif isinstance(self.data, Span):
+            res = self.data.text
         else:
             print("TextFragment.format_org: The data does not contain valid "
                   + "text.")
@@ -176,8 +178,8 @@ def textfragments_to_org(fragment_list,
         ## spacy.Token 
         if i < len(fragment_list) - 1:
             next_frag = fragment_list[i + 1]
-            if (isinstance(next_frag.data, tokens.Token)
-                and isinstance(frag.data, tokens.Token)):
+            if (isinstance(next_frag.data, Token)
+                and isinstance(frag.data, Token)):
                 if not next_frag.data.is_punct and not frag.data.is_space:
                     res_string += " "
             else:

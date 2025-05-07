@@ -8,7 +8,7 @@ be later used for analysis or text-production.
 Created: 2025-04-24
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  23:40:51 Fri Apr 25 2025 CEST
+$$ Last modified:  16:46:43 Wed May  7 2025 CEST
 
 """
 
@@ -43,6 +43,12 @@ LANG_SPACY_MODELS = {
 #: Helper to cache the spacy modles
 @lru_cache(maxsize=10)  # adjust based on number of language models you use
 def get_nlp(model_name: str):
+    """This loads and returns a spacy language model.  Additionally, it caches
+    up to 10 language models in order to minimize memory usage.
+
+    :param model_name: The name of the spacy model (e.g. "en_core_web_sm").
+    :type model_name: string
+    """
     if model_name:
         try:
             return spacy.load(model_name)
