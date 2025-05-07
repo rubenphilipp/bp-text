@@ -82,7 +82,7 @@
 <span class="sd">Created: 2025-04-24</span>
 <span class="sd">Author: Ruben Philipp &lt;me@rubenphilipp.com&gt;</span>
 
-<span class="sd">$$ Last modified:  23:40:51 Fri Apr 25 2025 CEST</span>
+<span class="sd">$$ Last modified:  16:46:43 Wed May  7 2025 CEST</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -119,6 +119,12 @@
 <a class="viewcode-back" href="../../generated/bp_text.text.html#bp_text.text.get_nlp">[docs]</a>
 <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># adjust based on number of language models you use</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_nlp</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This loads and returns a spacy language model.  Additionally, it caches</span>
+<span class="sd">    up to 10 language models in order to minimize memory usage.</span>
+
+<span class="sd">    :param model_name: The name of the spacy model (e.g. &quot;en_core_web_sm&quot;).</span>
+<span class="sd">    :type model_name: string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">model_name</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>

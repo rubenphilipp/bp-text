@@ -58,6 +58,7 @@
 <li class="toctree-l3"><a class="reference internal" href="bp_text.pool.html">bp_text.pool</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">bp_text.textfragment</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#bp_text.textfragment.TextFragment"><code class="docutils literal notranslate"><span class="pre">TextFragment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bp_text.textfragment.textfragments_to_org"><code class="docutils literal notranslate"><span class="pre">textfragments_to_org()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -102,7 +103,15 @@ is most often a BibTeX citekey, and some other meta-data, most likely retreived
 from the <cite>meta</cite> slot of a <code class="xref py py-class docutils literal notranslate"><span class="pre">Pool</span></code> instance.</p>
 <p>Created: 2025-05-06
 Author: Ruben Philipp &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rubenphilipp&#46;com">me<span>&#64;</span>rubenphilipp<span>&#46;</span>com</a>&gt;</p>
-<p>$$ Last modified:  01:14:41 Tue May  6 2025 CEST</p>
+<p>$$ Last modified:  16:49:30 Wed May  7 2025 CEST</p>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bp_text.textfragment.textfragments_to_org" title="bp_text.textfragment.textfragments_to_org"><code class="xref py py-obj docutils literal notranslate"><span class="pre">textfragments_to_org</span></code></a>(fragment_list[, cite, ...])</p></td>
+<td><p>This function takes a <cite>list</cite> of <a class="reference internal" href="#bp_text.textfragment.TextFragment" title="bp_text.textfragment.TextFragment"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextFragment</span></code></a> objects and returns a <cite>string</cite> formatted in org-mode syntax, (optionally) including org-cite references.</p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -142,6 +151,29 @@ a <cite>spacy.doc</cite> or <cite>spacy.token</cite> object.</p></li>
 <dd><p>Getter/setter for the data.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="bp_text.textfragment.TextFragment.format_org">
+<span class="sig-name descname"><span class="pre">format_org</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_cite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/textfragment.html#TextFragment.format_org"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.textfragment.TextFragment.format_org" title="Link to this definition"></a></dt>
+<dd><p>This returns a formatted string with the text contained in <cite>data</cite> in
+org-mode syntax.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cite</strong> (<em>boolean</em>) – When True, an org-cite citation will be appended to the
+generated string. Default = True</p></li>
+<li><p><strong>force_cite</strong> (<em>boolean</em>) – When True (and <cite>cite</cite> = True), also for a citation
+for text elements that normally don’t “require” a citation
+(e.g. PUNCT).
+Default = False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string with the content of <cite>text</cite> formatted in org-mode
+syntax.</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="bp_text.textfragment.TextFragment.key">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">key</span></span><a class="headerlink" href="#bp_text.textfragment.TextFragment.key" title="Link to this definition"></a></dt>
@@ -160,6 +192,26 @@ a <cite>spacy.doc</cite> or <cite>spacy.token</cite> object.</p></li>
 <dd><p>Getter/setter for the page_label.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bp_text.textfragment.textfragments_to_org">
+<span class="sig-prename descclassname"><span class="pre">bp_text.textfragment.</span></span><span class="sig-name descname"><span class="pre">textfragments_to_org</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragment_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_cite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bp_text/textfragment.html#textfragments_to_org"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bp_text.textfragment.textfragments_to_org" title="Link to this definition"></a></dt>
+<dd><p>This function takes a <cite>list</cite> of <a class="reference internal" href="#bp_text.textfragment.TextFragment" title="bp_text.textfragment.TextFragment"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextFragment</span></code></a> objects and
+returns a <cite>string</cite> formatted in org-mode syntax, (optionally) including
+org-cite references.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fragment_list</strong> (A list with <a class="reference internal" href="#bp_text.textfragment.TextFragment" title="bp_text.textfragment.TextFragment"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextFragment</span></code></a> objects.) – The <a class="reference internal" href="#bp_text.textfragment.TextFragment" title="bp_text.textfragment.TextFragment"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextFragment</span></code></a> objects.</p></li>
+<li><p><strong>cite</strong> (<em>boolean</em>) – When True, an org-cite citation will be appended to the
+generated string. Default = True</p></li>
+<li><p><strong>force_cite</strong> (<em>boolean</em>) – When True (and <cite>cite</cite> = True), also for a citation for
+text elements that normally don’t “require” a citation (e.g. PUNC).
+Default = False</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

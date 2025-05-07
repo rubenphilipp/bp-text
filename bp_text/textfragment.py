@@ -8,7 +8,7 @@ from the `meta` slot of a :py:class:`Pool` instance.
 Created: 2025-05-06
 Author: Ruben Philipp <me@rubenphilipp.com>
 
-$$ Last modified:  16:34:18 Wed May  7 2025 CEST
+$$ Last modified:  16:49:30 Wed May  7 2025 CEST
 
 """
 
@@ -110,8 +110,9 @@ class TextFragment:
         :param cite: When True, an org-cite citation will be appended to the
             generated string. Default = True
         :type cite: boolean
-        :param force_cite: When True (and `cite`=True), also for a citation for
-            text elements that normally don't "require" a citation (e.g. PUNCT).
+        :param force_cite: When True (and `cite` = True), also for a citation
+            for text elements that normally don't "require" a citation
+            (e.g. PUNCT).
             Default = False
         :type force_cite: boolean
 
@@ -158,7 +159,7 @@ def textfragments_to_org(fragment_list,
     :param cite: When True, an org-cite citation will be appended to the
         generated string. Default = True
     :type cite: boolean
-    :param force_cite: When True (and `cite`=True), also for a citation for
+    :param force_cite: When True (and `cite` = True), also for a citation for
             text elements that normally don't "require" a citation (e.g. PUNC).
             Default = False
     :type force_cite: boolean
