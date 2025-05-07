@@ -79,7 +79,14 @@ Trivial Noun Search
 ^^^^^^^^^^^^^^^^^^^
 
 The following lines show how to search a pool for a `search_word` which should
-be used as a noun in the context of the respective text:
+be used as a noun in the context of the respective text.
+
+The :py:class:`bp_text.textfragment.TextFragment` can be, in this case,
+conceived as a "container" for the search results.  It holds the token of the
+search result as well as the citekey, the page_label and some meta-data (taken
+from the resp. item's meta-data which is most likely retrieved from the BibTeX
+file).  In general, `TextFragment` objects help to unify the results of data
+extraction e.g. from a pool. 
 
 .. code-block:: python
 

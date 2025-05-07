@@ -138,7 +138,13 @@ improves the performance of <cite>bp_text</cite>.</p>
 <section id="trivial-noun-search">
 <h3>Trivial Noun Search<a class="headerlink" href="#trivial-noun-search" title="Link to this heading"></a></h3>
 <p>The following lines show how to search a pool for a <cite>search_word</cite> which should
-be used as a noun in the context of the respective text:</p>
+be used as a noun in the context of the respective text.</p>
+<p>The <a class="reference internal" href="generated/bp_text.textfragment.html#bp_text.textfragment.TextFragment" title="bp_text.textfragment.TextFragment"><code class="xref py py-class docutils literal notranslate"><span class="pre">bp_text.textfragment.TextFragment</span></code></a> can be, in this case,
+conceived as a “container” for the search results.  It holds the token of the
+search result as well as the citekey, the page_label and some meta-data (taken
+from the resp. item’s meta-data which is most likely retrieved from the BibTeX
+file).  In general, <cite>TextFragment</cite> objects help to unify the results of data
+extraction e.g. from a pool.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># these need to be imported in order to make the typecasting work (via</span>
 <span class="c1"># isinstance())...</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">bp_text.pdf</span><span class="w"> </span><span class="kn">import</span> <span class="n">PdfFile</span>
