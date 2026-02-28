@@ -1,3 +1,13 @@
+# This Repository Has Moved!
+
+This repository has been moved to Codeberg in February 2026. 
+
+You'll find it here: https://codeberg.org/rubenphilipp/bp-text
+
+-----
+
+## Description
+
 # bp_text
 
 This repository contains a set of tools for algorithmic text generation, being
